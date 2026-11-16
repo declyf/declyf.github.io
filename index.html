@@ -1,0 +1,579 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>DECLYF — The coaching platform for serious coaches</title>
+<meta name="description" content="DECLYF gives fitness coaches one place to build plans, watch every client's real numbers and keep them consistent. Install free on Android or iPhone.">
+<meta name="theme-color" content="#0A0A0C">
+<meta property="og:title" content="DECLYF — Coach smarter. Live dedicated.">
+<meta property="og:description" content="Build plans, see every client's real numbers, keep them consistent. Install free on Android or iPhone.">
+<meta property="og:type" content="website">
+<meta property="og:image" content="icon.png">
+<link rel="icon" href="favicon.png">
+<link rel="apple-touch-icon" href="icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wdth,wght@0,100,400..700;0,125,700..900&display=swap" rel="stylesheet">
+<style>
+/* ── tokens ─────────────────────────────────────────────── */
+:root{
+  --red:#E02A20; --red-deep:#A81A12; --volt:#FFD60A;
+  --bg:#0A0A0C; --surface:#121217; --surface2:#181820; --line:#2A2A33;
+  --text:#F2F2F4; --dim:#8E8E99; --shadow:rgba(0,0,0,.6);
+  --hero-wash:radial-gradient(70% 90% at 78% 18%, rgba(224,42,32,.30), transparent 70%);
+  --grid-line:rgba(255,255,255,.045);
+  --gut:clamp(18px,4.5vw,68px);
+  --cut:18px;                       /* corner notch size */
+}
+:root[data-theme="light"]{
+  --bg:#EDEDE8; --surface:#FFFFFF; --surface2:#F5F5F1; --line:#D3D3CA;
+  --text:#0A0A0C; --dim:#5C5C66; --shadow:rgba(10,10,12,.14);
+  --hero-wash:radial-gradient(70% 90% at 78% 18%, rgba(224,42,32,.16), transparent 70%);
+  --grid-line:rgba(10,10,12,.055);
+}
+@media (prefers-color-scheme: light){
+  :root:not([data-theme="dark"]){
+    --bg:#EDEDE8; --surface:#FFFFFF; --surface2:#F5F5F1; --line:#D3D3CA;
+    --text:#0A0A0C; --dim:#5C5C66; --shadow:rgba(10,10,12,.14);
+    --hero-wash:radial-gradient(70% 90% at 78% 18%, rgba(224,42,32,.16), transparent 70%);
+    --grid-line:rgba(10,10,12,.055);
+  }
+}
+
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  background:var(--bg);color:var(--text);
+  font-family:'Archivo',system-ui,-apple-system,'Segoe UI',sans-serif;
+  font-size:17px;line-height:1.62;-webkit-font-smoothing:antialiased;
+  font-variation-settings:'wdth' 100;
+  overflow-x:hidden;
+}
+a{color:inherit;text-decoration:none}
+img,svg{display:block;max-width:100%}
+:focus-visible{outline:3px solid var(--volt);outline-offset:3px}
+.wrap{width:100%;max-width:1180px;margin:0 auto;padding:0 var(--gut)}
+
+/* display type: one family, expanded width axis */
+.d{font-variation-settings:'wdth' 125,'wght' 850;text-transform:uppercase;line-height:.96;letter-spacing:-.012em}
+h1{font-size:clamp(40px,7.6vw,96px)}
+h2{font-size:clamp(30px,4.8vw,58px)}
+h3{font-size:clamp(20px,2.4vw,27px)}
+p{max-width:62ch}
+.dim{color:var(--dim)}
+.tnum{font-variant-numeric:tabular-nums}
+
+/* ── buttons ────────────────────────────────────────────── */
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:11px;
+  font-weight:700;font-size:16px;padding:17px 26px;cursor:pointer;border:0;
+  background:var(--red);color:#fff;position:relative;
+  clip-path:polygon(0 0,calc(100% - 14px) 0,100% 14px,100% 100%,14px 100%,0 calc(100% - 14px));
+  transition:background .16s,transform .16s;
+}
+.btn:hover{background:#F23B30;transform:translateY(-2px)}
+.btn.volt{background:var(--volt);color:#0A0A0C}
+.btn.volt:hover{background:#FFE34D}
+.btn.line{background:transparent;color:var(--text);box-shadow:inset 0 0 0 1.5px var(--line)}
+.btn.line:hover{box-shadow:inset 0 0 0 1.5px var(--red);color:var(--red);background:transparent}
+.btn.sm{padding:11px 18px;font-size:14px;clip-path:polygon(0 0,calc(100% - 10px) 0,100% 10px,100% 100%,10px 100%,0 calc(100% - 10px))}
+.btn svg{width:19px;height:19px;flex:none}
+
+/* ── panels with cut corners ────────────────────────────── */
+.panel{
+  background:var(--surface);border:1px solid var(--line);
+  clip-path:polygon(0 0,calc(100% - var(--cut)) 0,100% var(--cut),100% 100%,var(--cut) 100%,0 calc(100% - var(--cut)));
+  padding:26px;
+}
+.kicker{
+  font-size:12px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--red);display:flex;align-items:center;gap:9px;margin-bottom:14px;
+}
+.kicker::before{content:"";width:22px;height:2px;background:var(--red)}
+
+/* ── header ─────────────────────────────────────────────── */
+header{position:sticky;top:0;z-index:40;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
+.nav{display:flex;align-items:center;gap:22px;height:70px}
+.mark{font-size:25px;font-variation-settings:'wdth' 125,'wght' 900;letter-spacing:.015em}
+.mark b{color:var(--volt);font-weight:inherit}
+:root[data-theme="light"] .mark b{color:var(--red)}
+@media (prefers-color-scheme: light){:root:not([data-theme="dark"]) .mark b{color:var(--red)}}
+.nav .spacer{flex:1}
+.nav .links{display:flex;gap:26px;font-size:14.5px;font-weight:500;color:var(--dim)}
+.nav .links a:hover{color:var(--text)}
+.toggle{background:none;border:1px solid var(--line);color:var(--dim);width:38px;height:38px;display:grid;place-items:center;cursor:pointer}
+.toggle:hover{color:var(--text);border-color:var(--red)}
+.toggle svg{width:18px;height:18px}
+.sun{display:none}
+:root[data-theme="light"] .sun{display:block}:root[data-theme="light"] .moon{display:none}
+@media (prefers-color-scheme: light){:root:not([data-theme="dark"]) .sun{display:block}:root:not([data-theme="dark"]) .moon{display:none}}
+
+/* ── hero ───────────────────────────────────────────────── */
+.hero{position:relative;padding:clamp(36px,6vw,78px) 0 clamp(56px,8vw,104px);overflow:hidden}
+.hero::before{content:"";position:absolute;inset:0;background:var(--hero-wash);pointer-events:none}
+.hero::after{content:"";position:absolute;inset:0;pointer-events:none;
+  background:repeating-linear-gradient(to right,var(--grid-line) 0 1px,transparent 1px 25%);}
+.hero-in{position:relative;display:grid;grid-template-columns:1.08fr .92fr;gap:clamp(26px,5vw,66px);align-items:center}
+.hero h1 .ln{display:block;overflow:hidden}
+.hero h1 .ln i{display:block;font-style:normal;animation:rise .85s cubic-bezier(.16,.9,.2,1) both}
+.hero h1 .ln:nth-child(2) i{animation-delay:.09s}
+.hero h1 .ln:nth-child(3) i{animation-delay:.18s}
+@keyframes rise{from{transform:translateY(102%)}to{transform:translateY(0)}}
+.hero .lead{font-size:clamp(17px,1.8vw,20px);color:var(--dim);margin-top:24px;max-width:50ch}
+.hero .cta{display:flex;flex-wrap:wrap;gap:13px;margin-top:32px}
+.trust{display:flex;flex-wrap:wrap;gap:10px 26px;margin-top:20px;font-size:13.5px;color:var(--dim);font-weight:500}
+.trust span{display:flex;align-items:center;gap:8px}
+.trust span::before{content:"";width:7px;height:7px;background:var(--volt);transform:rotate(45deg)}
+
+/* HUD stat chips over the phone */
+.stage{position:relative;display:flex;justify-content:center}
+.hud{position:absolute;background:color-mix(in srgb,var(--surface) 92%,transparent);border:1px solid var(--line);backdrop-filter:blur(8px);padding:11px 15px;z-index:3;
+  clip-path:polygon(0 0,calc(100% - 10px) 0,100% 10px,100% 100%,10px 100%,0 calc(100% - 10px));animation:fade .7s .5s both}
+@keyframes fade{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+.hud b{display:block;font-size:23px;font-variation-settings:'wdth' 125,'wght' 850;line-height:1.1}
+.hud span{font-size:11px;letter-spacing:.11em;text-transform:uppercase;color:var(--dim);font-weight:700}
+.hud.a{top:8%;left:-6%}.hud.b{bottom:16%;right:-4%}
+.hud.a b{color:var(--volt)}
+:root[data-theme="light"] .hud.a b{color:var(--red)}
+@media (prefers-color-scheme: light){:root:not([data-theme="dark"]) .hud.a b{color:var(--red)}}
+
+/* phone */
+.phone{width:min(312px,88vw);background:#0B0B0E;border:8px solid #1C1C22;border-radius:38px;padding:16px 13px 18px;box-shadow:0 36px 70px -28px var(--shadow);position:relative;z-index:2}
+.phone .bar{display:flex;align-items:center;justify-content:space-between;margin:6px 4px 12px}
+.phone .bar .m{font-size:14px;font-variation-settings:'wdth' 125,'wght' 900;color:#F2F2F4}
+.phone .bar .m b{color:var(--volt);font-weight:inherit}
+.phone .t{font-size:21px;font-weight:700;margin:0 4px;color:#F2F2F4}
+.phone .s{font-size:12px;color:#8E8E99;margin:1px 4px 13px}
+.row{background:#15151B;border:1px solid #26262C;padding:11px;margin-bottom:9px;display:grid;grid-template-columns:38px 1fr auto;gap:11px;align-items:center;
+  clip-path:polygon(0 0,calc(100% - 10px) 0,100% 10px,100% 100%,10px 100%,0 calc(100% - 10px))}
+.row:last-child{margin-bottom:0}
+.av{width:38px;height:38px;display:grid;place-items:center;font-weight:800;font-size:14px;color:#0A0A0C;clip-path:polygon(0 0,calc(100% - 8px) 0,100% 8px,100% 100%,8px 100%,0 calc(100% - 8px))}
+.nm{font-weight:600;font-size:14.5px;color:#F2F2F4;line-height:1.25}
+.sb{font-size:11.5px;color:#8E8E99}
+.pb{height:4px;background:#26262C;margin-top:7px;overflow:hidden}
+.pb i{display:block;height:100%;background:var(--volt);width:var(--w);transform-origin:left;animation:fill 1s .7s cubic-bezier(.2,.8,.2,1) both}
+.pb.r i{background:var(--red)}
+@keyframes fill{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+.pct{font-size:11.5px;font-weight:800;color:var(--volt);font-variant-numeric:tabular-nums}
+.pct.r{color:var(--red)}
+
+/* ── install band ───────────────────────────────────────── */
+.install{border-top:1px solid var(--line);border-bottom:1px solid var(--line);background:var(--surface2);position:relative}
+.install::before{content:"";position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--red) 0 42%,var(--volt) 42% 100%)}
+.install .wrap{padding-block:clamp(44px,6vw,78px)}
+.inst-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:30px}
+.card-i{display:flex;flex-direction:column;gap:14px}
+.card-i .os{display:flex;align-items:center;gap:12px}
+.card-i .os svg{width:26px;height:26px}
+.card-i .os h3{font-variation-settings:'wdth' 125,'wght' 850;text-transform:uppercase}
+.card-i ol{margin:0;padding-left:19px;color:var(--dim);font-size:15px;display:grid;gap:7px}
+.card-i .btn{margin-top:auto;align-self:flex-start}
+.pill{font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;padding:5px 9px;background:var(--volt);color:#0A0A0C}
+.pill.soft{background:transparent;color:var(--dim);box-shadow:inset 0 0 0 1px var(--line)}
+
+/* ── sections ───────────────────────────────────────────── */
+section{padding:clamp(60px,8vw,112px) 0}
+.head{max-width:62ch;margin-bottom:clamp(30px,4.5vw,54px)}
+.head p{margin-top:15px;color:var(--dim);font-size:17.5px}
+
+/* feature rows */
+.feat{display:grid;grid-template-columns:.95fr 1.05fr;gap:clamp(24px,5vw,70px);align-items:center;padding:clamp(26px,4vw,46px) 0;border-top:1px solid var(--line)}
+.feat:last-of-type{border-bottom:1px solid var(--line)}
+.feat.flip .ft{order:2}
+.ft h3{font-variation-settings:'wdth' 125,'wght' 850;text-transform:uppercase;margin-bottom:13px}
+.ft p{color:var(--dim)}
+.ft ul{list-style:none;margin-top:17px;display:grid;gap:9px}
+.ft li{padding-left:26px;position:relative;font-size:15.5px}
+.ft li::before{content:"";position:absolute;left:0;top:.62em;width:12px;height:2px;background:var(--red)}
+
+/* plan mock */
+.wk{display:grid;grid-template-columns:repeat(7,1fr);gap:6px}
+.dy{border:1px solid var(--line);background:var(--surface2);padding:9px 4px;text-align:center;font-size:11px;color:var(--dim);font-weight:600}
+.dy b{display:block;color:var(--text);font-size:14px;font-variant-numeric:tabular-nums}
+.dy.on{border-color:var(--red);background:color-mix(in srgb,var(--red) 13%,transparent)}
+.dy.on i{display:block;font-style:normal;color:var(--red);font-size:10px;margin-top:4px;font-weight:800;text-transform:uppercase}
+.pl{display:flex;justify-content:space-between;gap:12px;padding:11px 2px;border-bottom:1px solid var(--line);font-size:15px}
+.pl:last-child{border:0;padding-bottom:0}
+.pl i{font-style:normal;color:var(--dim);font-variant-numeric:tabular-nums}
+.stats{display:flex;gap:26px;flex-wrap:wrap;margin-top:16px}
+.stats b{display:block;font-size:30px;font-variation-settings:'wdth' 125,'wght' 850;line-height:1.1}
+.stats span{font-size:12px;letter-spacing:.09em;text-transform:uppercase;color:var(--dim);font-weight:700}
+.codebox{text-align:center;padding:34px 20px}
+.codebox .c{display:inline-block;font-size:clamp(30px,4.6vw,46px);font-variation-settings:'wdth' 125,'wght' 900;color:var(--red);letter-spacing:.1em;padding:12px 24px;box-shadow:inset 0 0 0 2px var(--line);margin:12px 0 14px}
+
+/* numbers band */
+.band{background:var(--surface2);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.nums{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line)}
+.num{background:var(--surface2);padding:30px 22px}
+.num b{display:block;font-size:clamp(34px,4.4vw,52px);font-variation-settings:'wdth' 125,'wght' 850;line-height:1;color:var(--text)}
+.num b em{font-style:normal;color:var(--red)}
+.num span{display:block;margin-top:9px;font-size:13.5px;color:var(--dim);font-weight:500}
+
+/* steps */
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);border:1px solid var(--line)}
+.stp{background:var(--bg);padding:26px 22px 28px;counter-increment:s}
+.stp::before{content:counter(s,decimal-leading-zero);display:block;font-size:13px;font-weight:800;letter-spacing:.14em;color:var(--red);margin-bottom:16px}
+.stp h3{font-size:19px;font-variation-settings:'wdth' 125,'wght' 850;text-transform:uppercase;margin-bottom:8px}
+.stp p{font-size:15px;color:var(--dim)}
+.steps-wrap{counter-reset:s}
+
+/* pricing */
+.prices{display:grid;grid-template-columns:1fr 1fr;gap:20px;max-width:900px}
+.price{display:flex;flex-direction:column;gap:12px}
+.price.hl{box-shadow:inset 0 0 0 2px var(--red)}
+.price .amt{font-size:46px;font-variation-settings:'wdth' 125,'wght' 850;line-height:1}
+.price ul{list-style:none;display:grid;gap:8px;font-size:15.5px;color:var(--dim)}
+.price li::before{content:"+ ";color:var(--red);font-weight:800}
+.price .foot{margin-top:auto;padding-top:10px;font-size:13.5px;color:var(--dim)}
+
+/* faq */
+.faq{max-width:860px}
+details{border-top:1px solid var(--line)}
+details:last-of-type{border-bottom:1px solid var(--line)}
+summary{cursor:pointer;list-style:none;display:flex;justify-content:space-between;gap:22px;padding:20px 0;font-weight:600;font-size:17.5px}
+summary::-webkit-details-marker{display:none}
+summary::after{content:"";width:13px;height:13px;flex:none;margin-top:7px;border-right:2.5px solid var(--red);border-bottom:2.5px solid var(--red);transform:rotate(45deg);transition:transform .2s}
+details[open] summary::after{transform:rotate(225deg);margin-top:11px}
+details p{color:var(--dim);padding-bottom:20px;font-size:16px}
+
+/* final */
+.final{position:relative;text-align:center;overflow:hidden;border-top:1px solid var(--line)}
+.final::before{content:"";position:absolute;inset:0;background:radial-gradient(55% 130% at 50% 108%,rgba(224,42,32,.26),transparent 70%)}
+.final .wrap{position:relative}
+.final h2{max-width:17ch;margin:0 auto}
+.final p{margin:16px auto 0;color:var(--dim)}
+.final .cta{display:flex;gap:13px;justify-content:center;flex-wrap:wrap;margin-top:30px}
+footer{border-top:1px solid var(--line);padding:30px 0;font-size:13.5px;color:var(--dim)}
+footer .wrap{display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap}
+
+@media (max-width:920px){
+  .hero-in,.feat,.prices,.inst-grid{grid-template-columns:1fr}
+  .feat.flip .ft{order:0}
+  .nums,.steps{grid-template-columns:1fr 1fr}
+  .nav .links{display:none}
+  .hud.a{left:0}.hud.b{right:0}
+}
+@media (max-width:540px){
+  .nums,.steps{grid-template-columns:1fr}
+  .hud{display:none}
+  .btn{width:100%}
+  .card-i .btn{align-self:stretch}
+}
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *,*::before,*::after{animation:none!important;transition:none!important}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap nav">
+    <a href="#top" class="mark" aria-label="DECLYF home">DECL<b>Y</b>F</a>
+    <div class="spacer"></div>
+    <nav class="links" aria-label="Main">
+      <a href="#install">Install</a>
+      <a href="#coaches">For coaches</a>
+      <a href="#how">How it works</a>
+      <a href="#pricing">Pricing</a>
+      <a href="#faq">FAQ</a>
+    </nav>
+    <button class="toggle" id="theme" aria-label="Switch between dark and light">
+      <svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z"/></svg>
+      <svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4.2"/><path d="M12 2v2.6M12 19.4V22M4.2 4.2l1.9 1.9M17.9 17.9l1.9 1.9M2 12h2.6M19.4 12H22M4.2 19.8l1.9-1.9M17.9 6.1l1.9-1.9"/></svg>
+    </button>
+    <a class="btn sm" href="#install">Install free</a>
+  </div>
+</header>
+
+<main id="top">
+
+<!-- HERO -->
+<div class="hero">
+  <div class="wrap hero-in">
+    <div>
+      <h1 class="d"><span class="ln"><i>Coach every</i></span><span class="ln"><i>client like</i></span><span class="ln"><i>it's your only one.</i></span></h1>
+      <p class="lead">DECLYF puts your plans, their logs and their results in one app. You see what each client actually ate and lifted — before the check-in, not after.</p>
+      <div class="cta">
+        <a class="btn" href="#install">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v11m0 0-4.5-4.5M12 15l4.5-4.5M5 20h14"/></svg>
+          Install the app
+        </a>
+        <a class="btn line" href="#coaches">What coaches get</a>
+      </div>
+      <div class="trust">
+        <span>Free for your clients</span>
+        <span>Works offline</span>
+        <span>Android &amp; iPhone</span>
+      </div>
+    </div>
+
+    <div class="stage">
+      <div class="hud a"><b class="tnum">91%</b><span>Plan completed</span></div>
+      <div class="hud b"><b class="tnum">34</b><span>Day streak</span></div>
+      <div class="phone" role="img" aria-label="The DECLYF coach screen listing four clients with their streaks and how much of their plan they finished this week.">
+        <div class="bar"><span class="m">DECL<b>Y</b>F</span></div>
+        <div class="t">Clients</div>
+        <div class="s">4 active · 1 needs a nudge</div>
+        <div class="row"><div class="av" style="background:#FFD60A">AS</div><div><div class="nm">Aarav S.</div><div class="sb">Chest · Shoulders today</div><div class="pb"><i style="--w:92%"></i></div></div><span class="pct">92%</span></div>
+        <div class="row"><div class="av" style="background:#FFD60A">MP</div><div><div class="nm">Meera P.</div><div class="sb">Logged 4 meals</div><div class="pb"><i style="--w:78%"></i></div></div><span class="pct">78%</span></div>
+        <div class="row"><div class="av" style="background:#E02A20;color:#fff">KD</div><div><div class="nm">Kabir D.</div><div class="sb">Missed 3 days</div><div class="pb r"><i style="--w:31%"></i></div></div><span class="pct r">31%</span></div>
+        <div class="row"><div class="av" style="background:#FFD60A">IR</div><div><div class="nm">Isha R.</div><div class="sb">Legs · 5 of 5 done</div><div class="pb"><i style="--w:100%"></i></div></div><span class="pct">100%</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- INSTALL -->
+<div class="install" id="install">
+  <div class="wrap">
+    <div class="kicker">Install</div>
+    <h2 class="d">Get DECLYF on your phone</h2>
+    <p class="dim" style="margin-top:14px">It takes under a minute, and it costs nothing. Send this page to a client and they can do the same.</p>
+
+    <div class="inst-grid">
+      <div class="panel card-i">
+        <div class="os">
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.6 9.5c-.1 0-2.3.1-3.6 2-1.1 1.6-.7 3.6.6 4.5-.5 1.4-1.4 2.9-2.4 2.9-.9 0-1.2-.6-2.3-.6s-1.4.6-2.3.6c-1.3 0-3.6-3.3-3.6-6.4 0-3.1 2-4.5 3.6-4.5 1 0 1.8.6 2.4.6.5 0 1.5-.7 2.7-.6.9 0 2.4.3 3.3 1.6-.1 0-1.9 1-1.9 2.9 0 2.2 1.9 3 1.9 3M13.9 5.6c.5-.6.9-1.5.8-2.4-.8 0-1.8.5-2.4 1.2-.5.6-.9 1.5-.8 2.4.9.1 1.8-.5 2.4-1.2"/></svg>
+          <h3>iPhone</h3><span class="pill">Works now</span>
+        </div>
+        <p class="dim" style="font-size:15px">DECLYF installs straight from Safari as a home-screen app — no App Store, no waiting for review.</p>
+        <ol>
+          <li>Tap the button below in <strong>Safari</strong>.</li>
+          <li>Tap the Share icon at the bottom.</li>
+          <li>Choose <strong>Add to Home Screen</strong>.</li>
+        </ol>
+        <a class="btn volt" href="app/" id="ios-btn">Open DECLYF on iPhone</a>
+      </div>
+
+      <div class="panel card-i">
+        <div class="os">
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6 9h12v8.2c0 .8-.6 1.4-1.4 1.4h-.8V21a1.2 1.2 0 1 1-2.4 0v-2.4h-2.8V21a1.2 1.2 0 1 1-2.4 0v-2.4h-.8c-.8 0-1.4-.6-1.4-1.4Zm-2.3.1a1.2 1.2 0 0 1 1.2 1.2v4.9a1.2 1.2 0 0 1-2.4 0v-4.9a1.2 1.2 0 0 1 1.2-1.2m16.6 0a1.2 1.2 0 0 1 1.2 1.2v4.9a1.2 1.2 0 1 1-2.4 0v-4.9a1.2 1.2 0 0 1 1.2-1.2M15.6 3.6l1.1-1.9a.3.3 0 0 0-.5-.3l-1.1 2a7 7 0 0 0-6.2 0l-1.1-2a.3.3 0 0 0-.5.3l1.1 1.9A6 6 0 0 0 6 8.1h12a6 6 0 0 0-2.4-4.5M9.5 6.3a.65.65 0 1 1 0-1.3.65.65 0 0 1 0 1.3m5 0a.65.65 0 1 1 0-1.3.65.65 0 0 1 0 1.3"/></svg>
+          <h3>Android</h3><span class="pill soft" id="apk-pill">Checking…</span>
+        </div>
+        <p class="dim" style="font-size:15px">Install the full app directly. The button always gives the newest version — to update, download again and install over the top.</p>
+        <ol>
+          <li>Tap <strong>Download APK</strong>.</li>
+          <li>Open the downloaded file.</li>
+          <li>Allow <strong>Install from this source</strong> if asked.</li>
+        </ol>
+        <a class="btn" href="https://github.com/declyf/declyf.github.io/releases/latest/download/declyf.apk" id="apk-btn">Download APK</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FOR COACHES -->
+<section id="coaches">
+  <div class="wrap">
+    <div class="head">
+      <div class="kicker">For coaches</div>
+      <h2 class="d">Your whole roster, one screen</h2>
+      <p>Spreadsheets, PDF plans and WhatsApp screenshots do not scale past ten clients. DECLYF does.</p>
+    </div>
+
+    <div class="feat">
+      <div class="ft">
+        <h3>Plans land on their phone</h3>
+        <p>Set the workout and the food targets for each day. Your client opens the app and sees exactly what today asks of them, with your name on it.</p>
+        <ul>
+          <li>Exercises, sets and rep ranges per weekday</li>
+          <li>Calorie and protein targets per client</li>
+          <li>Change it once; their app updates on sync</li>
+        </ul>
+      </div>
+      <div class="panel" role="img" aria-label="A week with Monday, Wednesday and Friday planned, and Monday's chest workout listed below.">
+        <div class="wk">
+          <div class="dy on">Mon<b>16</b><i>Chest</i></div><div class="dy">Tue<b>17</b></div>
+          <div class="dy on">Wed<b>18</b><i>Back</i></div><div class="dy">Thu<b>19</b></div>
+          <div class="dy on">Fri<b>20</b><i>Legs</i></div><div class="dy">Sat<b>21</b></div><div class="dy">Sun<b>22</b></div>
+        </div>
+        <div style="margin-top:18px">
+          <div class="pl"><span>Barbell Bench Press</span><i>4 × 6–8</i></div>
+          <div class="pl"><span>Incline Dumbbell Press</span><i>3 × 8–10</i></div>
+          <div class="pl"><span>Overhead Press</span><i>3 × 8–10</i></div>
+          <div class="pl"><span>Triceps Pushdown</span><i>3 × 10–12</i></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="feat flip">
+      <div class="ft">
+        <h3>See the truth, not the story</h3>
+        <p>Every meal, set, run and weigh-in is there. You know who is on track and who went quiet, before you get on the call.</p>
+        <ul>
+          <li>Weight trend against calories and protein</li>
+          <li>Streaks and missed days at a glance</li>
+          <li>Every workout, with the weights they lifted</li>
+        </ul>
+      </div>
+      <div class="panel" role="img" aria-label="A weight line falling from 82 to 76 kilograms, with a 34 day streak and 91 percent of the plan completed.">
+        <svg viewBox="0 0 400 140" style="width:100%;height:auto" aria-hidden="true">
+          <defs><linearGradient id="g" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#E02A20" stop-opacity=".34"/><stop offset="1" stop-color="#E02A20" stop-opacity="0"/></linearGradient></defs>
+          <path d="M0 28 L44 36 L88 33 L132 50 L176 56 L220 70 L264 68 L308 86 L352 96 L400 108 L400 140 L0 140Z" fill="url(#g)"/>
+          <path d="M0 28 L44 36 L88 33 L132 50 L176 56 L220 70 L264 68 L308 86 L352 96 L400 108" fill="none" stroke="#E02A20" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/>
+          <circle cx="400" cy="108" r="6" fill="#FFD60A"/>
+        </svg>
+        <div class="stats">
+          <div><b class="tnum">76 kg</b><span>from 82</span></div>
+          <div><b class="tnum">34</b><span>Day streak</span></div>
+          <div><b class="tnum">91%</b><span>Plan done</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="feat">
+      <div class="ft">
+        <h3>One code connects a client</h3>
+        <p>Every coach gets a code built from their name. Put it in your Instagram bio or a DM. The client pastes it in, and your plan is on their phone.</p>
+        <ul>
+          <li>No emails to chase, no accounts to create for them</li>
+          <li>Clients can leave anytime; their data stays theirs</li>
+          <li>Works for in-person and online coaching alike</li>
+        </ul>
+      </div>
+      <div class="panel codebox" role="img" aria-label="An example coach code, HARI dash 4821.">
+        <div class="dim" style="font-size:13px;letter-spacing:.12em;text-transform:uppercase;font-weight:700">Your coach code</div>
+        <div class="c">HARI-4821</div>
+        <div class="dim" style="font-size:14.5px">They open Profile, tap “Join a coach”, paste it. Done.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- NUMBERS -->
+<div class="band">
+  <div class="wrap" style="padding-block:0">
+    <div class="nums">
+      <div class="num"><b class="tnum">800<em>+</em></b><span>Indian dishes in the food library, with real portions</span></div>
+      <div class="num"><b class="tnum">130<em>+</em></b><span>Exercises, grouped by muscle, with set-by-set logging</span></div>
+      <div class="num"><b class="tnum">2</b><span>Global food databases searched live, plus barcodes</span></div>
+      <div class="num"><b>Offline</b><span>Everything saves on the phone first and syncs later</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- HOW -->
+<section id="how">
+  <div class="wrap">
+    <div class="head">
+      <div class="kicker">How it works</div>
+      <h2 class="d">Coaching your first client today</h2>
+    </div>
+    <div class="steps-wrap">
+      <div class="steps">
+        <div class="stp"><h3>Install</h3><p>Add DECLYF to your phone and create your account.</p></div>
+        <div class="stp"><h3>Get coach access</h3><p>Tap “Apply for coach access” in Profile. We switch it on during early access.</p></div>
+        <div class="stp"><h3>Share your code</h3><p>Send it to clients. They join from their own Profile in seconds.</p></div>
+        <div class="stp"><h3>Build their plan</h3><p>Set workouts and food targets, then watch the logs come in.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section id="pricing" style="padding-top:0">
+  <div class="wrap">
+    <div class="head">
+      <div class="kicker">Pricing</div>
+      <h2 class="d">Free for clients. Free for coaches while we launch.</h2>
+      <p>Paid coach plans come later, and you will hear from us well before anything changes.</p>
+    </div>
+    <div class="prices">
+      <div class="panel price">
+        <h3 class="d">Clients</h3>
+        <div class="amt">Free</div>
+        <ul>
+          <li>Food, workout and weight logging</li>
+          <li>Streaks and a weekly recap to share</li>
+          <li>Their coach's plan, always in sync</li>
+          <li>Works with no signal</li>
+        </ul>
+      </div>
+      <div class="panel price hl">
+        <h3 class="d">Coaches</h3>
+        <div class="amt">Early access</div>
+        <ul>
+          <li>Unlimited clients while we launch</li>
+          <li>Workout and food plans per client</li>
+          <li>Live view of every client's progress</li>
+          <li>Your own invite code</li>
+        </ul>
+        <div class="foot">Payments are not live. There is nothing to pay today.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section id="faq" style="padding-top:0">
+  <div class="wrap">
+    <div class="head"><div class="kicker">Questions</div><h2 class="d">Straight answers</h2></div>
+    <div class="faq">
+      <details open><summary>How do iPhone users install it without the App Store?</summary><p>Open this page in Safari, tap “Open DECLYF on iPhone”, then use Share → Add to Home Screen. It then behaves like any other app: its own icon, full screen, no browser bars.</p></details>
+      <details><summary>Why is Android a direct download?</summary><p>So every improvement reaches you the same day instead of waiting on store review. A Play Store listing is planned.</p></details>
+      <details><summary>Do my clients pay anything?</summary><p>No. The client app is free, including the plans you send them.</p></details>
+      <details><summary>Where does my clients' data live?</summary><p>On their phone first, then backed up to a private database. Only the client and the coach they joined can see it, and a client can leave a coach at any time.</p></details>
+      <details><summary>Does it work without internet?</summary><p>Yes. Meals, workouts and weigh-ins all save on the phone and sync when the signal comes back.</p></details>
+    </div>
+  </div>
+</section>
+
+<!-- FINAL -->
+<section class="final">
+  <div class="wrap">
+    <h2 class="d">Coach smarter. Live dedicated.</h2>
+    <p>Install DECLYF and have your first client connected today.</p>
+    <div class="cta">
+      <a class="btn" href="#install">Install the app</a>
+      <a class="btn line" href="app/">Open the web app</a>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>© 2026 DECLYF · Dedicated Life. All rights reserved.</span>
+    <span>Built in Ahmedabad, India</span>
+  </div>
+</footer>
+
+<script>
+// Theme: follow the phone, remember a manual choice.
+(function () {
+  var root = document.documentElement, k = 'declyf-theme';
+  try { var s = localStorage.getItem(k); if (s) root.setAttribute('data-theme', s); } catch (e) {}
+  document.getElementById('theme').addEventListener('click', function () {
+    var dark = getComputedStyle(root).getPropertyValue('--bg').trim().indexOf('#0A0A0C') === 0
+      || root.getAttribute('data-theme') === 'dark'
+      || (!root.getAttribute('data-theme') && !window.matchMedia('(prefers-color-scheme: light)').matches);
+    var next = dark ? 'light' : 'dark';
+    root.setAttribute('data-theme', next);
+    try { localStorage.setItem(k, next); } catch (e) {}
+  });
+})();
+
+// Android: only offer the APK when a release actually exists, and name its version.
+(function () {
+  var pill = document.getElementById('apk-pill'), btn = document.getElementById('apk-btn');
+  fetch('https://api.github.com/repos/declyf/declyf.github.io/releases/latest')
+    .then(function (r) { return r.ok ? r.json() : null; })
+    .then(function (rel) {
+      if (rel && rel.tag_name) {
+        pill.textContent = 'v' + rel.tag_name.replace(/^v/, '');
+        pill.className = 'pill';
+        return;
+      }
+      pill.textContent = 'Coming soon';
+      btn.textContent = 'Use the web app for now';
+      btn.setAttribute('href', 'app/');
+      btn.className = 'btn line';
+    })
+    .catch(function () { pill.textContent = 'Android'; });
+})();
+</script>
+</body>
+</html>

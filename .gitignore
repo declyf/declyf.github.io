@@ -1,0 +1,5 @@
+# Nothing from the app source belongs here. This repo publishes the built site only.
+*.ps1
+*.env
+.env*
+node_modules/
