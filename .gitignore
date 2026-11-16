@@ -1,5 +1,6 @@
-# Nothing from the app source belongs here. This repo publishes the built site only.
-*.ps1
-*.env
-.env*
-node_modules/
+# This repo publishes the built site only; no source belongs here.
+# Paths are anchored so the exported app's own asset folders are never skipped.
+/node_modules/
+/*.ps1
+.env
+.env.*
