@@ -3,283 +3,286 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>DECLYF — The coaching platform for serious coaches</title>
-<meta name="description" content="DECLYF gives fitness coaches one place to build plans, watch every client's real numbers and keep them consistent. Install free on Android or iPhone.">
-<meta name="theme-color" content="#0A0A0C">
+<title>DECLYF — The coaching platform</title>
+<meta name="description" content="DECLYF gives coaches one place to build plans and see every client's real numbers, and gives clients a free app for food, training and progress. Install on Android or iPhone.">
+<meta name="theme-color" content="#070B0F">
 <meta property="og:title" content="DECLYF — Coach smarter. Live dedicated.">
-<meta property="og:description" content="Build plans, see every client's real numbers, keep them consistent. Install free on Android or iPhone.">
-<meta property="og:type" content="website">
+<meta property="og:description" content="One place for your plans, their logs and their results.">
 <meta property="og:image" content="icon.png">
 <link rel="icon" href="favicon.png">
 <link rel="apple-touch-icon" href="icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wdth,wght@0,100,400..700;0,125,700..900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
-/* ── tokens ─────────────────────────────────────────────── */
 :root{
-  --red:#E02A20; --red-deep:#A81A12; --volt:#FFD60A;
-  --bg:#0A0A0C; --surface:#121217; --surface2:#181820; --line:#2A2A33;
-  --text:#F2F2F4; --dim:#8E8E99; --shadow:rgba(0,0,0,.6);
-  --hero-wash:radial-gradient(70% 90% at 78% 18%, rgba(224,42,32,.30), transparent 70%);
-  --grid-line:rgba(255,255,255,.045);
-  --gut:clamp(18px,4.5vw,68px);
-  --cut:18px;                       /* corner notch size */
+  --cyan:#22D3EE; --cyan-2:#67E8F9; --cyan-deep:#0E7F93; --orange:#FF8A45;
+  --bg:#070B0F; --bg-2:#0B1118; --surface:#111923; --surface-2:#16202C; --line:#1E2A36;
+  --text:#EAF2F6; --dim:#8DA2B0; --shadow:rgba(0,0,0,.62);
+  --glow:radial-gradient(60% 55% at 50% 8%, rgba(34,211,238,.20), transparent 70%);
+  --gut:clamp(18px,4.5vw,64px);
+  --r:20px;
 }
 :root[data-theme="light"]{
-  --bg:#EDEDE8; --surface:#FFFFFF; --surface2:#F5F5F1; --line:#D3D3CA;
-  --text:#0A0A0C; --dim:#5C5C66; --shadow:rgba(10,10,12,.14);
-  --hero-wash:radial-gradient(70% 90% at 78% 18%, rgba(224,42,32,.16), transparent 70%);
-  --grid-line:rgba(10,10,12,.055);
+  --bg:#F3F7F9; --bg-2:#FFFFFF; --surface:#FFFFFF; --surface-2:#EDF3F6; --line:#D9E3E9;
+  --text:#081017; --dim:#55707F; --shadow:rgba(8,16,23,.13);
+  --glow:radial-gradient(60% 55% at 50% 6%, rgba(34,211,238,.26), transparent 70%);
 }
 @media (prefers-color-scheme: light){
   :root:not([data-theme="dark"]){
-    --bg:#EDEDE8; --surface:#FFFFFF; --surface2:#F5F5F1; --line:#D3D3CA;
-    --text:#0A0A0C; --dim:#5C5C66; --shadow:rgba(10,10,12,.14);
-    --hero-wash:radial-gradient(70% 90% at 78% 18%, rgba(224,42,32,.16), transparent 70%);
-    --grid-line:rgba(10,10,12,.055);
+    --bg:#F3F7F9; --bg-2:#FFFFFF; --surface:#FFFFFF; --surface-2:#EDF3F6; --line:#D9E3E9;
+    --text:#081017; --dim:#55707F; --shadow:rgba(8,16,23,.13);
+    --glow:radial-gradient(60% 55% at 50% 6%, rgba(34,211,238,.26), transparent 70%);
   }
 }
 
 *{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
-body{
-  background:var(--bg);color:var(--text);
-  font-family:'Archivo',system-ui,-apple-system,'Segoe UI',sans-serif;
-  font-size:17px;line-height:1.62;-webkit-font-smoothing:antialiased;
-  font-variation-settings:'wdth' 100;
-  overflow-x:hidden;
-}
+body{background:var(--bg);color:var(--text);font-family:'Poppins',system-ui,-apple-system,'Segoe UI',sans-serif;
+  font-size:17px;line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden}
 a{color:inherit;text-decoration:none}
 img,svg{display:block;max-width:100%}
-:focus-visible{outline:3px solid var(--volt);outline-offset:3px}
-.wrap{width:100%;max-width:1180px;margin:0 auto;padding:0 var(--gut)}
-
-/* display type: one family, expanded width axis */
-.d{font-variation-settings:'wdth' 125,'wght' 850;text-transform:uppercase;line-height:.96;letter-spacing:-.012em}
-h1{font-size:clamp(40px,7.6vw,96px)}
-h2{font-size:clamp(30px,4.8vw,58px)}
-h3{font-size:clamp(20px,2.4vw,27px)}
-p{max-width:62ch}
+:focus-visible{outline:3px solid var(--cyan);outline-offset:3px;border-radius:8px}
+.wrap{width:100%;max-width:1160px;margin:0 auto;padding:0 var(--gut)}
+h1,h2,h3{font-weight:700;line-height:1.06;letter-spacing:-.025em}
+h1{font-size:clamp(38px,6.4vw,78px);font-weight:800}
+h2{font-size:clamp(29px,4.3vw,52px);font-weight:800}
+h3{font-size:clamp(19px,2.1vw,25px)}
+p{max-width:60ch}
 .dim{color:var(--dim)}
 .tnum{font-variant-numeric:tabular-nums}
+.grad{background:linear-gradient(104deg,var(--cyan) 8%,var(--cyan-2) 52%,var(--orange) 118%);
+  -webkit-background-clip:text;background-clip:text;color:transparent}
 
-/* ── buttons ────────────────────────────────────────────── */
-.btn{
-  display:inline-flex;align-items:center;justify-content:center;gap:11px;
-  font-weight:700;font-size:16px;padding:17px 26px;cursor:pointer;border:0;
-  background:var(--red);color:#fff;position:relative;
-  clip-path:polygon(0 0,calc(100% - 14px) 0,100% 14px,100% 100%,14px 100%,0 calc(100% - 14px));
-  transition:background .16s,transform .16s;
-}
-.btn:hover{background:#F23B30;transform:translateY(-2px)}
-.btn.volt{background:var(--volt);color:#0A0A0C}
-.btn.volt:hover{background:#FFE34D}
-.btn.line{background:transparent;color:var(--text);box-shadow:inset 0 0 0 1.5px var(--line)}
-.btn.line:hover{box-shadow:inset 0 0 0 1.5px var(--red);color:var(--red);background:transparent}
-.btn.sm{padding:11px 18px;font-size:14px;clip-path:polygon(0 0,calc(100% - 10px) 0,100% 10px,100% 100%,10px 100%,0 calc(100% - 10px))}
+/* reveal on scroll */
+.rv{opacity:0;transform:translateY(26px);transition:opacity .75s cubic-bezier(.2,.7,.2,1),transform .75s cubic-bezier(.2,.7,.2,1)}
+.rv.in{opacity:1;transform:none}
+.rv.d1{transition-delay:.08s}.rv.d2{transition-delay:.16s}.rv.d3{transition-delay:.24s}
+
+/* buttons */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;border:0;cursor:pointer;
+  font-family:inherit;font-weight:600;font-size:16px;padding:16px 26px;border-radius:999px;
+  background:var(--cyan);color:#04222A;transition:transform .18s,box-shadow .18s,background .18s;
+  box-shadow:0 10px 26px -12px rgba(34,211,238,.9)}
+.btn:hover{transform:translateY(-2px);background:var(--cyan-2);box-shadow:0 16px 34px -12px rgba(34,211,238,.95)}
+.btn.ghost{background:transparent;color:var(--text);box-shadow:inset 0 0 0 1.5px var(--line)}
+.btn.ghost:hover{box-shadow:inset 0 0 0 1.5px var(--cyan);color:var(--cyan)}
+.btn.sm{padding:11px 19px;font-size:14.5px}
 .btn svg{width:19px;height:19px;flex:none}
 
-/* ── panels with cut corners ────────────────────────────── */
-.panel{
-  background:var(--surface);border:1px solid var(--line);
-  clip-path:polygon(0 0,calc(100% - var(--cut)) 0,100% var(--cut),100% 100%,var(--cut) 100%,0 calc(100% - var(--cut)));
-  padding:26px;
-}
-.kicker{
-  font-size:12px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;
-  color:var(--red);display:flex;align-items:center;gap:9px;margin-bottom:14px;
-}
-.kicker::before{content:"";width:22px;height:2px;background:var(--red)}
-
-/* ── header ─────────────────────────────────────────────── */
-header{position:sticky;top:0;z-index:40;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
-.nav{display:flex;align-items:center;gap:22px;height:70px}
-.mark{font-size:25px;font-variation-settings:'wdth' 125,'wght' 900;letter-spacing:.015em}
-.mark b{color:var(--volt);font-weight:inherit}
-:root[data-theme="light"] .mark b{color:var(--red)}
-@media (prefers-color-scheme: light){:root:not([data-theme="dark"]) .mark b{color:var(--red)}}
-.nav .spacer{flex:1}
-.nav .links{display:flex;gap:26px;font-size:14.5px;font-weight:500;color:var(--dim)}
+/* header */
+header{position:sticky;top:0;z-index:60;background:color-mix(in srgb,var(--bg) 82%,transparent);
+  backdrop-filter:saturate(1.4) blur(16px);border-bottom:1px solid transparent;transition:border-color .3s}
+header.stuck{border-bottom-color:var(--line)}
+.nav{display:flex;align-items:center;gap:20px;height:68px}
+.logo{display:flex;align-items:center;gap:10px;font-weight:800;font-size:21px;letter-spacing:.02em}
+.logo svg{width:28px;height:28px;border-radius:8px}
+.nav .sp{flex:1}
+.nav .links{display:flex;gap:28px;font-size:15px;color:var(--dim);font-weight:500}
 .nav .links a:hover{color:var(--text)}
-.toggle{background:none;border:1px solid var(--line);color:var(--dim);width:38px;height:38px;display:grid;place-items:center;cursor:pointer}
-.toggle:hover{color:var(--text);border-color:var(--red)}
-.toggle svg{width:18px;height:18px}
+.tg{width:38px;height:38px;border-radius:999px;border:1px solid var(--line);background:none;color:var(--dim);display:grid;place-items:center;cursor:pointer}
+.tg:hover{color:var(--cyan);border-color:var(--cyan)}
+.tg svg{width:17px;height:17px}
 .sun{display:none}
 :root[data-theme="light"] .sun{display:block}:root[data-theme="light"] .moon{display:none}
 @media (prefers-color-scheme: light){:root:not([data-theme="dark"]) .sun{display:block}:root:not([data-theme="dark"]) .moon{display:none}}
 
-/* ── hero ───────────────────────────────────────────────── */
-.hero{position:relative;padding:clamp(36px,6vw,78px) 0 clamp(56px,8vw,104px);overflow:hidden}
-.hero::before{content:"";position:absolute;inset:0;background:var(--hero-wash);pointer-events:none}
-.hero::after{content:"";position:absolute;inset:0;pointer-events:none;
-  background:repeating-linear-gradient(to right,var(--grid-line) 0 1px,transparent 1px 25%);}
-.hero-in{position:relative;display:grid;grid-template-columns:1.08fr .92fr;gap:clamp(26px,5vw,66px);align-items:center}
-.hero h1 .ln{display:block;overflow:hidden}
-.hero h1 .ln i{display:block;font-style:normal;animation:rise .85s cubic-bezier(.16,.9,.2,1) both}
-.hero h1 .ln:nth-child(2) i{animation-delay:.09s}
-.hero h1 .ln:nth-child(3) i{animation-delay:.18s}
-@keyframes rise{from{transform:translateY(102%)}to{transform:translateY(0)}}
-.hero .lead{font-size:clamp(17px,1.8vw,20px);color:var(--dim);margin-top:24px;max-width:50ch}
-.hero .cta{display:flex;flex-wrap:wrap;gap:13px;margin-top:32px}
-.trust{display:flex;flex-wrap:wrap;gap:10px 26px;margin-top:20px;font-size:13.5px;color:var(--dim);font-weight:500}
-.trust span{display:flex;align-items:center;gap:8px}
-.trust span::before{content:"";width:7px;height:7px;background:var(--volt);transform:rotate(45deg)}
+/* hero */
+.hero{position:relative;text-align:center;padding:clamp(42px,7vw,96px) 0 0;overflow:hidden}
+.hero::before{content:"";position:absolute;inset:0;background:var(--glow);pointer-events:none}
+.hero-in{position:relative}
+.eyebrow{display:inline-flex;align-items:center;gap:9px;font-size:13.5px;font-weight:600;color:var(--cyan);
+  background:color-mix(in srgb,var(--cyan) 12%,transparent);padding:7px 15px;border-radius:999px;margin-bottom:24px}
+.eyebrow i{width:6px;height:6px;border-radius:50%;background:var(--cyan);animation:pulse 2.4s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
+.hero h1{max-width:16ch;margin:0 auto}
+.hero .lead{margin:24px auto 0;color:var(--dim);font-size:clamp(16.5px,1.7vw,19.5px);max-width:56ch}
+.hero .cta{display:flex;gap:13px;justify-content:center;flex-wrap:wrap;margin-top:32px}
+.hero .micro{margin-top:16px;font-size:13.5px;color:var(--dim)}
 
-/* HUD stat chips over the phone */
-.stage{position:relative;display:flex;justify-content:center}
-.hud{position:absolute;background:color-mix(in srgb,var(--surface) 92%,transparent);border:1px solid var(--line);backdrop-filter:blur(8px);padding:11px 15px;z-index:3;
-  clip-path:polygon(0 0,calc(100% - 10px) 0,100% 10px,100% 100%,10px 100%,0 calc(100% - 10px));animation:fade .7s .5s both}
-@keyframes fade{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
-.hud b{display:block;font-size:23px;font-variation-settings:'wdth' 125,'wght' 850;line-height:1.1}
-.hud span{font-size:11px;letter-spacing:.11em;text-transform:uppercase;color:var(--dim);font-weight:700}
-.hud.a{top:8%;left:-6%}.hud.b{bottom:16%;right:-4%}
-.hud.a b{color:var(--volt)}
-:root[data-theme="light"] .hud.a b{color:var(--red)}
-@media (prefers-color-scheme: light){:root:not([data-theme="dark"]) .hud.a b{color:var(--red)}}
+/* floating hero device */
+.float{margin-top:clamp(34px,5vw,56px);display:flex;justify-content:center;position:relative;padding-bottom:clamp(40px,6vw,76px)}
+.float::after{content:"";position:absolute;bottom:0;left:50%;transform:translateX(-50%);width:min(560px,86vw);height:120px;
+  background:radial-gradient(50% 60% at 50% 50%,rgba(34,211,238,.22),transparent 72%);filter:blur(12px)}
+.levitate{animation:lev 7s ease-in-out infinite}
+@keyframes lev{0%,100%{transform:translateY(0)}50%{transform:translateY(-14px)}}
 
 /* phone */
-.phone{width:min(312px,88vw);background:#0B0B0E;border:8px solid #1C1C22;border-radius:38px;padding:16px 13px 18px;box-shadow:0 36px 70px -28px var(--shadow);position:relative;z-index:2}
-.phone .bar{display:flex;align-items:center;justify-content:space-between;margin:6px 4px 12px}
-.phone .bar .m{font-size:14px;font-variation-settings:'wdth' 125,'wght' 900;color:#F2F2F4}
-.phone .bar .m b{color:var(--volt);font-weight:inherit}
-.phone .t{font-size:21px;font-weight:700;margin:0 4px;color:#F2F2F4}
-.phone .s{font-size:12px;color:#8E8E99;margin:1px 4px 13px}
-.row{background:#15151B;border:1px solid #26262C;padding:11px;margin-bottom:9px;display:grid;grid-template-columns:38px 1fr auto;gap:11px;align-items:center;
-  clip-path:polygon(0 0,calc(100% - 10px) 0,100% 10px,100% 100%,10px 100%,0 calc(100% - 10px))}
-.row:last-child{margin-bottom:0}
-.av{width:38px;height:38px;display:grid;place-items:center;font-weight:800;font-size:14px;color:#0A0A0C;clip-path:polygon(0 0,calc(100% - 8px) 0,100% 8px,100% 100%,8px 100%,0 calc(100% - 8px))}
-.nm{font-weight:600;font-size:14.5px;color:#F2F2F4;line-height:1.25}
-.sb{font-size:11.5px;color:#8E8E99}
-.pb{height:4px;background:#26262C;margin-top:7px;overflow:hidden}
-.pb i{display:block;height:100%;background:var(--volt);width:var(--w);transform-origin:left;animation:fill 1s .7s cubic-bezier(.2,.8,.2,1) both}
-.pb.r i{background:var(--red)}
-@keyframes fill{from{transform:scaleX(0)}to{transform:scaleX(1)}}
-.pct{font-size:11.5px;font-weight:800;color:var(--volt);font-variant-numeric:tabular-nums}
-.pct.r{color:var(--red)}
+.phone{width:min(320px,80vw);background:#070A0E;border:9px solid #171F29;border-radius:42px;padding:14px 12px 16px;
+  box-shadow:0 44px 90px -34px var(--shadow),0 0 0 1px rgba(255,255,255,.05);position:relative;z-index:2}
+.phone::before{content:"";position:absolute;top:9px;left:50%;transform:translateX(-50%);width:84px;height:5px;border-radius:5px;background:#171F29}
+.ph-top{display:flex;align-items:center;gap:8px;margin:10px 4px 12px}
+.ph-top svg{width:19px;height:19px;border-radius:6px}
+.ph-top span{font-weight:800;font-size:13px;letter-spacing:.08em;color:#EAF2F6}
+.scr{display:none}
+.scr.on{display:block;animation:sfade .55s ease both}
+@keyframes sfade{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+.ph-h{font-size:19px;font-weight:700;color:#EAF2F6;margin:0 4px}
+.ph-s{font-size:11.5px;color:#8DA2B0;margin:1px 4px 12px}
+.tile{background:#111923;border:1px solid #1E2A36;border-radius:16px;padding:13px;margin-bottom:9px}
+.tile:last-child{margin-bottom:0}
+.ring-row{display:flex;align-items:center;gap:14px}
+.ring{width:84px;height:84px;flex:none}
+.ring circle{fill:none;stroke-width:9;stroke-linecap:round}
+.ring .tr{stroke:#1E2A36}
+.ring .pr{stroke:var(--cyan);stroke-dasharray:220;stroke-dashoffset:220;transform:rotate(-90deg);transform-origin:50% 50%}
+.ring.go .pr{animation:dash 1.5s .25s cubic-bezier(.2,.75,.2,1) forwards}
+@keyframes dash{to{stroke-dashoffset:62}}
+.big{font-size:30px;font-weight:800;color:#EAF2F6;line-height:1.05;font-variant-numeric:tabular-nums}
+.cap{font-size:11.5px;color:#8DA2B0}
+.macros{display:flex;gap:7px;margin-top:11px}
+.mac{flex:1}
+.mac .b{height:5px;border-radius:5px;background:#1E2A36;overflow:hidden}
+.mac .b i{display:block;height:100%;background:var(--cyan);width:var(--w)}
+.mac .b.o i{background:var(--orange)}
+.mac .l{font-size:10px;color:#8DA2B0;margin-top:5px;letter-spacing:.04em}
+.set{display:flex;justify-content:space-between;align-items:center;padding:9px 0;border-bottom:1px solid #1E2A36;font-size:13px;color:#EAF2F6}
+.set:last-child{border:0;padding-bottom:0}
+.set i{font-style:normal;color:#8DA2B0;font-variant-numeric:tabular-nums}
+.set .ok{width:18px;height:18px;border-radius:50%;background:var(--cyan);display:grid;place-items:center}
+.set .ok svg{width:11px;height:11px}
+.cl{display:grid;grid-template-columns:34px 1fr auto;gap:10px;align-items:center;padding:9px 0;border-bottom:1px solid #1E2A36}
+.cl:last-child{border:0;padding-bottom:0}
+.cl .av{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;font-size:12.5px;font-weight:700;color:#04222A;background:var(--cyan)}
+.cl .av.o{background:var(--orange)}
+.cl .n{font-size:13.5px;font-weight:600;color:#EAF2F6}
+.cl .u{font-size:11px;color:#8DA2B0}
+.cl .p{font-size:12px;font-weight:700;color:var(--cyan);font-variant-numeric:tabular-nums}
+.cl .p.o{color:var(--orange)}
 
-/* ── install band ───────────────────────────────────────── */
-.install{border-top:1px solid var(--line);border-bottom:1px solid var(--line);background:var(--surface2);position:relative}
-.install::before{content:"";position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--red) 0 42%,var(--volt) 42% 100%)}
-.install .wrap{padding-block:clamp(44px,6vw,78px)}
-.inst-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:30px}
-.card-i{display:flex;flex-direction:column;gap:14px}
-.card-i .os{display:flex;align-items:center;gap:12px}
-.card-i .os svg{width:26px;height:26px}
-.card-i .os h3{font-variation-settings:'wdth' 125,'wght' 850;text-transform:uppercase}
-.card-i ol{margin:0;padding-left:19px;color:var(--dim);font-size:15px;display:grid;gap:7px}
-.card-i .btn{margin-top:auto;align-self:flex-start}
-.pill{font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;padding:5px 9px;background:var(--volt);color:#0A0A0C}
-.pill.soft{background:transparent;color:var(--dim);box-shadow:inset 0 0 0 1px var(--line)}
+/* scrollytelling */
+.story{position:relative;padding:clamp(50px,7vw,90px) 0}
+.story-grid{display:grid;grid-template-columns:1.02fr .98fr;gap:clamp(26px,5vw,70px);align-items:start}
+.sticky{position:sticky;top:104px;display:flex;justify-content:center}
 
-/* ── sections ───────────────────────────────────────────── */
-section{padding:clamp(60px,8vw,112px) 0}
-.head{max-width:62ch;margin-bottom:clamp(30px,4.5vw,54px)}
+/* the animated stage: one scene per beat, all driven by how far you have scrolled */
+.stage{width:100%;max-width:470px;aspect-ratio:1/1;position:relative;
+  background:linear-gradient(180deg,var(--surface) 0%,var(--bg-2) 100%);
+  border:1px solid var(--line);border-radius:28px;overflow:hidden}
+.stage::before{content:"";position:absolute;inset:0;background:radial-gradient(60% 50% at 50% 30%,rgba(34,211,238,.13),transparent 70%)}
+.scene{position:absolute;inset:0;opacity:0;visibility:hidden;transition:opacity .5s ease}
+.scene.on{opacity:1;visibility:visible}
+.scene svg{width:100%;height:100%}
+.hint{position:absolute;left:0;right:0;bottom:16px;text-align:center;font-size:12.5px;color:var(--dim);letter-spacing:.02em}
+.hint b{color:var(--cyan);font-weight:600}
+.repcount{position:absolute;top:18px;right:20px;font-size:12px;font-weight:600;color:var(--cyan);
+  background:color-mix(in srgb,var(--cyan) 13%,transparent);padding:5px 12px;border-radius:999px;font-variant-numeric:tabular-nums}
+.kcal{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center}
+.kcal b{display:block;font-size:34px;font-weight:800;font-variant-numeric:tabular-nums;line-height:1.1}
+.kcal span{font-size:12px;color:var(--dim)}
+/* Each beat holds a screen of scroll, so the stage has room to animate. */
+.beats{display:grid;gap:0;padding:0 0 18vh}
+.beat{opacity:.32;transition:opacity .45s ease;min-height:104vh;display:flex;flex-direction:column;justify-content:center}
+.beat.active{opacity:1}
+.beat .n{font-size:12.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--cyan);margin-bottom:12px;display:flex;align-items:center;gap:10px}
+.beat .n::before{content:"";width:26px;height:2px;background:var(--cyan);border-radius:2px}
+.beat h3{margin-bottom:12px}
+.beat p{color:var(--dim)}
+.beat ul{list-style:none;margin-top:16px;display:grid;gap:9px}
+.beat li{padding-left:25px;position:relative;font-size:15.5px}
+.beat li::before{content:"";position:absolute;left:0;top:.52em;width:13px;height:7px;border-left:2px solid var(--cyan);border-bottom:2px solid var(--cyan);transform:rotate(-45deg)}
+
+/* sections */
+section{padding:clamp(56px,7.5vw,104px) 0}
+.head{max-width:60ch;margin-bottom:clamp(28px,4vw,50px)}
+.head.mid{margin-inline:auto;text-align:center}
 .head p{margin-top:15px;color:var(--dim);font-size:17.5px}
+.head.mid p{margin-inline:auto}
 
-/* feature rows */
-.feat{display:grid;grid-template-columns:.95fr 1.05fr;gap:clamp(24px,5vw,70px);align-items:center;padding:clamp(26px,4vw,46px) 0;border-top:1px solid var(--line)}
-.feat:last-of-type{border-bottom:1px solid var(--line)}
-.feat.flip .ft{order:2}
-.ft h3{font-variation-settings:'wdth' 125,'wght' 850;text-transform:uppercase;margin-bottom:13px}
-.ft p{color:var(--dim)}
-.ft ul{list-style:none;margin-top:17px;display:grid;gap:9px}
-.ft li{padding-left:26px;position:relative;font-size:15.5px}
-.ft li::before{content:"";position:absolute;left:0;top:.62em;width:12px;height:2px;background:var(--red)}
+/* install */
+.install{background:var(--bg-2);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.ins{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:28px;display:flex;flex-direction:column;gap:15px;
+  transition:transform .3s,border-color .3s,box-shadow .3s}
+.card:hover{transform:translateY(-4px);border-color:color-mix(in srgb,var(--cyan) 45%,var(--line));box-shadow:0 24px 50px -30px var(--shadow)}
+.card .os{display:flex;align-items:center;gap:12px}
+.card .os svg{width:27px;height:27px;color:var(--text)}
+.card .os h3{font-size:22px}
+.tag{margin-left:auto;font-size:11.5px;font-weight:700;padding:5px 11px;border-radius:999px;background:color-mix(in srgb,var(--cyan) 15%,transparent);color:var(--cyan)}
+.tag.soft{background:transparent;color:var(--dim);box-shadow:inset 0 0 0 1px var(--line)}
+.steps-s{display:grid;gap:9px;counter-reset:q}
+.steps-s div{display:flex;gap:11px;font-size:15px;color:var(--dim);counter-increment:q}
+.steps-s div::before{content:counter(q);flex:none;width:21px;height:21px;border-radius:50%;background:var(--surface-2);
+  color:var(--text);font-size:11.5px;font-weight:700;display:grid;place-items:center;margin-top:3px}
+.card .btn{margin-top:auto;align-self:flex-start}
+.webapp{margin-top:18px;display:flex;align-items:center;gap:18px;flex-wrap:wrap;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:24px 28px}
+.webapp .t{flex:1;min-width:260px}
+.webapp h3{margin-bottom:6px}
+.webapp p{color:var(--dim);font-size:15.5px}
 
-/* plan mock */
-.wk{display:grid;grid-template-columns:repeat(7,1fr);gap:6px}
-.dy{border:1px solid var(--line);background:var(--surface2);padding:9px 4px;text-align:center;font-size:11px;color:var(--dim);font-weight:600}
-.dy b{display:block;color:var(--text);font-size:14px;font-variant-numeric:tabular-nums}
-.dy.on{border-color:var(--red);background:color-mix(in srgb,var(--red) 13%,transparent)}
-.dy.on i{display:block;font-style:normal;color:var(--red);font-size:10px;margin-top:4px;font-weight:800;text-transform:uppercase}
-.pl{display:flex;justify-content:space-between;gap:12px;padding:11px 2px;border-bottom:1px solid var(--line);font-size:15px}
-.pl:last-child{border:0;padding-bottom:0}
-.pl i{font-style:normal;color:var(--dim);font-variant-numeric:tabular-nums}
-.stats{display:flex;gap:26px;flex-wrap:wrap;margin-top:16px}
-.stats b{display:block;font-size:30px;font-variation-settings:'wdth' 125,'wght' 850;line-height:1.1}
-.stats span{font-size:12px;letter-spacing:.09em;text-transform:uppercase;color:var(--dim);font-weight:700}
-.codebox{text-align:center;padding:34px 20px}
-.codebox .c{display:inline-block;font-size:clamp(30px,4.6vw,46px);font-variation-settings:'wdth' 125,'wght' 900;color:var(--red);letter-spacing:.1em;padding:12px 24px;box-shadow:inset 0 0 0 2px var(--line);margin:12px 0 14px}
-
-/* numbers band */
-.band{background:var(--surface2);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
-.nums{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line)}
-.num{background:var(--surface2);padding:30px 22px}
-.num b{display:block;font-size:clamp(34px,4.4vw,52px);font-variation-settings:'wdth' 125,'wght' 850;line-height:1;color:var(--text)}
-.num b em{font-style:normal;color:var(--red)}
-.num span{display:block;margin-top:9px;font-size:13.5px;color:var(--dim);font-weight:500}
-
-/* steps */
-.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);border:1px solid var(--line)}
-.stp{background:var(--bg);padding:26px 22px 28px;counter-increment:s}
-.stp::before{content:counter(s,decimal-leading-zero);display:block;font-size:13px;font-weight:800;letter-spacing:.14em;color:var(--red);margin-bottom:16px}
-.stp h3{font-size:19px;font-variation-settings:'wdth' 125,'wght' 850;text-transform:uppercase;margin-bottom:8px}
-.stp p{font-size:15px;color:var(--dim)}
-.steps-wrap{counter-reset:s}
+/* numbers */
+.nums{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
+.num{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:26px 22px}
+.num b{display:block;font-size:clamp(32px,4vw,46px);font-weight:800;line-height:1;font-variant-numeric:tabular-nums}
+.num span{display:block;margin-top:10px;font-size:14.5px;color:var(--dim)}
 
 /* pricing */
-.prices{display:grid;grid-template-columns:1fr 1fr;gap:20px;max-width:900px}
-.price{display:flex;flex-direction:column;gap:12px}
-.price.hl{box-shadow:inset 0 0 0 2px var(--red)}
-.price .amt{font-size:46px;font-variation-settings:'wdth' 125,'wght' 850;line-height:1}
-.price ul{list-style:none;display:grid;gap:8px;font-size:15.5px;color:var(--dim)}
-.price li::before{content:"+ ";color:var(--red);font-weight:800}
-.price .foot{margin-top:auto;padding-top:10px;font-size:13.5px;color:var(--dim)}
+.prices{display:grid;grid-template-columns:1fr 1fr;gap:18px;max-width:900px;margin-inline:auto}
+.price{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:30px;display:flex;flex-direction:column;gap:13px}
+.price.hl{border-color:var(--cyan);box-shadow:0 0 0 1px var(--cyan),0 26px 60px -40px rgba(34,211,238,.8)}
+.price .amt{font-size:42px;font-weight:800;line-height:1}
+.price ul{list-style:none;display:grid;gap:9px;color:var(--dim);font-size:15.5px}
+.price li{padding-left:24px;position:relative}
+.price li::before{content:"";position:absolute;left:0;top:.52em;width:12px;height:7px;border-left:2px solid var(--cyan);border-bottom:2px solid var(--cyan);transform:rotate(-45deg)}
+.price .ft{margin-top:auto;padding-top:8px;font-size:13.5px;color:var(--dim)}
 
 /* faq */
-.faq{max-width:860px}
-details{border-top:1px solid var(--line)}
-details:last-of-type{border-bottom:1px solid var(--line)}
-summary{cursor:pointer;list-style:none;display:flex;justify-content:space-between;gap:22px;padding:20px 0;font-weight:600;font-size:17.5px}
+.faq{max-width:840px;margin-inline:auto}
+details{border-bottom:1px solid var(--line)}
+summary{cursor:pointer;list-style:none;display:flex;justify-content:space-between;gap:20px;padding:20px 0;font-weight:600;font-size:17.5px}
 summary::-webkit-details-marker{display:none}
-summary::after{content:"";width:13px;height:13px;flex:none;margin-top:7px;border-right:2.5px solid var(--red);border-bottom:2.5px solid var(--red);transform:rotate(45deg);transition:transform .2s}
-details[open] summary::after{transform:rotate(225deg);margin-top:11px}
+summary::after{content:"+";color:var(--cyan);font-size:25px;line-height:1;font-weight:400;transition:transform .25s}
+details[open] summary::after{transform:rotate(45deg)}
 details p{color:var(--dim);padding-bottom:20px;font-size:16px}
 
 /* final */
-.final{position:relative;text-align:center;overflow:hidden;border-top:1px solid var(--line)}
-.final::before{content:"";position:absolute;inset:0;background:radial-gradient(55% 130% at 50% 108%,rgba(224,42,32,.26),transparent 70%)}
+.final{position:relative;text-align:center;overflow:hidden;background:var(--bg-2);border-top:1px solid var(--line)}
+.final::before{content:"";position:absolute;inset:0;background:radial-gradient(52% 120% at 50% 112%,rgba(34,211,238,.26),transparent 70%)}
 .final .wrap{position:relative}
-.final h2{max-width:17ch;margin:0 auto}
+.final h2{max-width:17ch;margin-inline:auto}
 .final p{margin:16px auto 0;color:var(--dim)}
 .final .cta{display:flex;gap:13px;justify-content:center;flex-wrap:wrap;margin-top:30px}
 footer{border-top:1px solid var(--line);padding:30px 0;font-size:13.5px;color:var(--dim)}
 footer .wrap{display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap}
 
 @media (max-width:920px){
-  .hero-in,.feat,.prices,.inst-grid{grid-template-columns:1fr}
-  .feat.flip .ft{order:0}
-  .nums,.steps{grid-template-columns:1fr 1fr}
+  .story-grid,.ins,.prices,.nums{grid-template-columns:1fr}
+  .nums{grid-template-columns:1fr 1fr}
+  .sticky{top:84px;margin-bottom:26px}
+  .beats{padding:0 0 12vh}
+  .beat{min-height:88vh}
+  .beat{opacity:1}
   .nav .links{display:none}
-  .hud.a{left:0}.hud.b{right:0}
 }
 @media (max-width:540px){
-  .nums,.steps{grid-template-columns:1fr}
-  .hud{display:none}
+  .nums{grid-template-columns:1fr}
   .btn{width:100%}
-  .card-i .btn{align-self:stretch}
+  .card .btn{align-self:stretch}
 }
 @media (prefers-reduced-motion:reduce){
   html{scroll-behavior:auto}
   *,*::before,*::after{animation:none!important;transition:none!important}
+  .rv{opacity:1;transform:none}
+  .beat{opacity:1}
 }
 </style>
 </head>
 <body>
 
-<header>
+<header id="hdr">
   <div class="wrap nav">
-    <a href="#top" class="mark" aria-label="DECLYF home">DECL<b>Y</b>F</a>
-    <div class="spacer"></div>
+    <a href="#top" class="logo" aria-label="DECLYF home">
+      <svg viewBox="0 0 100 100" aria-hidden="true"><rect width="100" height="100" rx="26" fill="#22D3EE"/><path fill-rule="evenodd" fill="#070B0F" d="M34 26H52C66 26 76 36 76 50C76 64 66 74 52 74H34ZM46 38V62H52C59 62 64 57 64 50C64 43 59 38 52 38Z"/></svg>
+      DECLYF
+    </a>
+    <div class="sp"></div>
     <nav class="links" aria-label="Main">
+      <a href="#product">Product</a>
       <a href="#install">Install</a>
-      <a href="#coaches">For coaches</a>
-      <a href="#how">How it works</a>
       <a href="#pricing">Pricing</a>
       <a href="#faq">FAQ</a>
     </nav>
-    <button class="toggle" id="theme" aria-label="Switch between dark and light">
+    <button class="tg" id="theme" aria-label="Switch between dark and light">
       <svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z"/></svg>
       <svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4.2"/><path d="M12 2v2.6M12 19.4V22M4.2 4.2l1.9 1.9M17.9 17.9l1.9 1.9M2 12h2.6M19.4 12H22M4.2 19.8l1.9-1.9M17.9 6.1l1.9-1.9"/></svg>
     </button>
@@ -292,34 +295,171 @@ footer .wrap{display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap}
 <!-- HERO -->
 <div class="hero">
   <div class="wrap hero-in">
-    <div>
-      <h1 class="d"><span class="ln"><i>Coach every</i></span><span class="ln"><i>client like</i></span><span class="ln"><i>it's your only one.</i></span></h1>
-      <p class="lead">DECLYF puts your plans, their logs and their results in one app. You see what each client actually ate and lifted — before the check-in, not after.</p>
-      <div class="cta">
-        <a class="btn" href="#install">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v11m0 0-4.5-4.5M12 15l4.5-4.5M5 20h14"/></svg>
-          Install the app
-        </a>
-        <a class="btn line" href="#coaches">What coaches get</a>
+    <span class="eyebrow rv in"><i></i> Now in early access</span>
+    <h1 class="rv in">Coaching that runs on <span class="grad">real numbers.</span></h1>
+    <p class="lead rv in d1">Your plans go out. Their meals, lifts and weight come back. DECLYF keeps both sides looking at the same truth — on the phone, and on the web.</p>
+    <div class="cta rv in d2">
+      <a class="btn" href="#install">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v11m0 0-4.5-4.5M12 15l4.5-4.5M5 20h14"/></svg>
+        Install the app
+      </a>
+      <a class="btn ghost" href="app/">Open the web app</a>
+    </div>
+    <p class="micro rv in d3">Free for clients · Android &amp; iPhone · Works offline</p>
+  </div>
+
+  <div class="float">
+    <div class="levitate">
+      <div class="phone" id="heroPhone">
+        <div class="ph-top">
+          <svg viewBox="0 0 100 100" aria-hidden="true"><rect width="100" height="100" rx="26" fill="#22D3EE"/><path fill-rule="evenodd" fill="#070B0F" d="M34 26H52C66 26 76 36 76 50C76 64 66 74 52 74H34ZM46 38V62H52C59 62 64 57 64 50C64 43 59 38 52 38Z"/></svg>
+          <span>DECLYF</span>
+        </div>
+        <div class="ph-h">Today</div>
+        <div class="ph-s">Monday · day 34</div>
+        <div class="tile">
+          <div class="ring-row">
+            <svg class="ring" id="heroRing" viewBox="0 0 100 100" aria-hidden="true">
+              <circle class="tr" cx="50" cy="50" r="35"/><circle class="pr" cx="50" cy="50" r="35"/>
+            </svg>
+            <div>
+              <div class="big tnum">1,840</div>
+              <div class="cap">of 2,400 kcal eaten</div>
+              <div class="macros">
+                <div class="mac"><div class="b"><i style="--w:72%"></i></div><div class="l">PROTEIN 128 g</div></div>
+                <div class="mac"><div class="b o"><i style="--w:54%"></i></div><div class="l">CARBS 190 g</div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="tile">
+          <div class="set"><span>Barbell Bench Press</span><i>60 kg × 8</i></div>
+          <div class="set"><span>Incline Dumbbell Press</span><i>22 kg × 10</i></div>
+          <div class="set"><span>Triceps Pushdown</span><div class="ok"><svg viewBox="0 0 24 24" fill="none" stroke="#04222A" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"><path d="m5 13 4 4L19 7"/></svg></div></div>
+        </div>
       </div>
-      <div class="trust">
-        <span>Free for your clients</span>
-        <span>Works offline</span>
-        <span>Android &amp; iPhone</span>
+    </div>
+  </div>
+</div>
+
+<!-- SCROLLYTELLING -->
+<div class="story" id="product">
+  <div class="wrap story-grid">
+    <div class="sticky">
+      <div class="stage" id="stage" aria-hidden="true">
+
+        <!-- SCENE 1 — the rep. Scroll down, the bar comes down to the chest; scroll up, it presses away. -->
+        <div class="scene on" data-scene="0">
+          <div class="repcount" id="repTxt">Rep 1 · top</div>
+          <svg viewBox="0 0 400 400">
+            <!-- floor -->
+            <line x1="30" y1="338" x2="370" y2="338" stroke="var(--line)" stroke-width="2"/>
+            <!-- rack uprights, behind everything -->
+            <rect x="296" y="168" width="12" height="170" rx="6" fill="var(--line)"/>
+            <rect x="286" y="168" width="32" height="10" rx="5" fill="var(--line)"/>
+            <!-- bench -->
+            <rect x="112" y="252" width="186" height="17" rx="8" fill="var(--surface-2)" stroke="var(--line)" stroke-width="2"/>
+            <rect x="132" y="269" width="13" height="69" rx="6" fill="var(--surface-2)" stroke="var(--line)" stroke-width="2"/>
+            <rect x="268" y="269" width="13" height="69" rx="6" fill="var(--surface-2)" stroke="var(--line)" stroke-width="2"/>
+            <!-- lifter: legs planted, torso on the bench, head at the rack end -->
+            <g stroke="var(--dim)" fill="var(--dim)">
+              <path d="M150 252 L112 302 L84 338" stroke-width="15" stroke-linecap="round" fill="none"/>
+              <path d="M168 252 L140 306 L116 338" stroke-width="15" stroke-linecap="round" fill="none" opacity=".65"/>
+              <rect x="158" y="222" width="126" height="31" rx="15" stroke="none"/>
+              <circle cx="292" cy="216" r="20" stroke="none"/>
+            </g>
+            <!-- arms: shoulder to bar, redrawn as the bar moves -->
+            <path id="armL" d="M258 228 L258 150" stroke="var(--cyan)" stroke-width="13" stroke-linecap="round" fill="none" opacity=".55"/>
+            <path id="armR" d="M212 228 L212 150" stroke="var(--cyan)" stroke-width="13" stroke-linecap="round" fill="none"/>
+            <!-- the barbell -->
+            <g id="bar">
+              <line x1="86" y1="150" x2="344" y2="150" stroke="var(--text)" stroke-width="7" stroke-linecap="round"/>
+              <rect x="98" y="120" width="18" height="60" rx="7" fill="var(--cyan)"/>
+              <rect x="120" y="131" width="14" height="38" rx="6" fill="var(--cyan)" opacity=".72"/>
+              <rect x="314" y="120" width="18" height="60" rx="7" fill="var(--cyan)"/>
+              <rect x="296" y="131" width="14" height="38" rx="6" fill="var(--cyan)" opacity=".72"/>
+            </g>
+          </svg>
+          <div class="hint">Scroll to press — <b>60 kg × 8</b>, logged set by set</div>
+        </div>
+
+        <!-- SCENE 2 — a meal leaves the phone and fills the day's ring. -->
+        <div class="scene" data-scene="1">
+          <svg viewBox="0 0 400 400">
+            <!-- phone -->
+            <rect x="34" y="104" width="112" height="196" rx="20" fill="var(--surface-2)" stroke="var(--line)" stroke-width="2"/>
+            <rect x="48" y="124" width="84" height="9" rx="4.5" fill="var(--line)"/>
+            <rect x="48" y="144" width="60" height="7" rx="3.5" fill="var(--line)"/>
+            <circle cx="90" cy="236" r="30" fill="none" stroke="var(--line)" stroke-width="8"/>
+            <circle cx="90" cy="236" r="30" fill="none" stroke="var(--cyan)" stroke-width="8" stroke-linecap="round"
+                    stroke-dasharray="188" stroke-dashoffset="188" id="phoneRing" transform="rotate(-90 90 236)"/>
+            <!-- the day ring on the right -->
+            <circle cx="286" cy="200" r="74" fill="none" stroke="var(--line)" stroke-width="15"/>
+            <circle cx="286" cy="200" r="74" fill="none" stroke="var(--cyan)" stroke-width="15" stroke-linecap="round"
+                    stroke-dasharray="465" stroke-dashoffset="465" id="dayRing" transform="rotate(-90 286 200)"/>
+            <!-- food chips travelling across -->
+            <g id="chips">
+              <g class="chip"><rect x="-44" y="-14" width="88" height="28" rx="14" fill="var(--surface)" stroke="var(--cyan)" stroke-width="1.5"/>
+                <text x="0" y="5" text-anchor="middle" font-size="13" font-weight="600" fill="var(--text)" font-family="Poppins,sans-serif">Dal · 180</text></g>
+              <g class="chip"><rect x="-48" y="-14" width="96" height="28" rx="14" fill="var(--surface)" stroke="var(--cyan)" stroke-width="1.5"/>
+                <text x="0" y="5" text-anchor="middle" font-size="13" font-weight="600" fill="var(--text)" font-family="Poppins,sans-serif">Roti · 120</text></g>
+              <g class="chip"><rect x="-52" y="-14" width="104" height="28" rx="14" fill="var(--surface)" stroke="var(--orange)" stroke-width="1.5"/>
+                <text x="0" y="5" text-anchor="middle" font-size="13" font-weight="600" fill="var(--text)" font-family="Poppins,sans-serif">Paneer · 265</text></g>
+            </g>
+          </svg>
+          <div class="kcal"><b id="kcalTxt">0</b><span>kcal logged today</span></div>
+          <div class="hint">Logged on the phone — <b>on your screen instantly</b></div>
+        </div>
+
+        <!-- SCENE 3 — twelve weeks of weight, drawn as you read. -->
+        <div class="scene" data-scene="2">
+          <svg viewBox="0 0 400 400">
+            <g stroke="var(--line)" stroke-width="1.5">
+              <line x1="52" y1="120" x2="356" y2="120"/><line x1="52" y1="190" x2="356" y2="190"/>
+              <line x1="52" y1="260" x2="356" y2="260"/><line x1="52" y1="330" x2="356" y2="330"/>
+            </g>
+            <path id="trendFill" d="M52 148 L103 164 L154 158 L205 206 L256 232 L307 266 L356 290 L356 330 L52 330 Z" fill="var(--cyan)" opacity=".14"/>
+            <path id="trend" d="M52 148 L103 164 L154 158 L205 206 L256 232 L307 266 L356 290"
+                  fill="none" stroke="var(--cyan)" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <circle id="trendDot" cx="52" cy="148" r="8" fill="var(--orange)"/>
+            <text x="52" y="100" font-size="15" font-weight="600" fill="var(--dim)" font-family="Poppins,sans-serif">Week 1 · 82 kg</text>
+            <text id="trendNow" x="356" y="100" text-anchor="end" font-size="20" font-weight="800" fill="var(--text)" font-family="Poppins,sans-serif">82 kg</text>
+          </svg>
+          <div class="hint">Twelve weeks of real weigh-ins — <b>6 kg down</b></div>
+        </div>
       </div>
     </div>
 
-    <div class="stage">
-      <div class="hud a"><b class="tnum">91%</b><span>Plan completed</span></div>
-      <div class="hud b"><b class="tnum">34</b><span>Day streak</span></div>
-      <div class="phone" role="img" aria-label="The DECLYF coach screen listing four clients with their streaks and how much of their plan they finished this week.">
-        <div class="bar"><span class="m">DECL<b>Y</b>F</span></div>
-        <div class="t">Clients</div>
-        <div class="s">4 active · 1 needs a nudge</div>
-        <div class="row"><div class="av" style="background:#FFD60A">AS</div><div><div class="nm">Aarav S.</div><div class="sb">Chest · Shoulders today</div><div class="pb"><i style="--w:92%"></i></div></div><span class="pct">92%</span></div>
-        <div class="row"><div class="av" style="background:#FFD60A">MP</div><div><div class="nm">Meera P.</div><div class="sb">Logged 4 meals</div><div class="pb"><i style="--w:78%"></i></div></div><span class="pct">78%</span></div>
-        <div class="row"><div class="av" style="background:#E02A20;color:#fff">KD</div><div><div class="nm">Kabir D.</div><div class="sb">Missed 3 days</div><div class="pb r"><i style="--w:31%"></i></div></div><span class="pct r">31%</span></div>
-        <div class="row"><div class="av" style="background:#FFD60A">IR</div><div><div class="nm">Isha R.</div><div class="sb">Legs · 5 of 5 done</div><div class="pb"><i style="--w:100%"></i></div></div><span class="pct">100%</span></div>
+    <div class="beats" id="beats">
+      <div class="beat" data-beat="0">
+        <div class="n">Your roster</div>
+        <h3>Know who needs you before they tell you</h3>
+        <p>Every client, their streak and how much of this week's plan they finished — on one screen. The one who went quiet is impossible to miss.</p>
+        <ul>
+          <li>Live adherence for each client</li>
+          <li>Missed days flagged in orange</li>
+          <li>One tap into their full history</li>
+        </ul>
+      </div>
+      <div class="beat" data-beat="1">
+        <div class="n">Your plans</div>
+        <h3>Build a week once. It runs itself.</h3>
+        <p>Set exercises, sets and rep ranges for each weekday, plus calorie and protein targets. It lands on their phone with your name on it.</p>
+        <ul>
+          <li>Per-weekday training plans</li>
+          <li>Food targets that match their goal</li>
+          <li>Edit once; everyone's app updates</li>
+        </ul>
+      </div>
+      <div class="beat" data-beat="2">
+        <div class="n">Their progress</div>
+        <h3>Proof, not promises</h3>
+        <p>Weight trend against what they actually ate and lifted. When a client stalls, you can see exactly where it went wrong.</p>
+        <ul>
+          <li>Weight, calories and protein on one chart</li>
+          <li>Every logged set, kept week to week</li>
+          <li>A shareable recap that keeps them going</li>
+        </ul>
       </div>
     </div>
   </div>
@@ -327,147 +467,61 @@ footer .wrap{display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap}
 
 <!-- INSTALL -->
 <div class="install" id="install">
-  <div class="wrap">
-    <div class="kicker">Install</div>
-    <h2 class="d">Get DECLYF on your phone</h2>
-    <p class="dim" style="margin-top:14px">It takes under a minute, and it costs nothing. Send this page to a client and they can do the same.</p>
+  <div class="wrap" style="padding-block:clamp(50px,7vw,88px)">
+    <div class="head mid rv">
+      <h2>Two ways in</h2>
+      <p>The app for your clients. The web for you.</p>
+    </div>
 
-    <div class="inst-grid">
-      <div class="panel card-i">
+    <div class="ins">
+      <div class="card rv">
         <div class="os">
           <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.6 9.5c-.1 0-2.3.1-3.6 2-1.1 1.6-.7 3.6.6 4.5-.5 1.4-1.4 2.9-2.4 2.9-.9 0-1.2-.6-2.3-.6s-1.4.6-2.3.6c-1.3 0-3.6-3.3-3.6-6.4 0-3.1 2-4.5 3.6-4.5 1 0 1.8.6 2.4.6.5 0 1.5-.7 2.7-.6.9 0 2.4.3 3.3 1.6-.1 0-1.9 1-1.9 2.9 0 2.2 1.9 3 1.9 3M13.9 5.6c.5-.6.9-1.5.8-2.4-.8 0-1.8.5-2.4 1.2-.5.6-.9 1.5-.8 2.4.9.1 1.8-.5 2.4-1.2"/></svg>
-          <h3>iPhone</h3><span class="pill">Works now</span>
+          <h3>iPhone</h3><span class="tag">Ready</span>
         </div>
-        <p class="dim" style="font-size:15px">DECLYF installs straight from Safari as a home-screen app — no App Store, no waiting for review.</p>
-        <ol>
-          <li>Tap the button below in <strong>Safari</strong>.</li>
-          <li>Tap the Share icon at the bottom.</li>
-          <li>Choose <strong>Add to Home Screen</strong>.</li>
-        </ol>
-        <a class="btn volt" href="app/" id="ios-btn">Open DECLYF on iPhone</a>
+        <p class="dim" style="font-size:15px">Installs from Safari as a home-screen app. No App Store, no review queue.</p>
+        <div class="steps-s">
+          <div>Open this page in Safari and tap below.</div>
+          <div>Tap the Share icon.</div>
+          <div>Choose “Add to Home Screen”.</div>
+        </div>
+        <a class="btn" href="app/">Open on iPhone</a>
       </div>
 
-      <div class="panel card-i">
+      <div class="card rv d1">
         <div class="os">
           <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6 9h12v8.2c0 .8-.6 1.4-1.4 1.4h-.8V21a1.2 1.2 0 1 1-2.4 0v-2.4h-2.8V21a1.2 1.2 0 1 1-2.4 0v-2.4h-.8c-.8 0-1.4-.6-1.4-1.4Zm-2.3.1a1.2 1.2 0 0 1 1.2 1.2v4.9a1.2 1.2 0 0 1-2.4 0v-4.9a1.2 1.2 0 0 1 1.2-1.2m16.6 0a1.2 1.2 0 0 1 1.2 1.2v4.9a1.2 1.2 0 1 1-2.4 0v-4.9a1.2 1.2 0 0 1 1.2-1.2M15.6 3.6l1.1-1.9a.3.3 0 0 0-.5-.3l-1.1 2a7 7 0 0 0-6.2 0l-1.1-2a.3.3 0 0 0-.5.3l1.1 1.9A6 6 0 0 0 6 8.1h12a6 6 0 0 0-2.4-4.5M9.5 6.3a.65.65 0 1 1 0-1.3.65.65 0 0 1 0 1.3m5 0a.65.65 0 1 1 0-1.3.65.65 0 0 1 0 1.3"/></svg>
-          <h3>Android</h3><span class="pill soft" id="apk-pill">Checking…</span>
+          <h3>Android</h3><span class="tag soft" id="apk-tag">Checking…</span>
         </div>
-        <p class="dim" style="font-size:15px">Install the full app directly. The button always gives the newest version — to update, download again and install over the top.</p>
-        <ol>
-          <li>Tap <strong>Download APK</strong>.</li>
-          <li>Open the downloaded file.</li>
-          <li>Allow <strong>Install from this source</strong> if asked.</li>
-        </ol>
+        <p class="dim" style="font-size:15px">Install the full app directly. The button always serves the newest build.</p>
+        <div class="steps-s">
+          <div>Tap Download and open the file.</div>
+          <div>Allow “Install from this source”.</div>
+          <div>To update later, download again.</div>
+        </div>
         <a class="btn" href="https://github.com/declyf/declyf.github.io/releases/latest/download/declyf.apk" id="apk-btn">Download APK</a>
       </div>
     </div>
+
+    <div class="webapp rv d2">
+      <div class="t">
+        <h3>Coaching from your desk</h3>
+        <p>The web app is the same DECLYF, on a big screen — build plans, open any client and read their week without touching your phone.</p>
+      </div>
+      <a class="btn ghost" href="app/">Open the web app</a>
+    </div>
   </div>
 </div>
-
-<!-- FOR COACHES -->
-<section id="coaches">
-  <div class="wrap">
-    <div class="head">
-      <div class="kicker">For coaches</div>
-      <h2 class="d">Your whole roster, one screen</h2>
-      <p>Spreadsheets, PDF plans and WhatsApp screenshots do not scale past ten clients. DECLYF does.</p>
-    </div>
-
-    <div class="feat">
-      <div class="ft">
-        <h3>Plans land on their phone</h3>
-        <p>Set the workout and the food targets for each day. Your client opens the app and sees exactly what today asks of them, with your name on it.</p>
-        <ul>
-          <li>Exercises, sets and rep ranges per weekday</li>
-          <li>Calorie and protein targets per client</li>
-          <li>Change it once; their app updates on sync</li>
-        </ul>
-      </div>
-      <div class="panel" role="img" aria-label="A week with Monday, Wednesday and Friday planned, and Monday's chest workout listed below.">
-        <div class="wk">
-          <div class="dy on">Mon<b>16</b><i>Chest</i></div><div class="dy">Tue<b>17</b></div>
-          <div class="dy on">Wed<b>18</b><i>Back</i></div><div class="dy">Thu<b>19</b></div>
-          <div class="dy on">Fri<b>20</b><i>Legs</i></div><div class="dy">Sat<b>21</b></div><div class="dy">Sun<b>22</b></div>
-        </div>
-        <div style="margin-top:18px">
-          <div class="pl"><span>Barbell Bench Press</span><i>4 × 6–8</i></div>
-          <div class="pl"><span>Incline Dumbbell Press</span><i>3 × 8–10</i></div>
-          <div class="pl"><span>Overhead Press</span><i>3 × 8–10</i></div>
-          <div class="pl"><span>Triceps Pushdown</span><i>3 × 10–12</i></div>
-        </div>
-      </div>
-    </div>
-
-    <div class="feat flip">
-      <div class="ft">
-        <h3>See the truth, not the story</h3>
-        <p>Every meal, set, run and weigh-in is there. You know who is on track and who went quiet, before you get on the call.</p>
-        <ul>
-          <li>Weight trend against calories and protein</li>
-          <li>Streaks and missed days at a glance</li>
-          <li>Every workout, with the weights they lifted</li>
-        </ul>
-      </div>
-      <div class="panel" role="img" aria-label="A weight line falling from 82 to 76 kilograms, with a 34 day streak and 91 percent of the plan completed.">
-        <svg viewBox="0 0 400 140" style="width:100%;height:auto" aria-hidden="true">
-          <defs><linearGradient id="g" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#E02A20" stop-opacity=".34"/><stop offset="1" stop-color="#E02A20" stop-opacity="0"/></linearGradient></defs>
-          <path d="M0 28 L44 36 L88 33 L132 50 L176 56 L220 70 L264 68 L308 86 L352 96 L400 108 L400 140 L0 140Z" fill="url(#g)"/>
-          <path d="M0 28 L44 36 L88 33 L132 50 L176 56 L220 70 L264 68 L308 86 L352 96 L400 108" fill="none" stroke="#E02A20" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/>
-          <circle cx="400" cy="108" r="6" fill="#FFD60A"/>
-        </svg>
-        <div class="stats">
-          <div><b class="tnum">76 kg</b><span>from 82</span></div>
-          <div><b class="tnum">34</b><span>Day streak</span></div>
-          <div><b class="tnum">91%</b><span>Plan done</span></div>
-        </div>
-      </div>
-    </div>
-
-    <div class="feat">
-      <div class="ft">
-        <h3>One code connects a client</h3>
-        <p>Every coach gets a code built from their name. Put it in your Instagram bio or a DM. The client pastes it in, and your plan is on their phone.</p>
-        <ul>
-          <li>No emails to chase, no accounts to create for them</li>
-          <li>Clients can leave anytime; their data stays theirs</li>
-          <li>Works for in-person and online coaching alike</li>
-        </ul>
-      </div>
-      <div class="panel codebox" role="img" aria-label="An example coach code, HARI dash 4821.">
-        <div class="dim" style="font-size:13px;letter-spacing:.12em;text-transform:uppercase;font-weight:700">Your coach code</div>
-        <div class="c">HARI-4821</div>
-        <div class="dim" style="font-size:14.5px">They open Profile, tap “Join a coach”, paste it. Done.</div>
-      </div>
-    </div>
-  </div>
-</section>
 
 <!-- NUMBERS -->
-<div class="band">
-  <div class="wrap" style="padding-block:0">
-    <div class="nums">
-      <div class="num"><b class="tnum">800<em>+</em></b><span>Indian dishes in the food library, with real portions</span></div>
-      <div class="num"><b class="tnum">130<em>+</em></b><span>Exercises, grouped by muscle, with set-by-set logging</span></div>
-      <div class="num"><b class="tnum">2</b><span>Global food databases searched live, plus barcodes</span></div>
-      <div class="num"><b>Offline</b><span>Everything saves on the phone first and syncs later</span></div>
-    </div>
-  </div>
-</div>
-
-<!-- HOW -->
-<section id="how">
+<section>
   <div class="wrap">
-    <div class="head">
-      <div class="kicker">How it works</div>
-      <h2 class="d">Coaching your first client today</h2>
-    </div>
-    <div class="steps-wrap">
-      <div class="steps">
-        <div class="stp"><h3>Install</h3><p>Add DECLYF to your phone and create your account.</p></div>
-        <div class="stp"><h3>Get coach access</h3><p>Tap “Apply for coach access” in Profile. We switch it on during early access.</p></div>
-        <div class="stp"><h3>Share your code</h3><p>Send it to clients. They join from their own Profile in seconds.</p></div>
-        <div class="stp"><h3>Build their plan</h3><p>Set workouts and food targets, then watch the logs come in.</p></div>
-      </div>
+    <div class="head mid rv"><h2>Built for how India actually eats and trains</h2></div>
+    <div class="nums">
+      <div class="num rv"><b class="tnum" data-count="800" data-suffix="+">0</b><span>Indian dishes with real portions, offline</span></div>
+      <div class="num rv d1"><b class="tnum" data-count="130" data-suffix="+">0</b><span>Exercises grouped by muscle, logged set by set</span></div>
+      <div class="num rv d2"><b class="tnum" data-count="2">0</b><span>Global food databases searched live, plus barcodes</span></div>
+      <div class="num rv d3"><b>₹0</b><span>What a client pays, today and at launch</span></div>
     </div>
   </div>
 </section>
@@ -475,32 +529,31 @@ footer .wrap{display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap}
 <!-- PRICING -->
 <section id="pricing" style="padding-top:0">
   <div class="wrap">
-    <div class="head">
-      <div class="kicker">Pricing</div>
-      <h2 class="d">Free for clients. Free for coaches while we launch.</h2>
-      <p>Paid coach plans come later, and you will hear from us well before anything changes.</p>
+    <div class="head mid rv">
+      <h2>Simple while we grow</h2>
+      <p>Paid coach plans come later. You will hear from us long before anything changes.</p>
     </div>
     <div class="prices">
-      <div class="panel price">
-        <h3 class="d">Clients</h3>
+      <div class="price rv">
+        <h3>Clients</h3>
         <div class="amt">Free</div>
         <ul>
-          <li>Food, workout and weight logging</li>
+          <li>Food, training and weight logging</li>
           <li>Streaks and a weekly recap to share</li>
           <li>Their coach's plan, always in sync</li>
           <li>Works with no signal</li>
         </ul>
       </div>
-      <div class="panel price hl">
-        <h3 class="d">Coaches</h3>
+      <div class="price hl rv d1">
+        <h3>Coaches</h3>
         <div class="amt">Early access</div>
         <ul>
           <li>Unlimited clients while we launch</li>
-          <li>Workout and food plans per client</li>
-          <li>Live view of every client's progress</li>
+          <li>Training and food plans per client</li>
+          <li>Live view of every client's week</li>
           <li>Your own invite code</li>
         </ul>
-        <div class="foot">Payments are not live. There is nothing to pay today.</div>
+        <div class="ft">Nothing to pay today.</div>
       </div>
     </div>
   </div>
@@ -509,13 +562,13 @@ footer .wrap{display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap}
 <!-- FAQ -->
 <section id="faq" style="padding-top:0">
   <div class="wrap">
-    <div class="head"><div class="kicker">Questions</div><h2 class="d">Straight answers</h2></div>
-    <div class="faq">
-      <details open><summary>How do iPhone users install it without the App Store?</summary><p>Open this page in Safari, tap “Open DECLYF on iPhone”, then use Share → Add to Home Screen. It then behaves like any other app: its own icon, full screen, no browser bars.</p></details>
-      <details><summary>Why is Android a direct download?</summary><p>So every improvement reaches you the same day instead of waiting on store review. A Play Store listing is planned.</p></details>
-      <details><summary>Do my clients pay anything?</summary><p>No. The client app is free, including the plans you send them.</p></details>
-      <details><summary>Where does my clients' data live?</summary><p>On their phone first, then backed up to a private database. Only the client and the coach they joined can see it, and a client can leave a coach at any time.</p></details>
-      <details><summary>Does it work without internet?</summary><p>Yes. Meals, workouts and weigh-ins all save on the phone and sync when the signal comes back.</p></details>
+    <div class="head mid rv"><h2>Questions</h2></div>
+    <div class="faq rv">
+      <details open><summary>How do iPhone users install it without the App Store?</summary><p>Open the site in Safari, tap “Open on iPhone”, then Share → Add to Home Screen. It gets its own icon and opens full screen, like any other app.</p></details>
+      <details><summary>Can coaches work on a laptop?</summary><p>Yes. The web app runs the whole of DECLYF in a browser, which is where most coaches build plans and review their week.</p></details>
+      <details><summary>Why is Android a direct download?</summary><p>So every improvement reaches people the same day instead of waiting on store review. A Play Store listing is planned.</p></details>
+      <details><summary>Do clients pay anything?</summary><p>No. The client app is free, including the plans their coach sends.</p></details>
+      <details><summary>Where does the data live?</summary><p>On the phone first, then backed up to a private database. Only the client and the coach they joined can see it, and a client can leave a coach at any time.</p></details>
     </div>
   </div>
 </section>
@@ -523,11 +576,11 @@ footer .wrap{display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap}
 <!-- FINAL -->
 <section class="final">
   <div class="wrap">
-    <h2 class="d">Coach smarter. Live dedicated.</h2>
-    <p>Install DECLYF and have your first client connected today.</p>
-    <div class="cta">
+    <h2 class="rv">Coach smarter. Live dedicated.</h2>
+    <p class="rv d1">Install DECLYF and connect your first client today.</p>
+    <div class="cta rv d2">
       <a class="btn" href="#install">Install the app</a>
-      <a class="btn line" href="app/">Open the web app</a>
+      <a class="btn ghost" href="app/">Open the web app</a>
     </div>
   </div>
 </section>
@@ -542,37 +595,165 @@ footer .wrap{display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap}
 </footer>
 
 <script>
-// Theme: follow the phone, remember a manual choice.
 (function () {
-  var root = document.documentElement, k = 'declyf-theme';
-  try { var s = localStorage.getItem(k); if (s) root.setAttribute('data-theme', s); } catch (e) {}
-  document.getElementById('theme').addEventListener('click', function () {
-    var dark = getComputedStyle(root).getPropertyValue('--bg').trim().indexOf('#0A0A0C') === 0
-      || root.getAttribute('data-theme') === 'dark'
-      || (!root.getAttribute('data-theme') && !window.matchMedia('(prefers-color-scheme: light)').matches);
-    var next = dark ? 'light' : 'dark';
-    root.setAttribute('data-theme', next);
-    try { localStorage.setItem(k, next); } catch (e) {}
-  });
-})();
+  var root = document.documentElement;
 
-// Android: only offer the APK when a release actually exists, and name its version.
-(function () {
-  var pill = document.getElementById('apk-pill'), btn = document.getElementById('apk-btn');
+  // Theme: follow the device, remember a manual choice.
+  try { var saved = localStorage.getItem('declyf-theme'); if (saved) root.setAttribute('data-theme', saved); } catch (e) {}
+  document.getElementById('theme').addEventListener('click', function () {
+    var isLight = root.getAttribute('data-theme') === 'light'
+      || (!root.getAttribute('data-theme') && window.matchMedia('(prefers-color-scheme: light)').matches);
+    var next = isLight ? 'dark' : 'light';
+    root.setAttribute('data-theme', next);
+    try { localStorage.setItem('declyf-theme', next); } catch (e) {}
+  });
+
+  // Respect the visitor's motion setting. ?motion=1 forces it on, for checking the animation.
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    && location.search.indexOf('motion=1') === -1;
+
+  // Header hairline once you leave the top.
+  var hdr = document.getElementById('hdr');
+  addEventListener('scroll', function () { hdr.classList.toggle('stuck', scrollY > 8); }, { passive: true });
+
+  // Reveal on scroll.
+  var rv = document.querySelectorAll('.rv:not(.in)');
+  if (reduce || !('IntersectionObserver' in window)) {
+    rv.forEach(function (el) { el.classList.add('in'); });
+  } else {
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+    }, { rootMargin: '0px 0px -12% 0px' });
+    rv.forEach(function (el) { io.observe(el); });
+  }
+
+  // Hero ring draws once it is in view.
+  var ring = document.getElementById('heroRing');
+  if (reduce) { ring.classList.add('go'); }
+  else if ('IntersectionObserver' in window) {
+    var ro = new IntersectionObserver(function (es) {
+      es.forEach(function (e) { if (e.isIntersecting) { ring.classList.add('go'); ro.disconnect(); } });
+    }, { threshold: .4 });
+    ro.observe(ring);
+  } else { ring.classList.add('go'); }
+
+  // The stage is driven by scroll: the bar presses, the meal lands, the trend draws.
+  var beats = [].slice.call(document.querySelectorAll('.beat'));
+  var scenes = [].slice.call(document.querySelectorAll('.scene'));
+  var story = document.querySelector('.story');
+  var bar = document.getElementById('bar');
+  var armL = document.getElementById('armL'), armR = document.getElementById('armR');
+  var repTxt = document.getElementById('repTxt');
+  var dayRing = document.getElementById('dayRing'), phoneRing = document.getElementById('phoneRing');
+  var kcalTxt = document.getElementById('kcalTxt');
+  var chips = [].slice.call(document.querySelectorAll('#chips .chip'));
+  var trend = document.getElementById('trend'), trendFill = document.getElementById('trendFill');
+  var trendDot = document.getElementById('trendDot'), trendNow = document.getElementById('trendNow');
+
+  var REPS = 3;              // presses across the first beat
+  var TOP = 150, CHEST = 218; // where the bar sits locked out, and down at the chest
+  var trendLen = trend ? trend.getTotalLength() : 0;
+  if (trend) { trend.style.strokeDasharray = trendLen; trend.style.strokeDashoffset = trendLen; }
+  if (trendFill) trendFill.style.opacity = 0;
+
+  function clamp(v) { return v < 0 ? 0 : v > 1 ? 1 : v; }
+
+  function paint() {
+    if (!story) return;
+    var r = story.getBoundingClientRect();
+    // 0 when the section reaches the top of the view, 1 when it leaves.
+    var p = clamp((-r.top) / Math.max(1, r.height - innerHeight));
+    var third = 1 / 3;
+    var which = p < third ? 0 : p < third * 2 ? 1 : 2;
+
+    scenes.forEach(function (s, n) { s.classList.toggle('on', n === which); });
+    beats.forEach(function (b, n) { b.classList.toggle('active', n === which); });
+
+    // Beat 1 - a real rep: down as you scroll down, up as you scroll back.
+    if (bar) {
+      var lp = clamp(p / third);
+      var phase = (Math.cos(lp * REPS * 2 * Math.PI) + 1) / 2;   // 1 at the top, 0 at the chest
+      var y = TOP + (CHEST - TOP) * (1 - phase);
+      bar.setAttribute('transform', 'translate(0,' + (y - TOP).toFixed(1) + ')');
+      armL.setAttribute('d', 'M258 228 L258 ' + y.toFixed(1));
+      armR.setAttribute('d', 'M212 228 L212 ' + y.toFixed(1));
+      var rep = Math.min(REPS, Math.floor(lp * REPS) + 1);
+      repTxt.textContent = 'Rep ' + rep + ' - ' + (phase > 0.72 ? 'lock out' : phase < 0.2 ? 'chest' : 'pressing');
+    }
+
+    // Beat 2 - meals travel from the phone into the day's ring.
+    if (dayRing) {
+      var fp = clamp((p - third) / third);
+      dayRing.style.strokeDashoffset = 465 - 465 * 0.78 * fp;
+      phoneRing.style.strokeDashoffset = 188 - 188 * 0.78 * fp;
+      kcalTxt.textContent = Math.round(1840 * fp).toLocaleString('en-IN');
+      chips.forEach(function (c, i) {
+        var cp = clamp(fp * 3 - i);                       // each chip flies in turn
+        var x = 96 + (286 - 96) * cp, yy = 236 - (236 - 200) * cp;
+        c.setAttribute('transform', 'translate(' + x.toFixed(1) + ',' + yy.toFixed(1) + ') scale(' + (1 - 0.35 * cp).toFixed(3) + ')');
+        c.style.opacity = cp <= 0 ? 0 : cp >= 1 ? 0 : 1;
+      });
+    }
+
+    // Beat 3 - the weight trend draws itself.
+    if (trend) {
+      var tp = clamp((p - third * 2) / third);
+      trend.style.strokeDashoffset = trendLen - trendLen * tp;
+      trendFill.style.opacity = (0.14 * tp).toFixed(3);
+      var pt = trend.getPointAtLength(trendLen * tp);
+      trendDot.setAttribute('cx', pt.x); trendDot.setAttribute('cy', pt.y);
+      trendNow.textContent = (82 - 6 * tp).toFixed(1).replace('.0', '') + ' kg';
+    }
+  }
+
+  if (reduce) {
+    scenes.forEach(function (s, n) { s.classList.toggle('on', n === 0); });
+    beats.forEach(function (b) { b.classList.add('active'); });
+  } else {
+    var queued = false;
+    addEventListener('scroll', function () {
+      if (queued) return;
+      queued = true;
+      requestAnimationFrame(function () { queued = false; paint(); });
+    }, { passive: true });
+    addEventListener('resize', paint);
+    // A hidden tab pauses animation frames, which would leave the queue latched.
+    document.addEventListener('visibilitychange', function () { queued = false; paint(); });
+    paint();
+  }
+
+  // Count the numbers up once.
+  var counters = [].slice.call(document.querySelectorAll('[data-count]'));
+  function run(el) {
+    var target = +el.getAttribute('data-count'), suffix = el.getAttribute('data-suffix') || '', t0 = null;
+    if (reduce) { el.textContent = target.toLocaleString('en-IN') + suffix; return; }
+    function tick(t) {
+      if (t0 === null) t0 = t;
+      var p = Math.min(1, (t - t0) / 1100), eased = 1 - Math.pow(1 - p, 3);
+      el.textContent = Math.round(target * eased).toLocaleString('en-IN') + (p === 1 ? suffix : '');
+      if (p < 1) requestAnimationFrame(tick);
+    }
+    requestAnimationFrame(tick);
+  }
+  if ('IntersectionObserver' in window) {
+    var co = new IntersectionObserver(function (es) {
+      es.forEach(function (e) { if (e.isIntersecting) { run(e.target); co.unobserve(e.target); } });
+    }, { threshold: .6 });
+    counters.forEach(function (c) { co.observe(c); });
+  } else { counters.forEach(run); }
+
+  // Android: only offer the APK when a release exists.
+  var tag = document.getElementById('apk-tag'), btn = document.getElementById('apk-btn');
   fetch('https://api.github.com/repos/declyf/declyf.github.io/releases/latest')
     .then(function (r) { return r.ok ? r.json() : null; })
     .then(function (rel) {
-      if (rel && rel.tag_name) {
-        pill.textContent = 'v' + rel.tag_name.replace(/^v/, '');
-        pill.className = 'pill';
-        return;
-      }
-      pill.textContent = 'Coming soon';
+      if (rel && rel.tag_name) { tag.textContent = 'v' + rel.tag_name.replace(/^v/, ''); tag.className = 'tag'; return; }
+      tag.textContent = 'Coming soon';
       btn.textContent = 'Use the web app for now';
       btn.setAttribute('href', 'app/');
-      btn.className = 'btn line';
+      btn.className = 'btn ghost';
     })
-    .catch(function () { pill.textContent = 'Android'; });
+    .catch(function () { tag.textContent = 'Android'; });
 })();
 </script>
 </body>
