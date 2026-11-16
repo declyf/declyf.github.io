@@ -3,10 +3,10 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>DECLYF — The coaching platform</title>
+<title>DECLYF &mdash; The coaching platform</title>
 <meta name="description" content="DECLYF gives coaches one place to build plans and see every client's real numbers, and gives clients a free app for food, training and progress. Install on Android or iPhone.">
 <meta name="theme-color" content="#070B0F">
-<meta property="og:title" content="DECLYF — Coach smarter. Live dedicated.">
+<meta property="og:title" content="DECLYF &mdash; Coach smarter. Live dedicated.">
 <meta property="og:description" content="One place for your plans, their logs and their results.">
 <meta property="og:image" content="icon.png">
 <link rel="icon" href="favicon.png">
@@ -16,23 +16,20 @@
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 :root{
-  --cyan:#22D3EE; --cyan-2:#67E8F9; --cyan-deep:#0E7F93; --orange:#FF8A45;
+  --cyan:#22D3EE; --cyan-2:#67E8F9; --orange:#FF8A45;
   --bg:#070B0F; --bg-2:#0B1118; --surface:#111923; --surface-2:#16202C; --line:#1E2A36;
   --text:#EAF2F6; --dim:#8DA2B0; --shadow:rgba(0,0,0,.62);
-  --glow:radial-gradient(60% 55% at 50% 8%, rgba(34,211,238,.20), transparent 70%);
   --gut:clamp(18px,4.5vw,64px);
-  --r:20px;
+  --r:22px;
 }
 :root[data-theme="light"]{
-  --bg:#F3F7F9; --bg-2:#FFFFFF; --surface:#FFFFFF; --surface-2:#EDF3F6; --line:#D9E3E9;
-  --text:#081017; --dim:#55707F; --shadow:rgba(8,16,23,.13);
-  --glow:radial-gradient(60% 55% at 50% 6%, rgba(34,211,238,.26), transparent 70%);
+  --bg:#F2F6F8; --bg-2:#FFFFFF; --surface:#FFFFFF; --surface-2:#E9F1F5; --line:#D8E3E9;
+  --text:#071017; --dim:#55707F; --shadow:rgba(8,16,23,.16);
 }
 @media (prefers-color-scheme: light){
   :root:not([data-theme="dark"]){
-    --bg:#F3F7F9; --bg-2:#FFFFFF; --surface:#FFFFFF; --surface-2:#EDF3F6; --line:#D9E3E9;
-    --text:#081017; --dim:#55707F; --shadow:rgba(8,16,23,.13);
-    --glow:radial-gradient(60% 55% at 50% 6%, rgba(34,211,238,.26), transparent 70%);
+    --bg:#F2F6F8; --bg-2:#FFFFFF; --surface:#FFFFFF; --surface-2:#E9F1F5; --line:#D8E3E9;
+    --text:#071017; --dim:#55707F; --shadow:rgba(8,16,23,.16);
   }
 }
 
@@ -43,43 +40,47 @@ body{background:var(--bg);color:var(--text);font-family:'Poppins',system-ui,-app
 a{color:inherit;text-decoration:none}
 img,svg{display:block;max-width:100%}
 :focus-visible{outline:3px solid var(--cyan);outline-offset:3px;border-radius:8px}
-.wrap{width:100%;max-width:1160px;margin:0 auto;padding:0 var(--gut)}
-h1,h2,h3{font-weight:700;line-height:1.06;letter-spacing:-.025em}
-h1{font-size:clamp(38px,6.4vw,78px);font-weight:800}
-h2{font-size:clamp(29px,4.3vw,52px);font-weight:800}
-h3{font-size:clamp(19px,2.1vw,25px)}
+.wrap{width:100%;max-width:1180px;margin:0 auto;padding:0 var(--gut)}
+h1,h2,h3{font-weight:700;line-height:1.05;letter-spacing:-.028em}
+h1{font-size:clamp(40px,6.6vw,82px);font-weight:800}
+h2{font-size:clamp(30px,4.4vw,54px);font-weight:800}
+h3{font-size:clamp(19px,2.1vw,26px)}
 p{max-width:60ch}
 .dim{color:var(--dim)}
 .tnum{font-variant-numeric:tabular-nums}
-.grad{background:linear-gradient(104deg,var(--cyan) 8%,var(--cyan-2) 52%,var(--orange) 118%);
+.grad{background:linear-gradient(100deg,var(--cyan) 6%,var(--cyan-2) 48%,var(--orange) 112%);
   -webkit-background-clip:text;background-clip:text;color:transparent}
 
-/* reveal on scroll */
-.rv{opacity:0;transform:translateY(26px);transition:opacity .75s cubic-bezier(.2,.7,.2,1),transform .75s cubic-bezier(.2,.7,.2,1)}
+/* ---------- reveal ---------- */
+.rv{opacity:0;transform:translateY(24px);transition:opacity .8s cubic-bezier(.2,.7,.2,1),transform .8s cubic-bezier(.2,.7,.2,1)}
 .rv.in{opacity:1;transform:none}
-.rv.d1{transition-delay:.08s}.rv.d2{transition-delay:.16s}.rv.d3{transition-delay:.24s}
+.d1{transition-delay:.07s}.d2{transition-delay:.14s}.d3{transition-delay:.21s}
 
-/* buttons */
+/* ---------- buttons ---------- */
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;border:0;cursor:pointer;
   font-family:inherit;font-weight:600;font-size:16px;padding:16px 26px;border-radius:999px;
-  background:var(--cyan);color:#04222A;transition:transform .18s,box-shadow .18s,background .18s;
-  box-shadow:0 10px 26px -12px rgba(34,211,238,.9)}
-.btn:hover{transform:translateY(-2px);background:var(--cyan-2);box-shadow:0 16px 34px -12px rgba(34,211,238,.95)}
+  background:var(--cyan);color:#04222A;transition:transform .2s,box-shadow .2s,background .2s;
+  box-shadow:0 12px 30px -14px rgba(34,211,238,.95)}
+.btn:hover{transform:translateY(-2px);background:var(--cyan-2);box-shadow:0 18px 40px -14px rgba(34,211,238,1)}
 .btn.ghost{background:transparent;color:var(--text);box-shadow:inset 0 0 0 1.5px var(--line)}
 .btn.ghost:hover{box-shadow:inset 0 0 0 1.5px var(--cyan);color:var(--cyan)}
 .btn.sm{padding:11px 19px;font-size:14.5px}
 .btn svg{width:19px;height:19px;flex:none}
 
-/* header */
-header{position:sticky;top:0;z-index:60;background:color-mix(in srgb,var(--bg) 82%,transparent);
-  backdrop-filter:saturate(1.4) blur(16px);border-bottom:1px solid transparent;transition:border-color .3s}
+/* ---------- header ---------- */
+header{position:sticky;top:0;z-index:60;background:color-mix(in srgb,var(--bg) 80%,transparent);
+  backdrop-filter:saturate(1.5) blur(18px);border-bottom:1px solid transparent;transition:border-color .3s}
 header.stuck{border-bottom-color:var(--line)}
 .nav{display:flex;align-items:center;gap:20px;height:68px}
 .logo{display:flex;align-items:center;gap:10px;font-weight:800;font-size:21px;letter-spacing:.02em}
 .logo svg{width:28px;height:28px;border-radius:8px}
 .nav .sp{flex:1}
 .nav .links{display:flex;gap:28px;font-size:15px;color:var(--dim);font-weight:500}
+.nav .links a{position:relative}
+.nav .links a::after{content:"";position:absolute;left:0;right:0;bottom:-5px;height:2px;background:var(--cyan);
+  transform:scaleX(0);transform-origin:left;transition:transform .28s cubic-bezier(.2,.7,.2,1)}
 .nav .links a:hover{color:var(--text)}
+.nav .links a:hover::after{transform:scaleX(1)}
 .tg{width:38px;height:38px;border-radius:999px;border:1px solid var(--line);background:none;color:var(--dim);display:grid;place-items:center;cursor:pointer}
 .tg:hover{color:var(--cyan);border-color:var(--cyan)}
 .tg svg{width:17px;height:17px}
@@ -87,104 +88,117 @@ header.stuck{border-bottom-color:var(--line)}
 :root[data-theme="light"] .sun{display:block}:root[data-theme="light"] .moon{display:none}
 @media (prefers-color-scheme: light){:root:not([data-theme="dark"]) .sun{display:block}:root:not([data-theme="dark"]) .moon{display:none}}
 
-/* hero */
-.hero{position:relative;text-align:center;padding:clamp(42px,7vw,96px) 0 0;overflow:hidden}
-.hero::before{content:"";position:absolute;inset:0;background:var(--glow);pointer-events:none}
+/* ---------- hero ---------- */
+.hero{position:relative;text-align:center;padding:clamp(44px,7vw,100px) 0 0;overflow:hidden}
+.aurora{position:absolute;inset:-25% -10% auto -10%;height:120%;pointer-events:none;filter:blur(70px);opacity:.75}
+.aurora i{position:absolute;display:block;border-radius:50%}
+.aurora i:nth-child(1){width:48vw;height:38vw;left:52%;top:-6%;background:rgba(34,211,238,.34);animation:drift1 17s ease-in-out infinite}
+.aurora i:nth-child(2){width:36vw;height:30vw;left:6%;top:4%;background:rgba(103,232,249,.20);animation:drift2 21s ease-in-out infinite}
+.aurora i:nth-child(3){width:30vw;height:26vw;left:30%;top:28%;background:rgba(255,138,69,.16);animation:drift3 25s ease-in-out infinite}
+@keyframes drift1{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(-7%,6%) scale(1.12)}}
+@keyframes drift2{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(9%,-5%) scale(1.1)}}
+@keyframes drift3{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(5%,8%) scale(.92)}}
 .hero-in{position:relative}
 .eyebrow{display:inline-flex;align-items:center;gap:9px;font-size:13.5px;font-weight:600;color:var(--cyan);
-  background:color-mix(in srgb,var(--cyan) 12%,transparent);padding:7px 15px;border-radius:999px;margin-bottom:24px}
+  background:color-mix(in srgb,var(--cyan) 13%,transparent);padding:7px 15px;border-radius:999px;margin-bottom:24px}
 .eyebrow i{width:6px;height:6px;border-radius:50%;background:var(--cyan);animation:pulse 2.4s ease-in-out infinite}
-@keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
-.hero h1{max-width:16ch;margin:0 auto}
-.hero .lead{margin:24px auto 0;color:var(--dim);font-size:clamp(16.5px,1.7vw,19.5px);max-width:56ch}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.3;transform:scale(.8)}}
+.hero h1{max-width:15ch;margin:0 auto}
+.hero .lead{margin:24px auto 0;color:var(--dim);font-size:clamp(16.5px,1.7vw,19.5px);max-width:54ch}
 .hero .cta{display:flex;gap:13px;justify-content:center;flex-wrap:wrap;margin-top:32px}
 .hero .micro{margin-top:16px;font-size:13.5px;color:var(--dim)}
+.stagearea{margin-top:clamp(34px,5vw,58px);display:flex;justify-content:center;position:relative;padding-bottom:clamp(30px,5vw,60px)}
+.stagearea::after{content:"";position:absolute;bottom:6px;left:50%;transform:translateX(-50%);width:min(520px,84vw);height:90px;
+  background:radial-gradient(50% 60% at 50% 50%,rgba(34,211,238,.26),transparent 72%);filter:blur(14px)}
 
-/* floating hero device */
-.float{margin-top:clamp(34px,5vw,56px);display:flex;justify-content:center;position:relative;padding-bottom:clamp(40px,6vw,76px)}
-.float::after{content:"";position:absolute;bottom:0;left:50%;transform:translateX(-50%);width:min(560px,86vw);height:120px;
-  background:radial-gradient(50% 60% at 50% 50%,rgba(34,211,238,.22),transparent 72%);filter:blur(12px)}
-.levitate{animation:lev 7s ease-in-out infinite}
-@keyframes lev{0%,100%{transform:translateY(0)}50%{transform:translateY(-14px)}}
-
-/* phone */
-.phone{width:min(320px,80vw);background:#070A0E;border:9px solid #171F29;border-radius:42px;padding:14px 12px 16px;
-  box-shadow:0 44px 90px -34px var(--shadow),0 0 0 1px rgba(255,255,255,.05);position:relative;z-index:2}
-.phone::before{content:"";position:absolute;top:9px;left:50%;transform:translateX(-50%);width:84px;height:5px;border-radius:5px;background:#171F29}
-.ph-top{display:flex;align-items:center;gap:8px;margin:10px 4px 12px}
+/* ---------- the device ---------- */
+.tilt{perspective:1400px}
+.phone{width:min(312px,78vw);background:#060A0E;border:9px solid #19222D;border-radius:44px;padding:14px 12px 18px;
+  box-shadow:0 50px 100px -38px var(--shadow),0 0 0 1px rgba(255,255,255,.055);position:relative;z-index:2;
+  transform-style:preserve-3d;will-change:transform}
+.phone::before{content:"";position:absolute;top:10px;left:50%;transform:translateX(-50%);width:86px;height:5px;border-radius:5px;background:#19222D}
+.ph-top{display:flex;align-items:center;gap:8px;margin:12px 4px 12px}
 .ph-top svg{width:19px;height:19px;border-radius:6px}
 .ph-top span{font-weight:800;font-size:13px;letter-spacing:.08em;color:#EAF2F6}
-.scr{display:none}
-.scr.on{display:block;animation:sfade .55s ease both}
-@keyframes sfade{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+.ph-top em{margin-left:auto;font-style:normal;font-size:10.5px;color:#8DA2B0;letter-spacing:.06em}
 .ph-h{font-size:19px;font-weight:700;color:#EAF2F6;margin:0 4px}
 .ph-s{font-size:11.5px;color:#8DA2B0;margin:1px 4px 12px}
 .tile{background:#111923;border:1px solid #1E2A36;border-radius:16px;padding:13px;margin-bottom:9px}
 .tile:last-child{margin-bottom:0}
-.ring-row{display:flex;align-items:center;gap:14px}
-.ring{width:84px;height:84px;flex:none}
-.ring circle{fill:none;stroke-width:9;stroke-linecap:round}
-.ring .tr{stroke:#1E2A36}
-.ring .pr{stroke:var(--cyan);stroke-dasharray:220;stroke-dashoffset:220;transform:rotate(-90deg);transform-origin:50% 50%}
-.ring.go .pr{animation:dash 1.5s .25s cubic-bezier(.2,.75,.2,1) forwards}
-@keyframes dash{to{stroke-dashoffset:62}}
-.big{font-size:30px;font-weight:800;color:#EAF2F6;line-height:1.05;font-variant-numeric:tabular-nums}
+
+/* screens stack in the same box, cross-fade between them */
+.screens{position:relative;min-height:330px}
+/* The outgoing screen leaves at once and the new one fades in, so they never ghost over each other. */
+.screen{position:absolute;inset:0;opacity:0;visibility:hidden;transform:translateY(12px);transition:none;pointer-events:none}
+.screen.on{opacity:1;visibility:visible;transform:none;
+  transition:opacity .42s cubic-bezier(.2,.7,.2,1),transform .42s cubic-bezier(.2,.7,.2,1)}
+
+/* today screen */
+.ringrow{display:flex;align-items:center;gap:14px}
+.ringsvg{width:88px;height:88px;flex:none}
+.ringsvg circle{fill:none;stroke-width:9;stroke-linecap:round}
+.big{font-size:29px;font-weight:800;color:#EAF2F6;line-height:1.05;font-variant-numeric:tabular-nums}
 .cap{font-size:11.5px;color:#8DA2B0}
-.macros{display:flex;gap:7px;margin-top:11px}
+.macros{display:flex;gap:8px;margin-top:11px}
 .mac{flex:1}
 .mac .b{height:5px;border-radius:5px;background:#1E2A36;overflow:hidden}
-.mac .b i{display:block;height:100%;background:var(--cyan);width:var(--w)}
+.mac .b i{display:block;height:100%;background:var(--cyan);width:0}
 .mac .b.o i{background:var(--orange)}
-.mac .l{font-size:10px;color:#8DA2B0;margin-top:5px;letter-spacing:.04em}
-.set{display:flex;justify-content:space-between;align-items:center;padding:9px 0;border-bottom:1px solid #1E2A36;font-size:13px;color:#EAF2F6}
-.set:last-child{border:0;padding-bottom:0}
-.set i{font-style:normal;color:#8DA2B0;font-variant-numeric:tabular-nums}
-.set .ok{width:18px;height:18px;border-radius:50%;background:var(--cyan);display:grid;place-items:center}
-.set .ok svg{width:11px;height:11px}
-.cl{display:grid;grid-template-columns:34px 1fr auto;gap:10px;align-items:center;padding:9px 0;border-bottom:1px solid #1E2A36}
-.cl:last-child{border:0;padding-bottom:0}
-.cl .av{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;font-size:12.5px;font-weight:700;color:#04222A;background:var(--cyan)}
-.cl .av.o{background:var(--orange)}
-.cl .n{font-size:13.5px;font-weight:600;color:#EAF2F6}
-.cl .u{font-size:11px;color:#8DA2B0}
-.cl .p{font-size:12px;font-weight:700;color:var(--cyan);font-variant-numeric:tabular-nums}
-.cl .p.o{color:var(--orange)}
+.mac .l{font-size:10px;color:#8DA2B0;margin-top:5px;letter-spacing:.03em}
+.meal{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid #1E2A36;
+  font-size:13px;color:#EAF2F6;opacity:0;transform:translateX(-10px);transition:opacity .35s,transform .35s}
+.meal:last-child{border:0;padding-bottom:0}
+.meal.in{opacity:1;transform:none}
+.meal i{font-style:normal;color:#8DA2B0;font-variant-numeric:tabular-nums}
 
-/* scrollytelling */
-.story{position:relative;padding:clamp(50px,7vw,90px) 0}
-.story-grid{display:grid;grid-template-columns:1.02fr .98fr;gap:clamp(26px,5vw,70px);align-items:start}
-.sticky{position:sticky;top:104px;display:flex;justify-content:center}
+/* train screen */
+.ex{display:flex;justify-content:space-between;align-items:center;padding:9px 0;border-bottom:1px solid #1E2A36;font-size:13px;color:#EAF2F6}
+.ex:last-child{border:0;padding-bottom:0}
+.ex i{font-style:normal;color:#8DA2B0;font-variant-numeric:tabular-nums;margin-left:auto;margin-right:10px}
+.chk{width:19px;height:19px;border-radius:50%;border:1.6px solid #2B3947;flex:none;display:grid;place-items:center;
+  transition:background .3s,border-color .3s,transform .3s}
+.chk svg{width:11px;height:11px;opacity:0;transition:opacity .3s}
+.ex.done .chk{background:var(--cyan);border-color:var(--cyan);transform:scale(1.08)}
+.ex.done .chk svg{opacity:1}
+.volume{display:flex;justify-content:space-between;align-items:baseline}
 
-/* the animated stage: one scene per beat, all driven by how far you have scrolled */
-.stage{width:100%;max-width:470px;aspect-ratio:1/1;position:relative;
-  background:linear-gradient(180deg,var(--surface) 0%,var(--bg-2) 100%);
-  border:1px solid var(--line);border-radius:28px;overflow:hidden}
-.stage::before{content:"";position:absolute;inset:0;background:radial-gradient(60% 50% at 50% 30%,rgba(34,211,238,.13),transparent 70%)}
-.scene{position:absolute;inset:0;opacity:0;visibility:hidden;transition:opacity .5s ease}
-.scene.on{opacity:1;visibility:visible}
-.scene svg{width:100%;height:100%}
-.hint{position:absolute;left:0;right:0;bottom:16px;text-align:center;font-size:12.5px;color:var(--dim);letter-spacing:.02em}
-.hint b{color:var(--cyan);font-weight:600}
-.repcount{position:absolute;top:18px;right:20px;font-size:12px;font-weight:600;color:var(--cyan);
-  background:color-mix(in srgb,var(--cyan) 13%,transparent);padding:5px 12px;border-radius:999px;font-variant-numeric:tabular-nums}
-.kcal{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center}
-.kcal b{display:block;font-size:34px;font-weight:800;font-variant-numeric:tabular-nums;line-height:1.1}
-.kcal span{font-size:12px;color:var(--dim)}
-/* Each beat holds a screen of scroll, so the stage has room to animate. */
-.beats{display:grid;gap:0;padding:0 0 18vh}
-.beat{opacity:.32;transition:opacity .45s ease;min-height:104vh;display:flex;flex-direction:column;justify-content:center}
+/* progress screen */
+.statrow{display:flex;gap:16px;margin-top:10px}
+.statrow b{display:block;font-size:20px;font-weight:800;color:#EAF2F6;font-variant-numeric:tabular-nums;line-height:1.15}
+
+/* ---------- scrolly ---------- */
+.story{position:relative;padding:clamp(40px,6vw,76px) 0 0}
+.story-grid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(26px,5vw,76px);align-items:start}
+.sticky{position:sticky;top:96px;display:flex;flex-direction:column;align-items:center;gap:18px}
+.rail{display:flex;gap:7px}
+.rail span{width:30px;height:3px;border-radius:3px;background:var(--line);overflow:hidden;position:relative}
+.rail span i{position:absolute;inset:0;background:var(--cyan);transform-origin:left;transform:scaleX(0)}
+.beats{display:grid;gap:0;padding:0 0 16vh}
+.beat{min-height:108vh;display:flex;flex-direction:column;justify-content:center;opacity:.3;transition:opacity .5s ease}
 .beat.active{opacity:1}
-.beat .n{font-size:12.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--cyan);margin-bottom:12px;display:flex;align-items:center;gap:10px}
+.beat .n{font-size:12.5px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--cyan);margin-bottom:13px;display:flex;align-items:center;gap:10px}
 .beat .n::before{content:"";width:26px;height:2px;background:var(--cyan);border-radius:2px}
-.beat h3{margin-bottom:12px}
+.beat h3{margin-bottom:13px}
 .beat p{color:var(--dim)}
-.beat ul{list-style:none;margin-top:16px;display:grid;gap:9px}
-.beat li{padding-left:25px;position:relative;font-size:15.5px}
+.beat ul{list-style:none;margin-top:17px;display:grid;gap:10px}
+.beat li{padding-left:26px;position:relative;font-size:15.5px}
 .beat li::before{content:"";position:absolute;left:0;top:.52em;width:13px;height:7px;border-left:2px solid var(--cyan);border-bottom:2px solid var(--cyan);transform:rotate(-45deg)}
 
-/* sections */
+/* ---------- marquee ---------- */
+.marq{border-block:1px solid var(--line);background:var(--bg-2);overflow:hidden;padding:17px 0;
+  -webkit-mask-image:linear-gradient(90deg,transparent,#000 9%,#000 91%,transparent);
+  mask-image:linear-gradient(90deg,transparent,#000 9%,#000 91%,transparent)}
+.marq .track{display:flex;gap:14px;width:max-content;animation:slide 44s linear infinite}
+.marq:hover .track{animation-play-state:paused}
+@keyframes slide{to{transform:translateX(-50%)}}
+.chip{display:inline-flex;align-items:center;gap:8px;white-space:nowrap;font-size:14px;font-weight:500;color:var(--dim);
+  border:1px solid var(--line);border-radius:999px;padding:8px 16px;background:var(--surface)}
+.chip b{color:var(--text);font-weight:600}
+.chip s{text-decoration:none;color:var(--cyan);font-variant-numeric:tabular-nums;font-weight:600}
+
+/* ---------- sections ---------- */
 section{padding:clamp(56px,7.5vw,104px) 0}
-.head{max-width:60ch;margin-bottom:clamp(28px,4vw,50px)}
+.head{max-width:60ch;margin-bottom:clamp(28px,4vw,52px)}
 .head.mid{margin-inline:auto;text-align:center}
 .head p{margin-top:15px;color:var(--dim);font-size:17.5px}
 .head.mid p{margin-inline:auto}
@@ -193,12 +207,12 @@ section{padding:clamp(56px,7.5vw,104px) 0}
 .install{background:var(--bg-2);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
 .ins{display:grid;grid-template-columns:1fr 1fr;gap:18px}
 .card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:28px;display:flex;flex-direction:column;gap:15px;
-  transition:transform .3s,border-color .3s,box-shadow .3s}
-.card:hover{transform:translateY(-4px);border-color:color-mix(in srgb,var(--cyan) 45%,var(--line));box-shadow:0 24px 50px -30px var(--shadow)}
+  transition:transform .32s cubic-bezier(.2,.7,.2,1),border-color .32s,box-shadow .32s}
+.card:hover{transform:translateY(-5px);border-color:color-mix(in srgb,var(--cyan) 50%,var(--line));box-shadow:0 28px 60px -34px var(--shadow)}
 .card .os{display:flex;align-items:center;gap:12px}
 .card .os svg{width:27px;height:27px;color:var(--text)}
 .card .os h3{font-size:22px}
-.tag{margin-left:auto;font-size:11.5px;font-weight:700;padding:5px 11px;border-radius:999px;background:color-mix(in srgb,var(--cyan) 15%,transparent);color:var(--cyan)}
+.tag{margin-left:auto;font-size:11.5px;font-weight:700;padding:5px 11px;border-radius:999px;background:color-mix(in srgb,var(--cyan) 16%,transparent);color:var(--cyan)}
 .tag.soft{background:transparent;color:var(--dim);box-shadow:inset 0 0 0 1px var(--line)}
 .steps-s{display:grid;gap:9px;counter-reset:q}
 .steps-s div{display:flex;gap:11px;font-size:15px;color:var(--dim);counter-increment:q}
@@ -212,8 +226,10 @@ section{padding:clamp(56px,7.5vw,104px) 0}
 
 /* numbers */
 .nums{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
-.num{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:26px 22px}
-.num b{display:block;font-size:clamp(32px,4vw,46px);font-weight:800;line-height:1;font-variant-numeric:tabular-nums}
+.num{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:26px 22px;
+  transition:transform .3s,border-color .3s}
+.num:hover{transform:translateY(-4px);border-color:color-mix(in srgb,var(--cyan) 45%,var(--line))}
+.num b{display:block;font-size:clamp(30px,3.7vw,44px);font-weight:800;line-height:1;font-variant-numeric:tabular-nums}
 .num span{display:block;margin-top:10px;font-size:14.5px;color:var(--dim)}
 
 /* pricing */
@@ -237,7 +253,7 @@ details p{color:var(--dim);padding-bottom:20px;font-size:16px}
 
 /* final */
 .final{position:relative;text-align:center;overflow:hidden;background:var(--bg-2);border-top:1px solid var(--line)}
-.final::before{content:"";position:absolute;inset:0;background:radial-gradient(52% 120% at 50% 112%,rgba(34,211,238,.26),transparent 70%)}
+.final::before{content:"";position:absolute;inset:0;background:radial-gradient(52% 120% at 50% 112%,rgba(34,211,238,.28),transparent 70%)}
 .final .wrap{position:relative}
 .final h2{max-width:17ch;margin-inline:auto}
 .final p{margin:16px auto 0;color:var(--dim)}
@@ -246,12 +262,10 @@ footer{border-top:1px solid var(--line);padding:30px 0;font-size:13.5px;color:va
 footer .wrap{display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap}
 
 @media (max-width:920px){
-  .story-grid,.ins,.prices,.nums{grid-template-columns:1fr}
+  .story-grid,.ins,.prices{grid-template-columns:1fr}
   .nums{grid-template-columns:1fr 1fr}
-  .sticky{top:84px;margin-bottom:26px}
-  .beats{padding:0 0 12vh}
-  .beat{min-height:88vh}
-  .beat{opacity:1}
+  .sticky{top:84px;margin-bottom:24px}
+  .beat{min-height:90vh;opacity:1}
   .nav .links{display:none}
 }
 @media (max-width:540px){
@@ -261,8 +275,8 @@ footer .wrap{display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap}
 }
 @media (prefers-reduced-motion:reduce){
   html{scroll-behavior:auto}
-  *,*::before,*::after{animation:none!important;transition:none!important}
-  .rv{opacity:1;transform:none}
+  .aurora i,.eyebrow i,.marq .track{animation:none}
+  .rv{opacity:1;transform:none;transition:none}
   .beat{opacity:1}
 }
 </style>
@@ -292,12 +306,13 @@ footer .wrap{display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap}
 
 <main id="top">
 
-<!-- HERO -->
+<!-- ================= HERO ================= -->
 <div class="hero">
+  <div class="aurora" aria-hidden="true"><i></i><i></i><i></i></div>
   <div class="wrap hero-in">
     <span class="eyebrow rv in"><i></i> Now in early access</span>
     <h1 class="rv in">Coaching that runs on <span class="grad">real numbers.</span></h1>
-    <p class="lead rv in d1">Your plans go out. Their meals, lifts and weight come back. DECLYF keeps both sides looking at the same truth — on the phone, and on the web.</p>
+    <p class="lead rv in d1">Your plans go out. Their meals, lifts and weight come back. DECLYF keeps both sides looking at the same truth &mdash; on the phone, and on the web.</p>
     <div class="cta rv in d2">
       <a class="btn" href="#install">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v11m0 0-4.5-4.5M12 15l4.5-4.5M5 20h14"/></svg>
@@ -305,167 +320,148 @@ footer .wrap{display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap}
       </a>
       <a class="btn ghost" href="app/">Open the web app</a>
     </div>
-    <p class="micro rv in d3">Free for clients · Android &amp; iPhone · Works offline</p>
+    <p class="micro rv in d3">Free for clients &middot; Android &amp; iPhone &middot; Works offline</p>
   </div>
+</div>
 
-  <div class="float">
-    <div class="levitate">
-      <div class="phone" id="heroPhone">
-        <div class="ph-top">
-          <svg viewBox="0 0 100 100" aria-hidden="true"><rect width="100" height="100" rx="26" fill="#22D3EE"/><path fill-rule="evenodd" fill="#070B0F" d="M34 26H52C66 26 76 36 76 50C76 64 66 74 52 74H34ZM46 38V62H52C59 62 64 57 64 50C64 43 59 38 52 38Z"/></svg>
-          <span>DECLYF</span>
-        </div>
-        <div class="ph-h">Today</div>
-        <div class="ph-s">Monday · day 34</div>
-        <div class="tile">
-          <div class="ring-row">
-            <svg class="ring" id="heroRing" viewBox="0 0 100 100" aria-hidden="true">
-              <circle class="tr" cx="50" cy="50" r="35"/><circle class="pr" cx="50" cy="50" r="35"/>
-            </svg>
-            <div>
-              <div class="big tnum">1,840</div>
-              <div class="cap">of 2,400 kcal eaten</div>
-              <div class="macros">
-                <div class="mac"><div class="b"><i style="--w:72%"></i></div><div class="l">PROTEIN 128 g</div></div>
-                <div class="mac"><div class="b o"><i style="--w:54%"></i></div><div class="l">CARBS 190 g</div></div>
+<!-- ================= SCROLLY: the device plays the product ================= -->
+<div class="story" id="product">
+  <div class="wrap story-grid">
+
+    <div class="sticky">
+      <div class="tilt">
+        <div class="phone" id="device">
+          <div class="ph-top">
+            <svg viewBox="0 0 100 100" aria-hidden="true"><rect width="100" height="100" rx="26" fill="#22D3EE"/><path fill-rule="evenodd" fill="#070B0F" d="M34 26H52C66 26 76 36 76 50C76 64 66 74 52 74H34ZM46 38V62H52C59 62 64 57 64 50C64 43 59 38 52 38Z"/></svg>
+            <span>DECLYF</span><em id="scrName">TODAY</em>
+          </div>
+
+          <div class="screens">
+            <!-- 1 - today -->
+            <div class="screen on" data-screen="0">
+              <div class="ph-h">Today</div>
+              <div class="ph-s">Monday &middot; day 34</div>
+              <div class="tile">
+                <div class="ringrow">
+                  <svg class="ringsvg" viewBox="0 0 100 100" aria-hidden="true">
+                    <circle cx="50" cy="50" r="36" stroke="#1E2A36"/>
+                    <circle id="kRing" cx="50" cy="50" r="36" stroke="#22D3EE" stroke-dasharray="226" stroke-dashoffset="226" transform="rotate(-90 50 50)"/>
+                  </svg>
+                  <div>
+                    <div class="big tnum" id="kNum">0</div>
+                    <div class="cap">of 2,400 kcal eaten</div>
+                    <div class="macros">
+                      <div class="mac"><div class="b"><i id="mP"></i></div><div class="l">PROTEIN</div></div>
+                      <div class="mac"><div class="b o"><i id="mC"></i></div><div class="l">CARBS</div></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="tile">
+                <div class="meal" data-meal="0"><span>Oats &amp; whey</span><i>420</i></div>
+                <div class="meal" data-meal="1"><span>Chicken rice bowl</span><i>640</i></div>
+                <div class="meal" data-meal="2"><span>Greek yogurt</span><i>180</i></div>
+                <div class="meal" data-meal="3"><span>Salmon &amp; greens</span><i>600</i></div>
+              </div>
+            </div>
+
+            <!-- 2 - train -->
+            <div class="screen" data-screen="1">
+              <div class="ph-h">Train</div>
+              <div class="ph-s">Chest &middot; Shoulders &middot; Triceps</div>
+              <div class="tile">
+                <div class="volume"><span class="cap">Volume today</span><span class="big tnum" id="volNum" style="font-size:21px">0 kg</span></div>
+              </div>
+              <div class="tile">
+                <div class="ex" data-ex="0"><span>Bench Press</span><i>60 &times; 8</i><div class="chk"><svg viewBox="0 0 24 24" fill="none" stroke="#04222A" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"><path d="m5 13 4 4L19 7"/></svg></div></div>
+                <div class="ex" data-ex="1"><span>Incline Press</span><i>22 &times; 10</i><div class="chk"><svg viewBox="0 0 24 24" fill="none" stroke="#04222A" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"><path d="m5 13 4 4L19 7"/></svg></div></div>
+                <div class="ex" data-ex="2"><span>Overhead Press</span><i>35 &times; 8</i><div class="chk"><svg viewBox="0 0 24 24" fill="none" stroke="#04222A" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"><path d="m5 13 4 4L19 7"/></svg></div></div>
+                <div class="ex" data-ex="3"><span>Lateral Raise</span><i>10 &times; 14</i><div class="chk"><svg viewBox="0 0 24 24" fill="none" stroke="#04222A" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"><path d="m5 13 4 4L19 7"/></svg></div></div>
+                <div class="ex" data-ex="4"><span>Triceps Pushdown</span><i>30 &times; 12</i><div class="chk"><svg viewBox="0 0 24 24" fill="none" stroke="#04222A" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"><path d="m5 13 4 4L19 7"/></svg></div></div>
+              </div>
+            </div>
+
+            <!-- 3 - progress -->
+            <div class="screen" data-screen="2">
+              <div class="ph-h">Progress</div>
+              <div class="ph-s">Last 12 weeks</div>
+              <div class="tile">
+                <svg viewBox="0 0 260 120" style="width:100%;height:auto" aria-hidden="true">
+                  <defs><linearGradient id="gw" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#22D3EE" stop-opacity=".34"/><stop offset="1" stop-color="#22D3EE" stop-opacity="0"/></linearGradient></defs>
+                  <path id="wFill" d="M6 22 L48 32 L90 28 L132 50 L174 64 L216 82 L254 96 L254 118 L6 118 Z" fill="url(#gw)" opacity="0"/>
+                  <path id="wLine" d="M6 22 L48 32 L90 28 L132 50 L174 64 L216 82 L254 96" fill="none" stroke="#22D3EE" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/>
+                  <circle id="wDot" cx="6" cy="22" r="5" fill="#FF8A45"/>
+                </svg>
+                <div class="statrow">
+                  <div><b class="tnum" id="wNow">82.0 kg</b><div class="cap">weight</div></div>
+                  <div><b class="tnum" id="wDays">0</b><div class="cap">day streak</div></div>
+                  <div><b class="tnum" id="wAdh">0%</b><div class="cap">plan done</div></div>
+                </div>
               </div>
             </div>
           </div>
         </div>
-        <div class="tile">
-          <div class="set"><span>Barbell Bench Press</span><i>60 kg × 8</i></div>
-          <div class="set"><span>Incline Dumbbell Press</span><i>22 kg × 10</i></div>
-          <div class="set"><span>Triceps Pushdown</span><div class="ok"><svg viewBox="0 0 24 24" fill="none" stroke="#04222A" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"><path d="m5 13 4 4L19 7"/></svg></div></div>
-        </div>
       </div>
-    </div>
-  </div>
-</div>
 
-<!-- SCROLLYTELLING -->
-<div class="story" id="product">
-  <div class="wrap story-grid">
-    <div class="sticky">
-      <div class="stage" id="stage" aria-hidden="true">
-
-        <!-- SCENE 1 — the rep. Scroll down, the bar comes down to the chest; scroll up, it presses away. -->
-        <div class="scene on" data-scene="0">
-          <div class="repcount" id="repTxt">Rep 1 · top</div>
-          <svg viewBox="0 0 400 400">
-            <!-- floor -->
-            <line x1="30" y1="338" x2="370" y2="338" stroke="var(--line)" stroke-width="2"/>
-            <!-- rack uprights, behind everything -->
-            <rect x="296" y="168" width="12" height="170" rx="6" fill="var(--line)"/>
-            <rect x="286" y="168" width="32" height="10" rx="5" fill="var(--line)"/>
-            <!-- bench -->
-            <rect x="112" y="252" width="186" height="17" rx="8" fill="var(--surface-2)" stroke="var(--line)" stroke-width="2"/>
-            <rect x="132" y="269" width="13" height="69" rx="6" fill="var(--surface-2)" stroke="var(--line)" stroke-width="2"/>
-            <rect x="268" y="269" width="13" height="69" rx="6" fill="var(--surface-2)" stroke="var(--line)" stroke-width="2"/>
-            <!-- lifter: legs planted, torso on the bench, head at the rack end -->
-            <g stroke="var(--dim)" fill="var(--dim)">
-              <path d="M150 252 L112 302 L84 338" stroke-width="15" stroke-linecap="round" fill="none"/>
-              <path d="M168 252 L140 306 L116 338" stroke-width="15" stroke-linecap="round" fill="none" opacity=".65"/>
-              <rect x="158" y="222" width="126" height="31" rx="15" stroke="none"/>
-              <circle cx="292" cy="216" r="20" stroke="none"/>
-            </g>
-            <!-- arms: shoulder to bar, redrawn as the bar moves -->
-            <path id="armL" d="M258 228 L258 150" stroke="var(--cyan)" stroke-width="13" stroke-linecap="round" fill="none" opacity=".55"/>
-            <path id="armR" d="M212 228 L212 150" stroke="var(--cyan)" stroke-width="13" stroke-linecap="round" fill="none"/>
-            <!-- the barbell -->
-            <g id="bar">
-              <line x1="86" y1="150" x2="344" y2="150" stroke="var(--text)" stroke-width="7" stroke-linecap="round"/>
-              <rect x="98" y="120" width="18" height="60" rx="7" fill="var(--cyan)"/>
-              <rect x="120" y="131" width="14" height="38" rx="6" fill="var(--cyan)" opacity=".72"/>
-              <rect x="314" y="120" width="18" height="60" rx="7" fill="var(--cyan)"/>
-              <rect x="296" y="131" width="14" height="38" rx="6" fill="var(--cyan)" opacity=".72"/>
-            </g>
-          </svg>
-          <div class="hint">Scroll to press — <b>60 kg × 8</b>, logged set by set</div>
-        </div>
-
-        <!-- SCENE 2 — a meal leaves the phone and fills the day's ring. -->
-        <div class="scene" data-scene="1">
-          <svg viewBox="0 0 400 400">
-            <!-- phone -->
-            <rect x="34" y="104" width="112" height="196" rx="20" fill="var(--surface-2)" stroke="var(--line)" stroke-width="2"/>
-            <rect x="48" y="124" width="84" height="9" rx="4.5" fill="var(--line)"/>
-            <rect x="48" y="144" width="60" height="7" rx="3.5" fill="var(--line)"/>
-            <circle cx="90" cy="236" r="30" fill="none" stroke="var(--line)" stroke-width="8"/>
-            <circle cx="90" cy="236" r="30" fill="none" stroke="var(--cyan)" stroke-width="8" stroke-linecap="round"
-                    stroke-dasharray="188" stroke-dashoffset="188" id="phoneRing" transform="rotate(-90 90 236)"/>
-            <!-- the day ring on the right -->
-            <circle cx="286" cy="200" r="74" fill="none" stroke="var(--line)" stroke-width="15"/>
-            <circle cx="286" cy="200" r="74" fill="none" stroke="var(--cyan)" stroke-width="15" stroke-linecap="round"
-                    stroke-dasharray="465" stroke-dashoffset="465" id="dayRing" transform="rotate(-90 286 200)"/>
-            <!-- food chips travelling across -->
-            <g id="chips">
-              <g class="chip"><rect x="-44" y="-14" width="88" height="28" rx="14" fill="var(--surface)" stroke="var(--cyan)" stroke-width="1.5"/>
-                <text x="0" y="5" text-anchor="middle" font-size="13" font-weight="600" fill="var(--text)" font-family="Poppins,sans-serif">Dal · 180</text></g>
-              <g class="chip"><rect x="-48" y="-14" width="96" height="28" rx="14" fill="var(--surface)" stroke="var(--cyan)" stroke-width="1.5"/>
-                <text x="0" y="5" text-anchor="middle" font-size="13" font-weight="600" fill="var(--text)" font-family="Poppins,sans-serif">Roti · 120</text></g>
-              <g class="chip"><rect x="-52" y="-14" width="104" height="28" rx="14" fill="var(--surface)" stroke="var(--orange)" stroke-width="1.5"/>
-                <text x="0" y="5" text-anchor="middle" font-size="13" font-weight="600" fill="var(--text)" font-family="Poppins,sans-serif">Paneer · 265</text></g>
-            </g>
-          </svg>
-          <div class="kcal"><b id="kcalTxt">0</b><span>kcal logged today</span></div>
-          <div class="hint">Logged on the phone — <b>on your screen instantly</b></div>
-        </div>
-
-        <!-- SCENE 3 — twelve weeks of weight, drawn as you read. -->
-        <div class="scene" data-scene="2">
-          <svg viewBox="0 0 400 400">
-            <g stroke="var(--line)" stroke-width="1.5">
-              <line x1="52" y1="120" x2="356" y2="120"/><line x1="52" y1="190" x2="356" y2="190"/>
-              <line x1="52" y1="260" x2="356" y2="260"/><line x1="52" y1="330" x2="356" y2="330"/>
-            </g>
-            <path id="trendFill" d="M52 148 L103 164 L154 158 L205 206 L256 232 L307 266 L356 290 L356 330 L52 330 Z" fill="var(--cyan)" opacity=".14"/>
-            <path id="trend" d="M52 148 L103 164 L154 158 L205 206 L256 232 L307 266 L356 290"
-                  fill="none" stroke="var(--cyan)" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/>
-            <circle id="trendDot" cx="52" cy="148" r="8" fill="var(--orange)"/>
-            <text x="52" y="100" font-size="15" font-weight="600" fill="var(--dim)" font-family="Poppins,sans-serif">Week 1 · 82 kg</text>
-            <text id="trendNow" x="356" y="100" text-anchor="end" font-size="20" font-weight="800" fill="var(--text)" font-family="Poppins,sans-serif">82 kg</text>
-          </svg>
-          <div class="hint">Twelve weeks of real weigh-ins — <b>6 kg down</b></div>
-        </div>
+      <div class="rail" aria-hidden="true">
+        <span><i data-rail="0"></i></span><span><i data-rail="1"></i></span><span><i data-rail="2"></i></span>
       </div>
     </div>
 
     <div class="beats" id="beats">
       <div class="beat" data-beat="0">
-        <div class="n">Your roster</div>
-        <h3>Know who needs you before they tell you</h3>
-        <p>Every client, their streak and how much of this week's plan they finished — on one screen. The one who went quiet is impossible to miss.</p>
+        <div class="n">Every day</div>
+        <h3>Food logged in seconds, not in a notebook</h3>
+        <p>Search any food, scan a barcode, or pick from what they ate yesterday. The ring fills, the macros move, and you see it the moment they log it.</p>
         <ul>
-          <li>Live adherence for each client</li>
-          <li>Missed days flagged in orange</li>
-          <li>One tap into their full history</li>
+          <li>Search millions of foods and packaged products</li>
+          <li>Barcode scanning built in</li>
+          <li>Targets set from their goal, height and weight</li>
         </ul>
       </div>
       <div class="beat" data-beat="1">
-        <div class="n">Your plans</div>
-        <h3>Build a week once. It runs itself.</h3>
-        <p>Set exercises, sets and rep ranges for each weekday, plus calorie and protein targets. It lands on their phone with your name on it.</p>
+        <div class="n">Every session</div>
+        <h3>The plan you wrote, ticked off set by set</h3>
+        <p>Your weekly plan lands on their phone. They enter the weight, tick the set, and the volume adds itself up. Nothing is remembered wrong.</p>
         <ul>
-          <li>Per-weekday training plans</li>
-          <li>Food targets that match their goal</li>
-          <li>Edit once; everyone's app updates</li>
+          <li>Exercises, sets and rep ranges per weekday</li>
+          <li>Last week's weights shown as they lift</li>
+          <li>Cardio with distance, pace and calories</li>
         </ul>
       </div>
       <div class="beat" data-beat="2">
-        <div class="n">Their progress</div>
-        <h3>Proof, not promises</h3>
-        <p>Weight trend against what they actually ate and lifted. When a client stalls, you can see exactly where it went wrong.</p>
+        <div class="n">Every week</div>
+        <h3>Progress you can actually point at</h3>
+        <p>Weight against what they ate and lifted, week by week. When somebody stalls you can see exactly where, instead of guessing on a call.</p>
         <ul>
-          <li>Weight, calories and protein on one chart</li>
-          <li>Every logged set, kept week to week</li>
-          <li>A shareable recap that keeps them going</li>
+          <li>Weight, calories and adherence on one view</li>
+          <li>Streaks that keep people logging</li>
+          <li>A weekly recap they can share</li>
         </ul>
       </div>
     </div>
   </div>
 </div>
 
-<!-- INSTALL -->
+<!-- ================= MARQUEE ================= -->
+<div class="marq" aria-hidden="true">
+  <div class="track" id="track"></div>
+</div>
+
+<!-- ================= NUMBERS ================= -->
+<section>
+  <div class="wrap">
+    <div class="head mid rv"><h2>Enough depth to never leave the app</h2></div>
+    <div class="nums">
+      <div class="num rv"><b class="tnum" data-count="3" data-suffix="M+">0</b><span>Foods and packaged products searchable worldwide</span></div>
+      <div class="num rv d1"><b class="tnum" data-count="130" data-suffix="+">0</b><span>Exercises grouped by muscle, logged set by set</span></div>
+      <div class="num rv d2"><b class="tnum" data-count="2">0</b><span>Global nutrition databases queried live, plus barcodes</span></div>
+      <div class="num rv d3"><b>Offline</b><span>Everything saves on the phone first and syncs later</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= INSTALL ================= -->
 <div class="install" id="install">
   <div class="wrap" style="padding-block:clamp(50px,7vw,88px)">
     <div class="head mid rv">
@@ -483,7 +479,7 @@ footer .wrap{display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap}
         <div class="steps-s">
           <div>Open this page in Safari and tap below.</div>
           <div>Tap the Share icon.</div>
-          <div>Choose “Add to Home Screen”.</div>
+          <div>Choose &ldquo;Add to Home Screen&rdquo;.</div>
         </div>
         <a class="btn" href="app/">Open on iPhone</a>
       </div>
@@ -491,43 +487,30 @@ footer .wrap{display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap}
       <div class="card rv d1">
         <div class="os">
           <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6 9h12v8.2c0 .8-.6 1.4-1.4 1.4h-.8V21a1.2 1.2 0 1 1-2.4 0v-2.4h-2.8V21a1.2 1.2 0 1 1-2.4 0v-2.4h-.8c-.8 0-1.4-.6-1.4-1.4Zm-2.3.1a1.2 1.2 0 0 1 1.2 1.2v4.9a1.2 1.2 0 0 1-2.4 0v-4.9a1.2 1.2 0 0 1 1.2-1.2m16.6 0a1.2 1.2 0 0 1 1.2 1.2v4.9a1.2 1.2 0 1 1-2.4 0v-4.9a1.2 1.2 0 0 1 1.2-1.2M15.6 3.6l1.1-1.9a.3.3 0 0 0-.5-.3l-1.1 2a7 7 0 0 0-6.2 0l-1.1-2a.3.3 0 0 0-.5.3l1.1 1.9A6 6 0 0 0 6 8.1h12a6 6 0 0 0-2.4-4.5M9.5 6.3a.65.65 0 1 1 0-1.3.65.65 0 0 1 0 1.3m5 0a.65.65 0 1 1 0-1.3.65.65 0 0 1 0 1.3"/></svg>
-          <h3>Android</h3><span class="tag soft" id="apk-tag">Checking…</span>
+          <h3>Android</h3><span class="tag soft" id="apkTag">Checking&hellip;</span>
         </div>
         <p class="dim" style="font-size:15px">Install the full app directly. The button always serves the newest build.</p>
         <div class="steps-s">
           <div>Tap Download and open the file.</div>
-          <div>Allow “Install from this source”.</div>
+          <div>Allow &ldquo;Install from this source&rdquo;.</div>
           <div>To update later, download again.</div>
         </div>
-        <a class="btn" href="https://github.com/declyf/declyf.github.io/releases/latest/download/declyf.apk" id="apk-btn">Download APK</a>
+        <a class="btn" href="https://github.com/declyf/declyf.github.io/releases/latest/download/declyf.apk" id="apkBtn">Download APK</a>
       </div>
     </div>
 
     <div class="webapp rv d2">
       <div class="t">
         <h3>Coaching from your desk</h3>
-        <p>The web app is the same DECLYF, on a big screen — build plans, open any client and read their week without touching your phone.</p>
+        <p>The web app is the same DECLYF on a big screen &mdash; build plans, open any client and read their week without touching your phone.</p>
       </div>
       <a class="btn ghost" href="app/">Open the web app</a>
     </div>
   </div>
 </div>
 
-<!-- NUMBERS -->
-<section>
-  <div class="wrap">
-    <div class="head mid rv"><h2>Built for how India actually eats and trains</h2></div>
-    <div class="nums">
-      <div class="num rv"><b class="tnum" data-count="800" data-suffix="+">0</b><span>Indian dishes with real portions, offline</span></div>
-      <div class="num rv d1"><b class="tnum" data-count="130" data-suffix="+">0</b><span>Exercises grouped by muscle, logged set by set</span></div>
-      <div class="num rv d2"><b class="tnum" data-count="2">0</b><span>Global food databases searched live, plus barcodes</span></div>
-      <div class="num rv d3"><b>₹0</b><span>What a client pays, today and at launch</span></div>
-    </div>
-  </div>
-</section>
-
-<!-- PRICING -->
-<section id="pricing" style="padding-top:0">
+<!-- ================= PRICING ================= -->
+<section id="pricing">
   <div class="wrap">
     <div class="head mid rv">
       <h2>Simple while we grow</h2>
@@ -559,13 +542,13 @@ footer .wrap{display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap}
   </div>
 </section>
 
-<!-- FAQ -->
+<!-- ================= FAQ ================= -->
 <section id="faq" style="padding-top:0">
   <div class="wrap">
     <div class="head mid rv"><h2>Questions</h2></div>
     <div class="faq rv">
-      <details open><summary>How do iPhone users install it without the App Store?</summary><p>Open the site in Safari, tap “Open on iPhone”, then Share → Add to Home Screen. It gets its own icon and opens full screen, like any other app.</p></details>
-      <details><summary>Can coaches work on a laptop?</summary><p>Yes. The web app runs the whole of DECLYF in a browser, which is where most coaches build plans and review their week.</p></details>
+      <details open><summary>How do iPhone users install it without the App Store?</summary><p>Open the site in Safari, tap &ldquo;Open on iPhone&rdquo;, then Share &rarr; Add to Home Screen. It gets its own icon and opens full screen, like any other app.</p></details>
+      <details><summary>Can coaches work on a laptop?</summary><p>Yes. The web app runs the whole of DECLYF in a browser, which is where most coaches build plans and review the week.</p></details>
       <details><summary>Why is Android a direct download?</summary><p>So every improvement reaches people the same day instead of waiting on store review. A Play Store listing is planned.</p></details>
       <details><summary>Do clients pay anything?</summary><p>No. The client app is free, including the plans their coach sends.</p></details>
       <details><summary>Where does the data live?</summary><p>On the phone first, then backed up to a private database. Only the client and the coach they joined can see it, and a client can leave a coach at any time.</p></details>
@@ -573,7 +556,7 @@ footer .wrap{display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap}
   </div>
 </section>
 
-<!-- FINAL -->
+<!-- ================= FINAL ================= -->
 <section class="final">
   <div class="wrap">
     <h2 class="rv">Coach smarter. Live dedicated.</h2>
@@ -589,148 +572,65 @@ footer .wrap{display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap}
 
 <footer>
   <div class="wrap">
-    <span>© 2026 DECLYF · Dedicated Life. All rights reserved.</span>
-    <span>Built in Ahmedabad, India</span>
+    <span>&copy; 2026 DECLYF &middot; Dedicated Life. All rights reserved.</span>
+    <span>Coach smarter. Live dedicated.</span>
   </div>
 </footer>
 
 <script>
 (function () {
   var root = document.documentElement;
+  var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches
+    && location.search.indexOf('motion=1') === -1;
 
-  // Theme: follow the device, remember a manual choice.
+  /* ---- theme ---- */
   try { var saved = localStorage.getItem('declyf-theme'); if (saved) root.setAttribute('data-theme', saved); } catch (e) {}
   document.getElementById('theme').addEventListener('click', function () {
-    var isLight = root.getAttribute('data-theme') === 'light'
-      || (!root.getAttribute('data-theme') && window.matchMedia('(prefers-color-scheme: light)').matches);
-    var next = isLight ? 'dark' : 'light';
+    var light = root.getAttribute('data-theme') === 'light'
+      || (!root.getAttribute('data-theme') && matchMedia('(prefers-color-scheme: light)').matches);
+    var next = light ? 'dark' : 'light';
     root.setAttribute('data-theme', next);
     try { localStorage.setItem('declyf-theme', next); } catch (e) {}
   });
 
-  // Respect the visitor's motion setting. ?motion=1 forces it on, for checking the animation.
-  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches
-    && location.search.indexOf('motion=1') === -1;
-
-  // Header hairline once you leave the top.
+  /* ---- header hairline ---- */
   var hdr = document.getElementById('hdr');
-  addEventListener('scroll', function () { hdr.classList.toggle('stuck', scrollY > 8); }, { passive: true });
 
-  // Reveal on scroll.
+  /* ---- reveal ---- */
   var rv = document.querySelectorAll('.rv:not(.in)');
   if (reduce || !('IntersectionObserver' in window)) {
     rv.forEach(function (el) { el.classList.add('in'); });
   } else {
-    var io = new IntersectionObserver(function (entries) {
-      entries.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
-    }, { rootMargin: '0px 0px -12% 0px' });
+    var io = new IntersectionObserver(function (es) {
+      es.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+    }, { rootMargin: '0px 0px -10% 0px' });
     rv.forEach(function (el) { io.observe(el); });
   }
 
-  // Hero ring draws once it is in view.
-  var ring = document.getElementById('heroRing');
-  if (reduce) { ring.classList.add('go'); }
-  else if ('IntersectionObserver' in window) {
-    var ro = new IntersectionObserver(function (es) {
-      es.forEach(function (e) { if (e.isIntersecting) { ring.classList.add('go'); ro.disconnect(); } });
-    }, { threshold: .4 });
-    ro.observe(ring);
-  } else { ring.classList.add('go'); }
-
-  // The stage is driven by scroll: the bar presses, the meal lands, the trend draws.
-  var beats = [].slice.call(document.querySelectorAll('.beat'));
-  var scenes = [].slice.call(document.querySelectorAll('.scene'));
-  var story = document.querySelector('.story');
-  var bar = document.getElementById('bar');
-  var armL = document.getElementById('armL'), armR = document.getElementById('armR');
-  var repTxt = document.getElementById('repTxt');
-  var dayRing = document.getElementById('dayRing'), phoneRing = document.getElementById('phoneRing');
-  var kcalTxt = document.getElementById('kcalTxt');
-  var chips = [].slice.call(document.querySelectorAll('#chips .chip'));
-  var trend = document.getElementById('trend'), trendFill = document.getElementById('trendFill');
-  var trendDot = document.getElementById('trendDot'), trendNow = document.getElementById('trendNow');
-
-  var REPS = 3;              // presses across the first beat
-  var TOP = 150, CHEST = 218; // where the bar sits locked out, and down at the chest
-  var trendLen = trend ? trend.getTotalLength() : 0;
-  if (trend) { trend.style.strokeDasharray = trendLen; trend.style.strokeDashoffset = trendLen; }
-  if (trendFill) trendFill.style.opacity = 0;
-
-  function clamp(v) { return v < 0 ? 0 : v > 1 ? 1 : v; }
-
-  function paint() {
-    if (!story) return;
-    var r = story.getBoundingClientRect();
-    // 0 when the section reaches the top of the view, 1 when it leaves.
-    var p = clamp((-r.top) / Math.max(1, r.height - innerHeight));
-    var third = 1 / 3;
-    var which = p < third ? 0 : p < third * 2 ? 1 : 2;
-
-    scenes.forEach(function (s, n) { s.classList.toggle('on', n === which); });
-    beats.forEach(function (b, n) { b.classList.toggle('active', n === which); });
-
-    // Beat 1 - a real rep: down as you scroll down, up as you scroll back.
-    if (bar) {
-      var lp = clamp(p / third);
-      var phase = (Math.cos(lp * REPS * 2 * Math.PI) + 1) / 2;   // 1 at the top, 0 at the chest
-      var y = TOP + (CHEST - TOP) * (1 - phase);
-      bar.setAttribute('transform', 'translate(0,' + (y - TOP).toFixed(1) + ')');
-      armL.setAttribute('d', 'M258 228 L258 ' + y.toFixed(1));
-      armR.setAttribute('d', 'M212 228 L212 ' + y.toFixed(1));
-      var rep = Math.min(REPS, Math.floor(lp * REPS) + 1);
-      repTxt.textContent = 'Rep ' + rep + ' - ' + (phase > 0.72 ? 'lock out' : phase < 0.2 ? 'chest' : 'pressing');
-    }
-
-    // Beat 2 - meals travel from the phone into the day's ring.
-    if (dayRing) {
-      var fp = clamp((p - third) / third);
-      dayRing.style.strokeDashoffset = 465 - 465 * 0.78 * fp;
-      phoneRing.style.strokeDashoffset = 188 - 188 * 0.78 * fp;
-      kcalTxt.textContent = Math.round(1840 * fp).toLocaleString('en-IN');
-      chips.forEach(function (c, i) {
-        var cp = clamp(fp * 3 - i);                       // each chip flies in turn
-        var x = 96 + (286 - 96) * cp, yy = 236 - (236 - 200) * cp;
-        c.setAttribute('transform', 'translate(' + x.toFixed(1) + ',' + yy.toFixed(1) + ') scale(' + (1 - 0.35 * cp).toFixed(3) + ')');
-        c.style.opacity = cp <= 0 ? 0 : cp >= 1 ? 0 : 1;
-      });
-    }
-
-    // Beat 3 - the weight trend draws itself.
-    if (trend) {
-      var tp = clamp((p - third * 2) / third);
-      trend.style.strokeDashoffset = trendLen - trendLen * tp;
-      trendFill.style.opacity = (0.14 * tp).toFixed(3);
-      var pt = trend.getPointAtLength(trendLen * tp);
-      trendDot.setAttribute('cx', pt.x); trendDot.setAttribute('cy', pt.y);
-      trendNow.textContent = (82 - 6 * tp).toFixed(1).replace('.0', '') + ' kg';
-    }
+  /* ---- marquee content ---- */
+  var FOODS = [
+    ['Chicken breast', 165], ['Greek yogurt', 59], ['Rolled oats', 389], ['Banana', 89],
+    ['Whey protein', 380], ['Brown rice', 123], ['Salmon fillet', 208], ['Almonds', 579],
+    ['Paneer', 265], ['Sweet potato', 86], ['Whole eggs', 155], ['Lentils', 116],
+    ['Olive oil', 884], ['Cottage cheese', 98], ['Avocado', 160], ['Tofu', 76]
+  ];
+  var track = document.getElementById('track');
+  if (track) {
+    var html = FOODS.map(function (f) {
+      return '<span class="chip"><b>' + f[0] + '</b> <s>' + f[1] + '</s> kcal / 100 g</span>';
+    }).join('');
+    track.innerHTML = html + html;   /* doubled so the loop is seamless */
   }
 
-  if (reduce) {
-    scenes.forEach(function (s, n) { s.classList.toggle('on', n === 0); });
-    beats.forEach(function (b) { b.classList.add('active'); });
-  } else {
-    var queued = false;
-    addEventListener('scroll', function () {
-      if (queued) return;
-      queued = true;
-      requestAnimationFrame(function () { queued = false; paint(); });
-    }, { passive: true });
-    addEventListener('resize', paint);
-    // A hidden tab pauses animation frames, which would leave the queue latched.
-    document.addEventListener('visibilitychange', function () { queued = false; paint(); });
-    paint();
-  }
-
-  // Count the numbers up once.
+  /* ---- counters ---- */
   var counters = [].slice.call(document.querySelectorAll('[data-count]'));
   function run(el) {
     var target = +el.getAttribute('data-count'), suffix = el.getAttribute('data-suffix') || '', t0 = null;
-    if (reduce) { el.textContent = target.toLocaleString('en-IN') + suffix; return; }
+    if (reduce) { el.textContent = target + suffix; return; }
     function tick(t) {
       if (t0 === null) t0 = t;
-      var p = Math.min(1, (t - t0) / 1100), eased = 1 - Math.pow(1 - p, 3);
-      el.textContent = Math.round(target * eased).toLocaleString('en-IN') + (p === 1 ? suffix : '');
+      var p = Math.min(1, (t - t0) / 1200), e = 1 - Math.pow(1 - p, 3);
+      el.textContent = (target < 10 ? (target * e).toFixed(p === 1 ? 0 : 1) : Math.round(target * e)) + (p === 1 ? suffix : '');
       if (p < 1) requestAnimationFrame(tick);
     }
     requestAnimationFrame(tick);
@@ -738,14 +638,120 @@ footer .wrap{display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap}
   if ('IntersectionObserver' in window) {
     var co = new IntersectionObserver(function (es) {
       es.forEach(function (e) { if (e.isIntersecting) { run(e.target); co.unobserve(e.target); } });
-    }, { threshold: .6 });
+    }, { threshold: .55 });
     counters.forEach(function (c) { co.observe(c); });
   } else { counters.forEach(run); }
 
-  // Android: only offer the APK when a release exists.
-  var tag = document.getElementById('apk-tag'), btn = document.getElementById('apk-btn');
+  /* ---- the device: one animation loop, driven by scroll position ---- */
+  var story = document.querySelector('.story');
+  var device = document.getElementById('device');
+  var beats = [].slice.call(document.querySelectorAll('.beat'));
+  var screens = [].slice.call(document.querySelectorAll('.screen'));
+  var rails = [].slice.call(document.querySelectorAll('[data-rail]'));
+  var scrName = document.getElementById('scrName');
+  var NAMES = ['TODAY', 'TRAIN', 'PROGRESS'];
+
+  var kRing = document.getElementById('kRing'), kNum = document.getElementById('kNum');
+  var mP = document.getElementById('mP'), mC = document.getElementById('mC');
+  var meals = [].slice.call(document.querySelectorAll('.meal'));
+  var exs = [].slice.call(document.querySelectorAll('.ex'));
+  var volNum = document.getElementById('volNum');
+  var wLine = document.getElementById('wLine'), wFill = document.getElementById('wFill');
+  var wDot = document.getElementById('wDot'), wNow = document.getElementById('wNow');
+  var wDays = document.getElementById('wDays'), wAdh = document.getElementById('wAdh');
+
+  var wLen = wLine ? wLine.getTotalLength() : 0;
+  if (wLine) { wLine.style.strokeDasharray = wLen; wLine.style.strokeDashoffset = wLen; }
+
+  function clamp(v) { return v < 0 ? 0 : v > 1 ? 1 : v; }
+  function ease(v) { return v < .5 ? 2 * v * v : 1 - Math.pow(-2 * v + 2, 2) / 2; }
+
+  /* the finished state, used when someone prefers no motion */
+  function settle() {
+    if (kRing) { kRing.style.strokeDashoffset = 226 - 226 * .77; kNum.textContent = '1,840'; }
+    if (mP) { mP.style.width = '72%'; mC.style.width = '54%'; }
+    meals.forEach(function (m) { m.classList.add('in'); });
+    exs.forEach(function (e) { e.classList.add('done'); });
+    if (volNum) volNum.textContent = '4,180 kg';
+    if (wLine) { wLine.style.strokeDashoffset = 0; wFill.style.opacity = 1; }
+    if (wNow) { wNow.textContent = '76.0 kg'; wDays.textContent = '34'; wAdh.textContent = '91%'; }
+    rails.forEach(function (r) { r.style.transform = 'scaleX(1)'; });
+    beats.forEach(function (b) { b.classList.add('active'); });
+  }
+
+  function frame() {
+    if (!story) return;
+    hdr.classList.toggle('stuck', scrollY > 8);
+
+    var r = story.getBoundingClientRect();
+    var span = Math.max(1, r.height - innerHeight);
+    var p = clamp(-r.top / span);
+    var seg = 1 / 3;
+    var which = p >= seg * 2 ? 2 : p >= seg ? 1 : 0;
+    var local = clamp((p - seg * which) / seg);
+
+    screens.forEach(function (s, n) { s.classList.toggle('on', n === which); });
+    beats.forEach(function (b, n) { b.classList.toggle('active', n === which); });
+    rails.forEach(function (el, n) {
+      el.style.transform = 'scaleX(' + (n < which ? 1 : n > which ? 0 : local).toFixed(3) + ')';
+    });
+    if (scrName) scrName.textContent = NAMES[which];
+
+    /* the device turns a little as you move through the story */
+    if (device) {
+      var turn = (p - .5) * 16;          /* -8deg to +8deg */
+      var lift = Math.sin(p * Math.PI) * -10;
+      device.style.transform = 'rotateY(' + turn.toFixed(2) + 'deg) rotateX(' + (-turn * .22).toFixed(2) + 'deg) translateY(' + lift.toFixed(1) + 'px)';
+    }
+
+    /* 1 - today: the ring fills, macros grow, meals drop in */
+    if (which === 0 && kRing) {
+      var e0 = ease(local);
+      kRing.style.strokeDashoffset = (226 - 226 * .77 * e0).toFixed(1);
+      kNum.textContent = Math.round(1840 * e0).toLocaleString('en-US');
+      mP.style.width = (72 * e0).toFixed(1) + '%';
+      mC.style.width = (54 * e0).toFixed(1) + '%';
+      meals.forEach(function (m, i) { m.classList.toggle('in', local > (i + .5) / (meals.length + 1)); });
+    }
+
+    /* 2 - train: sets tick off one by one, volume climbs */
+    if (which === 1 && exs.length) {
+      var done = 0;
+      exs.forEach(function (ex, i) {
+        var on = local > (i + .4) / (exs.length + .6);
+        ex.classList.toggle('done', on);
+        if (on) done++;
+      });
+      volNum.textContent = Math.round(4180 * (done / exs.length)).toLocaleString('en-US') + ' kg';
+    }
+
+    /* 3 - progress: the weight line draws itself */
+    if (which === 2 && wLine) {
+      var e2 = ease(local);
+      wLine.style.strokeDashoffset = (wLen - wLen * e2).toFixed(1);
+      wFill.style.opacity = e2.toFixed(3);
+      var pt = wLine.getPointAtLength(wLen * e2);
+      wDot.setAttribute('cx', pt.x); wDot.setAttribute('cy', pt.y);
+      wNow.textContent = (82 - 6 * e2).toFixed(1) + ' kg';
+      wDays.textContent = Math.round(34 * e2);
+      wAdh.textContent = Math.round(91 * e2) + '%';
+    }
+  }
+
+  if (reduce) {
+    settle();
+    addEventListener('scroll', function () { hdr.classList.toggle('stuck', scrollY > 8); }, { passive: true });
+  } else {
+    /* a plain loop, plus direct events, so nothing can latch or be missed */
+    (function loop() { frame(); requestAnimationFrame(loop); })();
+    addEventListener('scroll', frame, { passive: true });
+    addEventListener('resize', frame);
+  }
+
+  /* ---- Android: only offer the APK once a release exists ---- */
+  var tag = document.getElementById('apkTag'), btn = document.getElementById('apkBtn');
   fetch('https://api.github.com/repos/declyf/declyf.github.io/releases/latest')
-    .then(function (r) { return r.ok ? r.json() : null; })
+    .then(function (res) { return res.ok ? res.json() : null; })
     .then(function (rel) {
       if (rel && rel.tag_name) { tag.textContent = 'v' + rel.tag_name.replace(/^v/, ''); tag.className = 'tag'; return; }
       tag.textContent = 'Coming soon';
