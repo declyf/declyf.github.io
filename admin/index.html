@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>DECLYF Admin</title>
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- declyf.github.io/admin forwards to the admin console inside the web app. Deploy as /admin/index.html. -->
+  <meta http-equiv="refresh" content="0; url=/app/admin">
+  <link rel="canonical" href="/app/admin">
+  <script>
+    // Keep any ?query and #hash (for example a password-reset link) when forwarding.
+    location.replace('/app/admin' + location.search + location.hash);
+  </script>
+  <style>
+    body { margin: 0; min-height: 100vh; display: grid; place-items: center; background: #F7F3EC; color: #141312;
+           font: 16px/1.5 Inter, ui-sans-serif, system-ui, sans-serif; }
+    a { color: #006AA6; font-weight: 600; }
+    @media (prefers-color-scheme: dark) { body { background: #0B0C0E; color: #F4F5F6; } a { color: #38BDF8; } }
+  </style>
+</head>
+<body>
+  <p>Opening DECLYF Admin. <a href="/app/admin">Continue</a></p>
+</body>
+</html>
