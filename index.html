@@ -3,7 +3,22 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<script>document.documentElement.classList.add('js')</script>
+<script>
+(function(){
+  var d=document.documentElement;d.classList.add('js');
+  /* intro: once per session, never with reduced motion */
+  try{
+    var rm=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var seen=false;try{seen=sessionStorage.getItem('declyf-intro')==='1';sessionStorage.setItem('declyf-intro','1')}catch(e){}
+    if(!rm&&!seen){
+      d.classList.add('splash');
+      /* failsafe: whatever happens, the page is never held behind the intro */
+      window.__splashT0=(window.performance&&performance.now())||0;
+      window.__splashFail=setTimeout(function(){d.classList.remove('splash','splash-out')},3200);
+    }
+  }catch(e){d.classList.remove('splash')}
+})();
+</script>
 <title>DECLYF | Nutrition and progress tracking for online fitness coaches</title>
 <meta name="description" content="Coach every client by the numbers. DECLYF is nutrition and progress tracking for online fitness coaches and their clients. Free for clients. Android, iPhone and web.">
 <meta name="theme-color" content="#0B0C0E">
@@ -107,84 +122,148 @@ html:not(.js) .nav::before{opacity:1}
 .hero-ctas{display:flex;gap:28px;align-items:center;justify-content:center;margin-top:36px;flex-wrap:wrap}
 .hero-note{margin-top:22px;font-size:14px;color:var(--nmuted)}
 .hero-note b{color:var(--heat-d);font-weight:600}
-.stage{position:relative;margin-top:clamp(48px,5vw,64px);height:clamp(460px,50vw,700px);perspective:1600px}
-.stage-in{position:absolute;left:50%;top:0;transform-style:preserve-3d;will-change:transform}
-.stage .phone{position:absolute;top:0;left:0}
-.ph-c{--w:clamp(240px,25vw,350px);transform:translateX(-50%);z-index:2}
-.ph-l,.ph-r{--w:clamp(200px,20vw,286px);top:9%!important;z-index:1;will-change:transform}
-.ph-l{transform:translateX(-50%) translateX(var(--sx,-74%)) scale(.94)}
-.ph-r{transform:translateX(-50%) translateX(var(--sx2,74%)) scale(.94)}
-.ph-l .screen img,.ph-r .screen img{opacity:.9}
-.stage-fade{position:absolute;left:0;right:0;bottom:0;height:16%;background:linear-gradient(to bottom,rgba(11,12,14,0),var(--night) 92%);z-index:5;pointer-events:none}
-@media (max-width:640px){.ph-l,.ph-r{display:none}.stage{height:clamp(420px,120vw,560px)}}
+/* hero: a ring of real screens. Without JS it is a static three-phone fan. */
+.stage{position:relative;z-index:0;isolation:isolate;margin-top:clamp(48px,5vw,64px);height:clamp(460px,50vw,700px);overflow:hidden}
+.stage-rise{position:absolute;inset:0}
+.car{position:absolute;inset:0;touch-action:pan-y;-webkit-user-select:none;user-select:none;-webkit-tap-highlight-color:transparent;outline:none}
+.car:focus-visible::after{content:"";position:absolute;left:50%;top:3px;width:calc(var(--cw,300px) + 10px);height:calc(var(--cw,300px) * 2.2);transform:translateX(-50%);border-radius:calc(var(--cw,300px) * .165 + 5px);box-shadow:0 0 0 2px var(--pulse-d);pointer-events:none;z-index:300}
+.car-ring{position:absolute;inset:0;--w:clamp(240px,25vw,350px)}
+.car .phone.cp{--w:inherit;position:absolute;left:50%;top:0;margin-left:calc(var(--w) / -2);transform-origin:50% 40%;backface-visibility:hidden}
+.car.live .phone.cp{will-change:transform;cursor:grab}
+.car.dragging .phone.cp{cursor:grabbing}
+.cp .shade{position:absolute;inset:0;background:#0B0C0E;opacity:0;pointer-events:none;z-index:2}
+/* static fan (no JS / before JS runs) */
+.cp{opacity:0}
+.cp:nth-child(1){opacity:1;z-index:3}
+.cp:nth-child(2){opacity:1;z-index:2;transform:translateX(78%) scale(.86)}
+.cp:nth-child(6){opacity:1;z-index:2;transform:translateX(-78%) scale(.86)}
+.cp:nth-child(2) .shade,.cp:nth-child(6) .shade{opacity:.22}
+.car.live .cp{opacity:1}
+.car-glow{position:absolute;left:50%;top:4%;width:calc(var(--cw,300px) * 3);height:calc(var(--cw,300px) * 2);transform:translateX(-50%);background:radial-gradient(closest-side,rgba(56,189,248,.36),rgba(56,189,248,.20) 30%,rgba(56,189,248,.08) 58%,rgba(56,189,248,.02) 80%,rgba(56,189,248,0));pointer-events:none;z-index:0}
+.stage-fade{position:absolute;left:0;right:0;bottom:0;height:22%;background:linear-gradient(to bottom,rgba(11,12,14,0),var(--night) 80%);z-index:400;pointer-events:none}
+.car-ctl{position:absolute;left:0;right:0;bottom:clamp(14px,2.4vw,26px);z-index:401;display:flex;align-items:center;justify-content:center;gap:14px}
+html:not(.js) .car-ctl{display:none}
+.car-arrow{appearance:none;width:40px;height:40px;border-radius:999px;border:0;display:grid;place-items:center;cursor:pointer;color:#F4F5F6;background:rgba(28,30,34,.82);box-shadow:inset 0 0 0 1px rgba(255,255,255,.12);transition:background-color .25s,transform .25s var(--ease)}
+.car-arrow:hover{background:#2A2D33}
+.car-arrow:active{transform:scale(.94)}
+.car-dots{display:flex;gap:2px;padding:0 4px;border-radius:999px;background:rgba(28,30,34,.82);box-shadow:inset 0 0 0 1px rgba(255,255,255,.12)}
+.car-dots button{appearance:none;border:0;background:none;width:22px;height:40px;padding:0;cursor:pointer;display:grid;place-items:center}
+.car-dots button::before{content:"";width:7px;height:7px;border-radius:99px;background:rgba(244,245,246,.34);transition:width .35s var(--ease),background-color .35s}
+.car-dots button[aria-current="true"]::before{width:18px;background:var(--pulse-d)}
+.car-dots button[aria-current="true"]{width:32px}
+@media (max-width:640px){
+  .stage{height:clamp(460px,134vw,600px)}
+  .car-ring{--w:min(70vw,300px)}
+  .cp:nth-child(2){transform:translateX(62%) scale(.8)}
+  .cp:nth-child(6){transform:translateX(-62%) scale(.8)}
+}
 .js .hero .intro{opacity:0;transform:translateY(22px);animation:intro 1s var(--ease) forwards}
 .js .hero .intro.d1{animation-delay:.12s}.js .hero .intro.d2{animation-delay:.24s}.js .hero .intro.d3{animation-delay:.34s}
 .js .stage-rise{opacity:0;transform:translateY(120px);animation:rise 1.4s var(--ease) .45s forwards}
 @keyframes intro{to{opacity:1;transform:none}}
 @keyframes rise{to{opacity:1;transform:none}}
 
+/* intro overlay: the app's BrandSplash, shortened. Only exists once JS has decided to play it. */
+.splash-ov{display:none}
+html.splash .splash-ov{display:flex;position:fixed;inset:0;z-index:200;background:#0B0C0E;align-items:center;justify-content:center;cursor:pointer;transition:opacity .4s cubic-bezier(.32,0,.67,0),transform .4s cubic-bezier(.32,0,.67,0)}
+html.splash-out .splash-ov{opacity:0;transform:translateY(-30px);pointer-events:none}
+html.splash-skip .splash-ov{transition-duration:.26s}
+.sp-center{display:flex;flex-direction:column;align-items:center;gap:32px}
+.sp-tile{width:clamp(96px,26vw,128px);height:auto;opacity:0;animation:spTile .5s cubic-bezier(.34,1.56,.64,1) forwards}
+.sp-word{display:flex;flex-direction:column;align-items:center;gap:14px}
+.sp-letters{display:flex}
+.sp-letters span{font-family:var(--display);font-size:46px;line-height:52px;letter-spacing:4px;color:#F4F5F6;opacity:0;transform:translateY(30px);animation:spRise .32s cubic-bezier(.33,1,.68,1) forwards;animation-delay:calc(.3s + var(--i) * .045s)}
+.sp-line{display:block;height:3px;width:150px;border-radius:2px;background:#FF8A3D;transform:scaleX(0);animation:spLine .46s cubic-bezier(.33,1,.68,1) .3s forwards}
+.sp-tag{font-size:14px;letter-spacing:.6px;color:#B4B8BF;opacity:0;animation:spFade .26s linear .74s forwards}
+@keyframes spTile{from{opacity:0;transform:translateY(16px) scale(.72)}to{opacity:1;transform:none}}
+@keyframes spRise{to{opacity:1;transform:none}}
+@keyframes spLine{to{transform:scaleX(1)}}
+@keyframes spFade{to{opacity:1}}
+/* the hero waits behind the intro, then plays its own entrance as the intro lifts away */
+html.splash:not(.splash-out) .hero .intro,html.splash:not(.splash-out) .stage-rise{animation-play-state:paused}
+
 /* reveal */
 .js .reveal{opacity:0;transform:translateY(28px);transition:opacity .9s var(--ease),transform .9s var(--ease);transition-delay:var(--d,0s)}
 .js .reveal.in{opacity:1;transform:none}
 
 /* showcase */
+/* stacked steps: no JS, reduced motion, or a very short landscape screen */
 .show-pin{display:none}
-.sc-track{display:flex;gap:20px;overflow-x:auto;scroll-snap-type:x mandatory;padding:8px var(--gut) 24px;margin:0 auto;max-width:1300px;scrollbar-width:none;-webkit-overflow-scrolling:touch}
-.sc-track::-webkit-scrollbar{display:none}
-.slide{flex:0 0 min(80vw,330px);scroll-snap-align:center;display:flex;flex-direction:column;gap:28px}
-.slide .phone{--w:min(76vw,290px);margin:0 auto}
+.sc-track{display:grid;grid-template-columns:minmax(0,1fr);gap:clamp(56px,10vw,72px);padding:8px var(--gut) 0;margin:0 auto;max-width:1300px}
+.slide{display:flex;flex-direction:column;gap:28px;min-width:0}
+.slide .phone{--w:min(70vw,290px);margin:0 auto}
+.slide > div:last-child{max-width:420px;margin:0 auto;width:100%}
 .slide h3{font-size:24px;letter-spacing:-.025em}
 .slide p{color:var(--mut);margin-top:8px;font-size:16px}
 .slide .step-n{font-size:14px;font-weight:600;color:var(--pulse);margin-bottom:8px}
-.sc-hint{text-align:center;font-size:14px;color:var(--mut);margin-top:8px}
 .caption{font-size:13px;color:var(--mut);margin-top:20px}
-@media (min-width:1024px){
-  .sc-track{display:grid;grid-template-columns:repeat(4,1fr);overflow:visible;gap:28px}
-  .slide{flex:none}.slide .phone{--w:min(100%,250px)}
-  .sc-hint{display:none}
-}
+@media (min-width:700px){.sc-track{grid-template-columns:repeat(2,minmax(0,1fr));gap:64px 28px}.slide .phone{--w:min(100%,270px)}}
+@media (min-width:1024px){.sc-track{grid-template-columns:repeat(4,minmax(0,1fr));gap:28px}.slide .phone{--w:min(100%,250px)}}
+
+/* pinned: a tall scroll track with a sticky viewport, at every width */
 html.pin .show-stack{display:none}
-html.pin .show-pin{display:block;height:420vh;position:relative}
+html.pin .show-pin{display:block;height:calc(var(--pin-steps,4) * 85vh + 100vh);height:calc(var(--pin-steps,4) * 85svh + 100svh);position:relative}
 html.pin #showcase.band{padding:0}
 html.pin #showcase .head{display:none}
-.pin-sticky{position:sticky;top:0;height:100vh;display:flex;align-items:center;overflow:hidden}
-.pin-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(32px,4vw,64px);align-items:center;width:100%}
-.pin-phone{display:flex;justify-content:center}
+.pin-sticky{position:sticky;top:0;height:100vh;height:100svh;display:flex;align-items:center;overflow:hidden;padding-top:56px}
+.pin-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(32px,4vw,64px);align-items:center;width:100%;height:100%}
+.pin-phone{display:flex;justify-content:center;align-items:center;height:100%;min-height:0}
 .pin-copy{position:relative}
-.pin-copy .h-lg{margin-bottom:clamp(40px,6vh,64px)}
-.panes{position:relative;min-height:220px}
-.pane{position:absolute;inset:0 0 auto 0;opacity:0;transform:translateY(16px);transition:opacity .28s ease,transform .5s var(--ease);pointer-events:none}
-.pane.on{opacity:1;transform:none;transition:opacity .5s ease .26s,transform .7s var(--ease) .26s;pointer-events:auto}
+.pin-copy .h-lg{margin-bottom:clamp(28px,5vh,64px)}
+.panes{position:relative;min-height:var(--panes-h,220px)}
+.pane{position:absolute;inset:0 0 auto 0;opacity:0;transform:translateY(16px);transition:opacity .22s ease,transform .5s var(--ease);pointer-events:none}
+.pane.on{opacity:1;transform:none;transition:opacity .45s ease .24s,transform .7s var(--ease) .24s;pointer-events:auto}
 .pane .step-n{font-size:15px;font-weight:600;color:var(--pulse);margin-bottom:10px}
 .pane h3{font-size:clamp(30px,3vw,42px);letter-spacing:-.035em;line-height:1.08;font-weight:600}
 .pane p{font-size:19px;line-height:1.45;color:var(--mut);margin-top:16px;max-width:460px}
 .pane .num{color:var(--ink);font-weight:600}
-.dots{display:flex;gap:10px;margin-top:clamp(36px,6vh,56px);list-style:none;padding:0}
+.dots{display:flex;gap:10px;margin-top:clamp(28px,5vh,56px);list-style:none;padding:0}
 .dots button{appearance:none;border:0;background:none;padding:10px 0;cursor:pointer;display:flex;flex-direction:column;gap:10px;width:84px;text-align:left;font:500 13px var(--sans);color:var(--subtle)}
 .dots button.on{color:var(--ink)}
 .dots .bar{height:3px;border-radius:3px;background:var(--hair);overflow:hidden;width:100%}
 .dots .bar i{display:block;height:100%;background:var(--pulse);transform-origin:left;transform:scaleX(0)}
-.pin-phone .phone{--w:min(36vh,370px)}
-.pin-phone .screen img{opacity:0;transition:opacity .6s ease}
-.pin-phone .screen img.on{opacity:1}
+.pin-phone .phone{--w:var(--pw,min(36vh,370px))}
+.pin-phone .screen img{opacity:0;transform:scale(1.035);transition:opacity .55s ease,transform .8s var(--ease)}
+.pin-phone .screen img.prev{opacity:1;transform:none;transition:none;z-index:1}
+.pin-phone .screen img.on{opacity:1;transform:none;z-index:2}
+/* narrow: text block above the phone, both inside one viewport */
+@media (max-width:899px){
+  .pin-sticky{align-items:stretch;padding-top:calc(52px + clamp(8px,2.4svh,24px));padding-bottom:clamp(10px,2.4svh,28px)}
+  .pin-grid{grid-template-columns:minmax(0,1fr);grid-template-rows:auto minmax(0,1fr);gap:clamp(10px,2.4svh,28px);align-items:stretch;max-width:640px}
+  .pin-copy{text-align:center}
+  .pin-copy > .eyebrow,.pin-copy > .h-lg,.pin-copy > .caption{display:none}
+  .pane p{margin-left:auto;margin-right:auto;font-size:clamp(14px,2.1svh,18px);margin-top:clamp(6px,1.2svh,14px);line-height:1.4}
+  .pane h3{font-size:clamp(21px,3.4svh,34px)}
+  .pane .step-n{display:none}
+  .dots{justify-content:center;margin:0 0 clamp(8px,1.8svh,20px);gap:8px;order:-1}
+  .dots button{width:clamp(64px,19vw,96px);gap:7px;padding:6px 0;text-align:center;align-items:center;font-size:12px}
+  .pin-copy{display:flex;flex-direction:column}
+  html.pin #showcase .head{display:block;padding-top:clamp(96px,13vw,168px);margin-bottom:0;padding-bottom:clamp(24px,5vw,48px)}
+}
 
 /* coach fan */
 .coach{overflow:hidden}
-.fan{position:relative;height:clamp(460px,52vw,700px);perspective:1800px;margin-bottom:clamp(64px,8vw,112px)}
-.fan .phone{position:absolute;left:50%;top:0;transition:transform 1.4s var(--ease),opacity 1s ease}
-.fan .f-c{--w:clamp(220px,23vw,320px);z-index:3;transform:translateX(-50%)}
-.fan .f-l,.fan .f-r{--w:clamp(196px,20vw,280px);top:7%;z-index:2}
-.fan .f-l{transform:translateX(-50%) translateX(-60%) rotateY(28deg) rotateZ(-5deg) scale(.92)}
-.fan .f-r{transform:translateX(-50%) translateX(60%) rotateY(-28deg) rotateZ(5deg) scale(.92)}
-.js .fan:not(.in) .f-l,.js .fan:not(.in) .f-r{transform:translateX(-50%) translateY(6%) scale(.86);opacity:0}
-.js .fan:not(.in) .f-c{transform:translateX(-50%) translateY(40px);opacity:0}
-.fan .f-l{transition-delay:.15s}.fan .f-r{transition-delay:.15s}
+.fan{position:relative;height:clamp(460px,52vw,700px);perspective:1800px;margin-bottom:clamp(64px,8vw,112px);--w:clamp(220px,23vw,320px);--fx:52%;--fs:.805}
+.fan .phone{--w:inherit;position:absolute;left:50%;top:0;margin-left:calc(var(--w) / -2);transition:transform 1.4s var(--ease),opacity 1s ease}
+.fan .f-c{z-index:3;transform:translateX(0) translateZ(0) rotateY(0deg) rotateZ(0deg) scale(1)}
+.fan .f-l,.fan .f-r{z-index:2}
+.fan .f-l{transform:translateX(calc(var(--fx) * -1)) translateZ(0) rotateY(28deg) rotateZ(-5deg) scale(var(--fs))}
+.fan .f-r{transform:translateX(var(--fx)) translateZ(0) rotateY(-28deg) rotateZ(5deg) scale(var(--fs))}
+.fan.cycling .phone{transition:transform 1.05s cubic-bezier(.65,0,.35,1),opacity .6s ease}
+.fan .phone.wrapping{transition:none;z-index:1}
+.js .fan:not(.in) .f-l,.js .fan:not(.in) .f-r{transform:translateX(0) translateY(6%) scale(.7);opacity:0}
+.js .fan:not(.in) .f-c{transform:translateY(40px);opacity:0}
+.fan:not(.cycling) .f-l,.fan:not(.cycling) .f-r{transition-delay:.15s}
+/* breathing glow behind the phones */
+.fan-glow{position:absolute;left:50%;top:44%;width:min(1100px,150vw);height:min(760px,120vw);transform:translate(-50%,-50%);pointer-events:none;z-index:0}
+.fan-glow i{position:absolute;inset:0;border-radius:50%;will-change:transform,opacity}
+.fan-glow .g1{background:radial-gradient(closest-side,rgba(56,189,248,.26),rgba(56,189,248,.15) 28%,rgba(56,189,248,.06) 56%,rgba(56,189,248,.015) 80%,rgba(56,189,248,0));animation:glowA 9s ease-in-out infinite alternate}
+.fan-glow .g2{inset:22% 18% 14% 34%;background:radial-gradient(closest-side,rgba(255,138,61,.18),rgba(255,138,61,.08) 40%,rgba(255,138,61,.02) 75%,rgba(255,138,61,0));animation:glowB 11s ease-in-out infinite alternate}
+.fan.off .fan-glow i{animation-play-state:paused}
+@keyframes glowA{0%{transform:translate(-4%,2%) scale(.92);opacity:.75}50%{opacity:1}100%{transform:translate(4%,-3%) scale(1.06);opacity:.85}}
+@keyframes glowB{0%{transform:translate(6%,-4%) scale(1);opacity:.55}100%{transform:translate(-14%,6%) scale(1.15);opacity:1}}
 @media (max-width:640px){
-  .fan{height:clamp(420px,118vw,540px)}
-  .fan .f-c{--w:min(62vw,250px)}
-  .fan .f-l,.fan .f-r{--w:min(52vw,210px)}
-  .fan .f-l{transform:translateX(-50%) translateX(-46%) rotateY(26deg) rotateZ(-4deg) scale(.9)}
-  .fan .f-r{transform:translateX(-50%) translateX(46%) rotateY(-26deg) rotateZ(4deg) scale(.9)}
+  .fan{height:clamp(420px,118vw,540px);--w:min(62vw,250px);--fx:39%;--fs:.756}
 }
 .steps{display:grid;grid-template-columns:repeat(4,1fr);gap:clamp(24px,3vw,40px);list-style:none;padding:0;margin:0;counter-reset:s}
 .steps li{border-top:1px solid var(--nhair);padding-top:24px}
@@ -321,19 +400,28 @@ footer{padding:56px 0 48px;border-top:1px solid var(--nhair)}
   html{scroll-behavior:auto}
   .js .reveal,.js .hero .intro,.js .stage-rise{opacity:1!important;transform:none!important;animation:none!important;transition:none!important}
   .js .fan:not(.in) .f-l,.js .fan:not(.in) .f-r,.js .fan:not(.in) .f-c{opacity:1}
-  .js .fan:not(.in) .f-c{transform:translateX(-50%)}
-  .js .fan:not(.in) .f-l{transform:translateX(-50%) translateX(-60%) rotateY(28deg) rotateZ(-5deg) scale(.92)}
-  .js .fan:not(.in) .f-r{transform:translateX(-50%) translateX(60%) rotateY(-28deg) rotateZ(5deg) scale(.92)}
+  .js .fan:not(.in) .f-c{transform:none}
+  .js .fan:not(.in) .f-l{transform:translateX(calc(var(--fx) * -1)) rotateY(28deg) rotateZ(-5deg) scale(var(--fs))}
+  .js .fan:not(.in) .f-r{transform:translateX(var(--fx)) rotateY(-28deg) rotateZ(5deg) scale(var(--fs))}
+  .fan .phone{transition:none}
+  .fan-glow i{animation:none}
+  .pane,.pane.on,.pin-phone .screen img{transition:none}
   .mq-row{animation:none}
   .tile,.tile:hover{transition:none;transform:none}
-}
-@media (prefers-reduced-motion:reduce) and (max-width:640px){
-  .js .fan:not(.in) .f-l{transform:translateX(-50%) translateX(-46%) rotateY(26deg) rotateZ(-4deg) scale(.9)}
-  .js .fan:not(.in) .f-r{transform:translateX(-50%) translateX(46%) rotateY(-26deg) rotateZ(4deg) scale(.9)}
 }
 </style>
 </head>
 <body>
+<div class="splash-ov" id="splash" aria-hidden="true">
+  <div class="sp-center">
+    <svg class="sp-tile" width="128" height="128" viewBox="0 0 100 100"><rect x="4" y="4" width="92" height="92" rx="26" fill="#38BDF8"/><path d="M34 26H52C66 26 76 36 76 50C76 64 66 74 52 74H34Z M46 38V62H52C59 62 64 57 64 50C64 43 59 38 52 38Z" fill="#0B0C0E" fill-rule="evenodd"/></svg>
+    <div class="sp-word">
+      <div class="sp-letters"><span style="--i:0">D</span><span style="--i:1">E</span><span style="--i:2">C</span><span style="--i:3">L</span><span style="--i:4">Y</span><span style="--i:5">F</span></div>
+      <i class="sp-line"></i>
+      <p class="sp-tag">Coach smarter. Live dedicated.</p>
+    </div>
+  </div>
+</div>
 <a class="skip" href="#main">Skip to content</a>
 
 <header class="nav" id="nav">
@@ -366,13 +454,27 @@ footer{padding:56px 0 48px;border-top:1px solid var(--nhair)}
   </div>
   <div class="stage" id="stage">
     <div class="stage-rise">
-      <div class="stage-in" id="stageIn">
-        <div class="phone ph-l" id="phL"><div class="screen"><img src="img/food-dark.webp" width="1170" height="2532" alt="DECLYF Food screen: today's breakfast and lunch logged with calories and macros"></div></div>
-        <div class="phone ph-r" id="phR"><div class="screen"><img src="img/progress-dark.webp" width="1170" height="2532" alt="DECLYF Progress screen: weight journey from 86.5 kg to 81.8 kg with averages for 90 days"></div></div>
-        <div class="phone ph-c"><div class="screen"><img src="img/today-dark.webp" width="1170" height="2532" fetchpriority="high" alt="DECLYF Today screen: 714 kcal left of a 2020 kcal goal, with protein, carbs and fat bars"></div></div>
+      <div class="car" id="car" role="region" aria-roledescription="carousel" aria-label="App screens. Drag, or use the left and right arrow keys, to turn." tabindex="0">
+        <div class="car-glow" aria-hidden="true"></div>
+        <div class="car-ring" id="ring">
+          <div class="phone cp" data-name="Today" role="group" aria-roledescription="slide" aria-label="Today, 1 of 6"><div class="screen"><img src="img/today-dark.webp" width="1170" height="2532" fetchpriority="high" draggable="false" alt="DECLYF Today screen: 714 kcal left of a 2020 kcal goal, with protein, carbs and fat bars"><span class="shade"></span></div></div>
+          <div class="phone cp" data-name="Food" role="group" aria-roledescription="slide" aria-label="Food, 2 of 6"><div class="screen"><img src="img/food-dark.webp" width="1170" height="2532" draggable="false" alt="DECLYF Food screen: today's breakfast and lunch logged with calories and macros"><span class="shade"></span></div></div>
+          <div class="phone cp" data-name="Train" role="group" aria-roledescription="slide" aria-label="Train, 3 of 6"><div class="screen"><img src="img/train-dark.webp" width="1170" height="2532" loading="lazy" draggable="false" alt="DECLYF Train screen: the plan for Tuesday with weights and reps, 3 of 4 exercises done"><span class="shade"></span></div></div>
+          <div class="phone cp" data-name="Progress" role="group" aria-roledescription="slide" aria-label="Progress, 4 of 6"><div class="screen"><img src="img/progress-dark.webp" width="1170" height="2532" loading="lazy" draggable="false" alt="DECLYF Progress screen: weight journey from 86.5 kg to 81.8 kg with averages for 90 days"><span class="shade"></span></div></div>
+          <div class="phone cp" data-name="Clients" role="group" aria-roledescription="slide" aria-label="Clients, 5 of 6"><div class="screen"><img src="img/clients-dark.webp" width="1170" height="2532" loading="lazy" draggable="false" alt="Coach client list with demo clients marked on track, slipping or needs a nudge"><span class="shade"></span></div></div>
+          <div class="phone cp" data-name="Client" role="group" aria-roledescription="slide" aria-label="Client, 6 of 6"><div class="screen"><img src="img/client-dark.webp" width="1170" height="2532" draggable="false" alt="Client detail for a demo client: 6 of 7 days logged, 5 day streak, 1921 kcal average"><span class="shade"></span></div></div>
+        </div>
       </div>
     </div>
     <div class="stage-fade"></div>
+    <div class="car-ctl" id="carCtl">
+      <button type="button" class="car-arrow" id="carPrev" aria-label="Previous screen"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M10 3L5 8l5 5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      <div class="car-dots" id="carDots" role="group" aria-label="Choose a screen">
+        <button type="button" aria-label="Show Today"></button><button type="button" aria-label="Show Food"></button><button type="button" aria-label="Show Train"></button><button type="button" aria-label="Show Progress"></button><button type="button" aria-label="Show Clients"></button><button type="button" aria-label="Show Client"></button>
+      </div>
+      <button type="button" class="car-arrow" id="carNext" aria-label="Next screen"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M6 3l5 5-5 5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      <p class="sr" id="carLive" aria-live="polite" aria-atomic="true"></p>
+    </div>
   </div>
 </section>
 
@@ -403,7 +505,6 @@ footer{padding:56px 0 48px;border-top:1px solid var(--nhair)}
         <div><p class="step-n">Progress</p><h3>See the trend, not the noise.</h3><p>90 days of calories and weight. 4.7 kg down.</p></div>
       </article>
     </div>
-    <p class="sc-hint">Swipe to see each screen</p>
   </div>
 
   <div class="show-pin" id="pin" aria-hidden="true">
@@ -419,19 +520,19 @@ footer{padding:56px 0 48px;border-top:1px solid var(--nhair)}
             <div class="pane"><p class="step-n">Progress</p><h3>See the trend, not the noise.</h3><p>Calories per day and weight over 90 days. <span class="num tnum">86.5</span> to <span class="num tnum">81.8 kg</span> since September.</p></div>
           </div>
           <div class="dots" id="dots">
-            <button type="button" tabindex="-1" class="on"><span class="bar"><i></i></span>Today</button>
-            <button type="button" tabindex="-1"><span class="bar"><i></i></span>Food</button>
-            <button type="button" tabindex="-1"><span class="bar"><i></i></span>Train</button>
-            <button type="button" tabindex="-1"><span class="bar"><i></i></span>Progress</button>
+            <button type="button" class="on" aria-current="step"><span class="bar"><i></i></span>Today</button>
+            <button type="button"><span class="bar"><i></i></span>Food</button>
+            <button type="button"><span class="bar"><i></i></span>Train</button>
+            <button type="button"><span class="bar"><i></i></span>Progress</button>
           </div>
           <p class="caption">Real screens from the DECLYF web app, with a sample user.</p>
         </div>
         <div class="pin-phone">
           <div class="phone"><div class="screen">
-            <img class="on" src="img/today-light.webp" width="1170" height="2532" loading="lazy" alt="">
-            <img src="img/food-light.webp" width="1170" height="2532" loading="lazy" alt="">
-            <img src="img/train-light.webp" width="1170" height="2532" loading="lazy" alt="">
-            <img src="img/progress2-light.webp" width="1170" height="2532" loading="lazy" alt="">
+            <img class="on" src="img/today-light.webp" width="1170" height="2532" loading="lazy" alt="Today screen in light theme: calorie ring with 714 kcal left">
+            <img src="img/food-light.webp" width="1170" height="2532" loading="lazy" alt="Food screen in light theme: meals logged with calories and macros per item">
+            <img src="img/train-light.webp" width="1170" height="2532" loading="lazy" alt="Train screen in light theme: Tuesday plan, 3 of 4 exercises done with weights and reps">
+            <img src="img/progress2-light.webp" width="1170" height="2532" loading="lazy" alt="Progress screen in light theme: calories per day and a falling weight line">
           </div></div>
         </div>
       </div>
@@ -447,9 +548,10 @@ footer{padding:56px 0 48px;border-top:1px solid var(--nhair)}
     <p class="lede reveal">Who logged, who trained and who needs a nudge. Open any client to see their week.</p>
   </div>
   <div class="fan" id="fan">
-    <div class="phone f-l"><div class="screen"><img src="img/client-dark.webp" width="1170" height="2532" loading="lazy" alt="Client detail for a demo client: 6 of 7 days logged, 5 day streak, 1921 kcal average"></div></div>
-    <div class="phone f-r"><div class="screen"><img src="img/train-dark.webp" width="1170" height="2532" loading="lazy" alt="Train screen: the plan for Tuesday with logged sets"></div></div>
+    <div class="fan-glow" aria-hidden="true"><i class="g1"></i><i class="g2"></i></div>
     <div class="phone f-c"><div class="screen"><img src="img/clients-dark.webp" width="1170" height="2532" loading="lazy" alt="Coach client list with demo clients marked on track, slipping or needs a nudge"></div></div>
+    <div class="phone f-l"><div class="screen"><img src="img/client-dark.webp" width="1170" height="2532" loading="lazy" alt="Client detail for a demo client: 6 of 7 days logged, 5 day streak, 1921 kcal average"></div></div>
+    <div class="phone f-r"><div class="screen"><img src="img/today-dark.webp" width="1170" height="2532" loading="lazy" alt="Today screen: 714 kcal left of a 2020 kcal goal, with protein, carbs and fat bars"></div></div>
   </div>
   <div class="wrap">
     <ol class="steps">
@@ -710,68 +812,232 @@ footer{padding:56px 0 48px;border-top:1px solid var(--nhair)}
     reveals.forEach(function(e){ro.observe(e)});
   }
 
-  /* hero: scroll-linked tilt + pointer parallax */
-  var stage=document.getElementById('stage'),stageIn=document.getElementById('stageIn'),phL=document.getElementById('phL'),phR=document.getElementById('phR');
-  if(!reduce&&stage){
-    var heroOn=true,px=0,py=0,tx=0,ty=0,raf=0;
-    var fine=window.matchMedia('(pointer:fine) and (min-width:1024px)').matches;
-    function frame(){
-      raf=0;
-      var r=stage.getBoundingClientRect(),vh=window.innerHeight;
-      var p=clamp((vh-r.top)/(vh+r.height*0.2),0,1); /* 0 when stage just below fold */
-      var s=clamp(window.scrollY/(vh*0.9),0,1);
-      px+=(tx-px)*.08; py+=(ty-py)*.08;
-      var rx=(1-s)*16 + py*-3, ry=px*5, sc=.9+s*.1;
-      stageIn.style.transform='rotateX('+rx.toFixed(2)+'deg) rotateY('+ry.toFixed(2)+'deg) scale('+sc.toFixed(3)+')';
-      var spread=74+s*24;
-      phL.style.setProperty('--sx',(-spread)+'%'); phR.style.setProperty('--sx2',spread+'%');
-      if(heroOn&&(Math.abs(tx-px)>.002||Math.abs(ty-py)>.002))raf=requestAnimationFrame(frame);
-    }
-    function kick(){if(!raf&&heroOn)raf=requestAnimationFrame(frame)}
-    frame();
-    window.addEventListener('scroll',kick,{passive:true});
-    window.addEventListener('resize',kick);
-    if(fine){window.addEventListener('pointermove',function(e){tx=e.clientX/window.innerWidth-.5;ty=e.clientY/window.innerHeight-.5;kick()},{passive:true})}
-    new IntersectionObserver(function(es){heroOn=es[0].isIntersecting;kick()}).observe(stage);
+  /* ---------- intro overlay (the app's splash) ---------- */
+  if(root.classList.contains('splash')){
+    var spEl=document.getElementById('splash'),spDone=false,spOut=false;
+    var spFinish=function(){if(spDone)return;spDone=true;clearTimeout(window.__splashFail);root.classList.remove('splash','splash-out','splash-skip');window.removeEventListener('keydown',spKey,true)};
+    var spLeave=function(skip){
+      if(skip)root.classList.add('splash-skip');
+      if(spOut)return; spOut=true;
+      root.classList.add('splash-out');
+      setTimeout(spFinish,skip?300:440);
+    };
+    var spKey=function(){spLeave(true)};
+    var spWait=1180-(performance.now()-(window.__splashT0||0));
+    setTimeout(function(){spLeave(false)},Math.max(0,spWait));
+    spEl.addEventListener('pointerdown',function(){spLeave(true)});
+    window.addEventListener('keydown',spKey,true);
   }
 
-  /* pinned showcase (desktop, motion allowed) */
+  /* ---------- hero: 3D ring carousel ---------- */
+  (function(){
+    var stage=document.getElementById('stage'),car=document.getElementById('car'),ring=document.getElementById('ring');
+    if(!car)return;
+    var cps=[].slice.call(ring.querySelectorAll('.cp')),N=cps.length,TAU=Math.PI*2,STEP=TAU/N;
+    var shades=cps.map(function(c){return c.querySelector('.shade')});
+    var cdots=[].slice.call(document.querySelectorAll('#carDots button')),live=document.getElementById('carLive');
+    var K=118,C=19.5; /* spring: settles in about 700 ms with a whisper of overshoot */
+    var pos=0,target=0,vel=0,W=300,RX=220,raf=0,lastT=0,dragging=false,visible=true,hover=false,focusIn=false;
+    var lastUser=-1e9,lastAuto=performance.now(),front=-1;
+    var mod=function(n,m){return((n%m)+m)%m};
+    car.classList.add('live');
+
+    function measure(){
+      W=cps[0].offsetWidth||300;
+      var sw=stage.clientWidth;
+      RX=sw<=640?W*.54:W*.76;
+      car.style.setProperty('--cw',W+'px');
+      render();
+    }
+    function stepPx(){return Math.max(120,RX*1.08)}
+    function render(){
+      for(var i=0;i<N;i++){
+        var a=(i-pos)*STEP; a-=TAU*Math.round(a/TAU);
+        var c=Math.cos(a),s=Math.sin(a),t=(1-c)/2;
+        var x=s*RX*(1+.5*(1-c)),sc=1-t*.46,ry=s*30,z=-t*W*.6;
+        cps[i].style.transform='perspective(1400px) translate3d('+x.toFixed(1)+'px,0,'+z.toFixed(1)+'px) rotateY('+ry.toFixed(2)+'deg) scale('+sc.toFixed(4)+')';
+        cps[i].style.zIndex=Math.round(100+c*50);
+        shades[i].style.opacity=Math.min(.82,t*1.25).toFixed(3);
+      }
+    }
+    function announce(){
+      var f=mod(Math.round(target),N);
+      if(f===front)return; front=f;
+      cdots.forEach(function(d,k){d.setAttribute('aria-current',k===f?'true':'false')});
+      cps.forEach(function(c,k){c.setAttribute('aria-hidden',k===f?'false':'true')});
+      if(started)live.textContent=cps[f].getAttribute('data-name')+', screen '+(f+1)+' of '+N;
+    }
+    var started=false;
+    function tick(now){
+      raf=0;
+      var dt=lastT?Math.min(.05,(now-lastT)/1000):1/60; lastT=now;
+      if(!dragging){
+        if(reduce){pos=target;vel=0}
+        else{
+          var acc=K*(target-pos)-C*vel; vel+=acc*dt; pos+=vel*dt;
+          if(Math.abs(target-pos)<.0006&&Math.abs(vel)<.003){pos=target;vel=0}
+        }
+        if(pos===target&&Math.abs(target)>=N){var k=Math.floor(target/N)*N;target-=k;pos-=k}
+      }
+      render();
+      if(dragging||pos!==target)raf=requestAnimationFrame(tick);else lastT=0;
+    }
+    function kick(){if(!raf){lastT=0;raf=requestAnimationFrame(tick)}}
+    function userAct(){lastUser=performance.now();live.setAttribute('aria-live','polite');started=true}
+    function go(d,user){if(user)userAct();target=Math.round(target)+d;announce();kick()}
+    function goTo(i,user){var d=i-mod(Math.round(target),N);d-=N*Math.round(d/N);if(d)go(d,user);else if(user)userAct()}
+
+    /* drag / swipe: only horizontal drags are ours, vertical ones scroll the page */
+    var pid=null,sx=0,sy=0,sPos=0,decided=false,moved=false,samples=[];
+    car.addEventListener('pointerdown',function(e){
+      if(e.pointerType==='mouse'&&e.button!==0)return;
+      pid=e.pointerId;sx=e.clientX;sy=e.clientY;decided=false;moved=false;samples=[{x:e.clientX,t:e.timeStamp}];
+    });
+    car.addEventListener('pointermove',function(e){
+      if(e.pointerId!==pid)return;
+      var dx=e.clientX-sx,dy=e.clientY-sy;
+      if(!decided){
+        if(Math.abs(dx)<7&&Math.abs(dy)<7)return;
+        decided=true;
+        if(Math.abs(dx)<=Math.abs(dy)){pid=null;return}
+        dragging=true;moved=true;sPos=pos;vel=0;sx=e.clientX;dx=0;
+        car.classList.add('dragging');try{car.setPointerCapture(e.pointerId)}catch(_){}
+        userAct();
+      }
+      if(!dragging)return;
+      pos=sPos-dx/stepPx();
+      samples.push({x:e.clientX,t:e.timeStamp});if(samples.length>6)samples.shift();
+      kick();
+    });
+    function endDrag(e){
+      if(e.pointerId!==pid)return; pid=null;
+      if(!dragging)return;
+      dragging=false;car.classList.remove('dragging');
+      var a=samples[0],b=samples[samples.length-1],dt=b.t-a.t,v=dt>0?(b.x-a.x)/dt:0;
+      if(e.timeStamp-b.t>120)v=0;
+      var vs=-v*1000/stepPx(); vs=clamp(vs,-12,12);
+      var base=Math.round(pos),t=Math.round(pos+vs*.2);
+      target=clamp(t,base-2,base+2); vel=reduce?0:vs;
+      userAct();announce();kick();
+    }
+    car.addEventListener('pointerup',endDrag);
+    car.addEventListener('pointercancel',endDrag);
+    car.addEventListener('click',function(e){
+      if(moved){moved=false;return}
+      var ph=e.target.closest&&e.target.closest('.cp'); if(!ph)return;
+      goTo(cps.indexOf(ph),true);
+    });
+    stage.addEventListener('keydown',function(e){
+      if(e.key==='ArrowRight'){e.preventDefault();go(1,true)}
+      else if(e.key==='ArrowLeft'){e.preventDefault();go(-1,true)}
+    });
+    document.getElementById('carPrev').addEventListener('click',function(){go(-1,true)});
+    document.getElementById('carNext').addEventListener('click',function(){go(1,true)});
+    cdots.forEach(function(d,k){d.addEventListener('click',function(){goTo(k,true)})});
+
+    /* autoplay: gentle, and only when nobody is busy with it */
+    stage.addEventListener('pointerenter',function(e){if(e.pointerType==='mouse')hover=true});
+    stage.addEventListener('pointerleave',function(e){if(e.pointerType==='mouse'){hover=false;lastUser=performance.now()}});
+    stage.addEventListener('focusin',function(){focusIn=true});
+    stage.addEventListener('focusout',function(e){if(!stage.contains(e.relatedTarget)){focusIn=false;lastUser=performance.now()}});
+    if(!reduce){
+      setInterval(function(){
+        var now=performance.now();
+        if(!visible||hover||focusIn||dragging||document.hidden||now-lastUser<1500){lastAuto=now;return}
+        if(now-lastAuto>=3500){lastAuto=now;live.setAttribute('aria-live','off');go(1,false)}
+      },250);
+    }
+    if('IntersectionObserver' in window){new IntersectionObserver(function(es){visible=es[0].isIntersecting}).observe(stage)}
+    window.addEventListener('resize',measure);
+    measure();announce();
+    window.__car={get pos(){return pos},get target(){return target},get front(){return mod(Math.round(target),N)}};
+  })();
+
+  /* ---------- showcase: sticky viewport driven by ordinary page scroll ---------- */
   var pin=document.getElementById('pin');
-  var mqPin=window.matchMedia('(min-width:1024px) and (min-height:620px)');
-  var panes=pin.querySelectorAll('.pane'),imgs=pin.querySelectorAll('.pin-phone img'),dots=pin.querySelectorAll('.dots button'),fills=pin.querySelectorAll('.dots .bar i');
-  var cur=0,pinOn=false;
+  var panes=pin.querySelectorAll('.pane'),imgs=[].slice.call(pin.querySelectorAll('.pin-phone img')),dots=pin.querySelectorAll('.dots button'),fills=pin.querySelectorAll('.dots .bar i');
+  var panesBox=pin.querySelector('.panes'),phoneBox=pin.querySelector('.pin-phone');
+  var cur=0,pinOn=false,pinRaf=0,prevTimer=0;
   function setStep(i){
-    if(i===cur)return; cur=i;
+    if(i===cur)return;
+    var best=null,bo=-1;
+    imgs.forEach(function(m){var o=+getComputedStyle(m).opacity;if(o>bo){bo=o;best=m}});
+    imgs.forEach(function(m){m.classList.remove('prev')});
+    if(best&&best!==imgs[i])best.classList.add('prev');
+    cur=i;
     panes.forEach(function(p,k){p.classList.toggle('on',k===i)});
     imgs.forEach(function(p,k){p.classList.toggle('on',k===i)});
-    dots.forEach(function(p,k){p.classList.toggle('on',k===i)});
+    dots.forEach(function(p,k){p.classList.toggle('on',k===i);if(k===i)p.setAttribute('aria-current','step');else p.removeAttribute('aria-current')});
+    clearTimeout(prevTimer);
+    prevTimer=setTimeout(function(){imgs.forEach(function(m){m.classList.remove('prev')})},reduce?0:900);
   }
   function pinFrame(){
+    pinRaf=0;
     if(!pinOn)return;
     var r=pin.getBoundingClientRect(),span=r.height-window.innerHeight;
     var p=clamp(-r.top/span,0,.9999)*4;
-    var i=Math.floor(p);
-    setStep(i);
+    setStep(Math.floor(p));
     fills.forEach(function(f,k){f.style.transform='scaleX('+clamp(p-k,0,1).toFixed(3)+')'});
   }
+  function pinLayout(){
+    if(!pinOn)return;
+    var mh=0;panes.forEach(function(p){mh=Math.max(mh,p.offsetHeight)});
+    panesBox.style.setProperty('--panes-h',Math.ceil(mh)+'px');
+    var narrow=window.innerWidth<900,h=phoneBox.clientHeight,w=phoneBox.clientWidth;
+    var pw=Math.min(370,w*(narrow?.78:.9),h*(narrow?1:.86)/2.09);
+    pin.style.setProperty('--pw',Math.max(120,Math.floor(pw))+'px');
+  }
   function pinMode(){
-    var want=mqPin.matches&&!reduce;
+    var want=!reduce&&window.innerHeight>=440;
     root.classList.toggle('pin',want);
     pin.setAttribute('aria-hidden',want?'false':'true');
-    pinOn=want; if(want)pinFrame();
+    pinOn=want; if(want){pinLayout();pinFrame()}
   }
   pinMode();
-  (mqPin.addEventListener?mqPin.addEventListener('change',pinMode):mqPin.addListener(pinMode));
-  window.addEventListener('scroll',function(){if(pinOn)requestAnimationFrame(pinFrame)},{passive:true});
+  window.addEventListener('resize',function(){pinMode()});
+  window.addEventListener('scroll',function(){if(pinOn&&!pinRaf)pinRaf=requestAnimationFrame(pinFrame)},{passive:true});
+  if(document.fonts&&document.fonts.ready)document.fonts.ready.then(function(){pinLayout()});
   dots.forEach(function(d,k){d.addEventListener('click',function(){
     var top=pin.getBoundingClientRect().top+window.scrollY,span=pin.offsetHeight-window.innerHeight;
-    window.scrollTo({top:top+span*(k+.5)/4,behavior:'smooth'});
+    window.scrollTo({top:top+span*(k+.5)/4,behavior:reduce?'auto':'smooth'});
   })});
 
-  /* coach fan */
+  /* ---------- coach fan: glow + the front phone changes every 3 s ---------- */
   var fan=document.getElementById('fan');
+  var fps=[].slice.call(fan.querySelectorAll('.phone')),fanVis=false,fanHover=false,fanReady=0;
   if(reduce||!('IntersectionObserver' in window)){fan.classList.add('in')}
-  else{var fo=new IntersectionObserver(function(es){if(es[0].isIntersecting){fan.classList.add('in');fo.disconnect()}},{threshold:.3});fo.observe(fan)}
+  else{var fo=new IntersectionObserver(function(es){if(es[0].isIntersecting){fan.classList.add('in');fanReady=performance.now()+1600;fo.disconnect()}},{threshold:.3});fo.observe(fan)}
+  function fanCycle(){
+    var fx=(getComputedStyle(fan).getPropertyValue('--fx')||'52%').trim(),fs=(getComputedStyle(fan).getPropertyValue('--fs')||'.805').trim();
+    fan.classList.add('cycling');
+    fps.forEach(function(ph){
+      if(ph.classList.contains('f-l')){ph.classList.remove('f-l');ph.classList.add('f-c')}
+      else if(ph.classList.contains('f-c')){ph.classList.remove('f-c');ph.classList.add('f-r')}
+      else{
+        /* the right phone swings round behind the others to the left slot */
+        ph.classList.add('wrapping');ph.classList.remove('f-r');ph.classList.add('f-l');
+        if(ph.animate){
+          var an=ph.animate([
+            {transform:'translateX('+fx+') translateZ(0px) rotateY(-28deg) rotateZ(5deg) scale('+fs+')',opacity:1},
+            {transform:'translateX(0%) translateZ(-380px) rotateY(0deg) rotateZ(0deg) scale(.66)',opacity:.4,offset:.5},
+            {transform:'translateX(-'+fx+') translateZ(0px) rotateY(28deg) rotateZ(-5deg) scale('+fs+')',opacity:1}
+          ],{duration:1050,easing:'cubic-bezier(.65,0,.35,1)'});
+          an.onfinish=an.oncancel=function(){ph.classList.remove('wrapping')};
+        }else ph.classList.remove('wrapping');
+      }
+    });
+  }
+  if(!reduce&&'IntersectionObserver' in window){
+    new IntersectionObserver(function(es){fanVis=es[0].isIntersecting;fan.classList.toggle('off',!fanVis)}).observe(fan);
+    fan.addEventListener('pointerenter',function(e){if(e.pointerType==='mouse')fanHover=true});
+    fan.addEventListener('pointerleave',function(){fanHover=false});
+    var fanLast=0;
+    setInterval(function(){
+      var now=performance.now();
+      if(!fanReady||now<fanReady||!fanVis||fanHover||document.hidden){fanLast=now;return}
+      if(now-fanLast>=3000){fanLast=now;fanCycle()}
+    },250);
+  }
 
   /* laptop tabs */
   var tabs=document.querySelectorAll('.tabs [role=tab]'),bimgs=document.querySelectorAll('#bview img');
