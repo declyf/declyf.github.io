@@ -1,831 +1,800 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>DECLYF &mdash; The coaching platform</title>
-<meta name="description" content="DECLYF gives coaches one place to build plans and see every client's real numbers, and gives clients a free app for food, training and progress. Install on Android or iPhone.">
-<meta name="theme-color" content="#070B0F">
-<meta property="og:title" content="DECLYF &mdash; Coach smarter. Live dedicated.">
-<meta property="og:description" content="One place for your plans, their logs and their results.">
+<script>document.documentElement.classList.add('js')</script>
+<title>DECLYF | Nutrition and progress tracking for online fitness coaches</title>
+<meta name="description" content="Coach every client by the numbers. DECLYF is nutrition and progress tracking for online fitness coaches and their clients. Free for clients. Android, iPhone and web.">
+<meta name="theme-color" content="#0B0C0E">
+<meta property="og:type" content="website">
+<meta property="og:title" content="DECLYF | Coach every client by the numbers">
+<meta property="og:description" content="Nutrition and progress tracking for online fitness coaches and their clients. Free for clients. Android, iPhone and web.">
 <meta property="og:image" content="icon.png">
-<link rel="icon" href="favicon.png">
-<link rel="apple-touch-icon" href="icon.png">
+<meta name="twitter:card" content="summary">
+<link rel="icon" type="image/png" href="favicon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="preload" as="image" href="img/today-dark.webp" type="image/webp">
 <style>
 :root{
-  --cyan:#22D3EE; --cyan-2:#67E8F9; --orange:#FF8A45;
-  --bg:#070B0F; --bg-2:#0B1118; --surface:#111923; --surface-2:#16202C; --line:#1E2A36;
-  --text:#EAF2F6; --dim:#8DA2B0; --shadow:rgba(0,0,0,.62);
-  --gut:clamp(18px,4.5vw,64px);
-  --r:22px;
+  --paper:#F7F3EC; --surface:#FFFFFF; --surface2:#EFE9DF; --hair:#E2DACD;
+  --ink:#141312; --muted:#57534C; --subtle:#6A645C;
+  --night:#0B0C0E; --night2:#141518; --night3:#1C1E22; --nhair:#2A2D33;
+  --nink:#F4F5F6; --nmuted:#A9AEB6;
+  --pulse-l:#006AA6; --pulse-d:#38BDF8; --heat:#F26B1D; --heat-d:#FF8A3D; --heat-ink:#B04308;
+  --sans:Inter,-apple-system,"SF Pro Display","SF Pro Text","Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  --display:Anton,Impact,"Arial Narrow Bold",sans-serif;
+  --ease:cubic-bezier(.2,.7,.1,1);
+  --wrap:1200px; --gut:clamp(20px,5vw,48px);
 }
-:root[data-theme="light"]{
-  --bg:#F2F6F8; --bg-2:#FFFFFF; --surface:#FFFFFF; --surface-2:#E9F1F5; --line:#D8E3E9;
-  --text:#071017; --dim:#55707F; --shadow:rgba(8,16,23,.16);
-}
-@media (prefers-color-scheme: light){
-  :root:not([data-theme="dark"]){
-    --bg:#F2F6F8; --bg-2:#FFFFFF; --surface:#FFFFFF; --surface-2:#E9F1F5; --line:#D8E3E9;
-    --text:#071017; --dim:#55707F; --shadow:rgba(8,16,23,.16);
-  }
-}
-
-*{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth}
-body{background:var(--bg);color:var(--text);font-family:'Poppins',system-ui,-apple-system,'Segoe UI',sans-serif;
-  font-size:17px;line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden}
-a{color:inherit;text-decoration:none}
-img,svg{display:block;max-width:100%}
-:focus-visible{outline:3px solid var(--cyan);outline-offset:3px;border-radius:8px}
-.wrap{width:100%;max-width:1180px;margin:0 auto;padding:0 var(--gut)}
-h1,h2,h3{font-weight:700;line-height:1.05;letter-spacing:-.028em}
-h1{font-size:clamp(40px,6.6vw,82px);font-weight:800}
-h2{font-size:clamp(30px,4.4vw,54px);font-weight:800}
-h3{font-size:clamp(19px,2.1vw,26px)}
-p{max-width:60ch}
-.dim{color:var(--dim)}
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
+body{margin:0;font-family:var(--sans);font-size:17px;line-height:1.5;color:var(--ink);background:var(--night);-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;overflow-x:clip;font-feature-settings:"cv11","ss01"}
+img{max-width:100%;display:block}
+a{color:inherit}
+h1,h2,h3{margin:0;text-wrap:balance;font-weight:600;letter-spacing:-.025em;line-height:1.06}
+p{margin:0}
+.wrap{max-width:var(--wrap);margin:0 auto;padding:0 var(--gut)}
+.light{background:var(--paper);color:var(--ink);--pulse:var(--pulse-l);--mut:var(--muted)}
+.dark{background:var(--night);color:var(--nink);--pulse:var(--pulse-d);--mut:var(--nmuted)}
+.band{padding:clamp(96px,13vw,168px) 0;position:relative}
+:focus-visible{outline:2px solid var(--pulse,#38BDF8);outline-offset:3px;border-radius:6px}
+.skip{position:absolute;left:12px;top:-60px;z-index:100;background:#fff;color:#000;padding:10px 16px;border-radius:999px;text-decoration:none;font-weight:600}
+.skip:focus{top:12px}
 .tnum{font-variant-numeric:tabular-nums}
-.grad{background:linear-gradient(100deg,var(--cyan) 6%,var(--cyan-2) 48%,var(--orange) 112%);
-  -webkit-background-clip:text;background-clip:text;color:transparent}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 
-/* ---------- reveal ---------- */
-.rv{opacity:0;transform:translateY(24px);transition:opacity .8s cubic-bezier(.2,.7,.2,1),transform .8s cubic-bezier(.2,.7,.2,1)}
-.rv.in{opacity:1;transform:none}
-.d1{transition-delay:.07s}.d2{transition-delay:.14s}.d3{transition-delay:.21s}
+/* type */
+.eyebrow{font-size:15px;font-weight:600;letter-spacing:-.005em;color:var(--pulse);margin-bottom:14px}
+.h-xl{font-size:clamp(44px,7.4vw,88px);font-weight:700;letter-spacing:-.045em;line-height:1.0}
+.h-lg{font-size:clamp(36px,5.6vw,68px);font-weight:700;letter-spacing:-.04em;line-height:1.03}
+.h-md{font-size:clamp(28px,3.4vw,40px);font-weight:600;letter-spacing:-.03em;line-height:1.08}
+.lede{font-size:clamp(18px,1.9vw,23px);line-height:1.4;color:var(--mut);letter-spacing:-.012em;max-width:640px;font-weight:400}
+.center{text-align:center}
+.center .lede{margin-left:auto;margin-right:auto}
+.head{margin-bottom:clamp(48px,7vw,88px)}
+.head .lede{margin-top:20px}
 
-/* ---------- buttons ---------- */
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;border:0;cursor:pointer;
-  font-family:inherit;font-weight:600;font-size:16px;padding:16px 26px;border-radius:999px;
-  background:var(--cyan);color:#04222A;transition:transform .2s,box-shadow .2s,background .2s;
-  box-shadow:0 12px 30px -14px rgba(34,211,238,.95)}
-.btn:hover{transform:translateY(-2px);background:var(--cyan-2);box-shadow:0 18px 40px -14px rgba(34,211,238,1)}
-.btn.ghost{background:transparent;color:var(--text);box-shadow:inset 0 0 0 1.5px var(--line)}
-.btn.ghost:hover{box-shadow:inset 0 0 0 1.5px var(--cyan);color:var(--cyan)}
-.btn.sm{padding:11px 19px;font-size:14.5px}
-.btn svg{width:19px;height:19px;flex:none}
+/* buttons */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:50px;padding:0 26px;border-radius:999px;font-weight:600;font-size:17px;text-decoration:none;letter-spacing:-.01em;transition:transform .25s var(--ease),background-color .25s,box-shadow .25s;white-space:nowrap}
+.btn:active{transform:scale(.98)}
+.btn-p{background:var(--pulse);color:#fff}
+.dark .btn-p{color:#04131C}
+.btn-p:hover{box-shadow:0 8px 24px -8px color-mix(in srgb,var(--pulse) 70%,transparent)}
+.btn-q{background:transparent;color:inherit;box-shadow:inset 0 0 0 1px var(--hair)}
+.dark .btn-q{box-shadow:inset 0 0 0 1px var(--nhair)}
+.btn-q:hover{background:rgba(127,127,127,.08)}
+.link{color:var(--pulse);text-decoration:none;font-weight:500;font-size:17px}
+.link:hover{text-decoration:underline;text-underline-offset:4px}
+.link span{display:inline-block;transition:transform .25s var(--ease)}
+.link:hover span{transform:translateX(3px)}
 
-/* ---------- header ---------- */
-header{position:sticky;top:0;z-index:60;background:color-mix(in srgb,var(--bg) 80%,transparent);
-  backdrop-filter:saturate(1.5) blur(18px);border-bottom:1px solid transparent;transition:border-color .3s}
-header.stuck{border-bottom-color:var(--line)}
-.nav{display:flex;align-items:center;gap:20px;height:68px}
-.logo{display:flex;align-items:center;gap:10px;font-weight:800;font-size:21px;letter-spacing:.02em}
-.logo svg{width:28px;height:28px;border-radius:8px}
-.nav .sp{flex:1}
-.nav .links{display:flex;gap:28px;font-size:15px;color:var(--dim);font-weight:500}
-.nav .links a{position:relative}
-.nav .links a::after{content:"";position:absolute;left:0;right:0;bottom:-5px;height:2px;background:var(--cyan);
-  transform:scaleX(0);transform-origin:left;transition:transform .28s cubic-bezier(.2,.7,.2,1)}
-.nav .links a:hover{color:var(--text)}
-.nav .links a:hover::after{transform:scaleX(1)}
-.tg{width:38px;height:38px;border-radius:999px;border:1px solid var(--line);background:none;color:var(--dim);display:grid;place-items:center;cursor:pointer}
-.tg:hover{color:var(--cyan);border-color:var(--cyan)}
-.tg svg{width:17px;height:17px}
-.sun{display:none}
-:root[data-theme="light"] .sun{display:block}:root[data-theme="light"] .moon{display:none}
-@media (prefers-color-scheme: light){:root:not([data-theme="dark"]) .sun{display:block}:root:not([data-theme="dark"]) .moon{display:none}}
+/* nav */
+.nav{position:fixed;inset:0 0 auto 0;z-index:50;color:var(--nink);--pulse:var(--pulse-d)}
+.nav::before{content:"";position:absolute;inset:0;background:rgba(11,12,14,.72);-webkit-backdrop-filter:saturate(180%) blur(20px);backdrop-filter:saturate(180%) blur(20px);border-bottom:1px solid rgba(255,255,255,.08);opacity:.0;transition:opacity .35s}
+.nav.scrolled::before,.no-js-nav .nav::before{opacity:1}
+html:not(.js) .nav::before{opacity:1}
+.nav-in{position:relative;height:64px;display:flex;align-items:center;gap:32px;transition:height .35s var(--ease)}
+.nav.scrolled .nav-in{height:52px}
+.wordmark{font-family:var(--display);font-size:22px;letter-spacing:.02em;text-decoration:none;color:inherit;line-height:1}
+.nav ul{display:flex;gap:28px;list-style:none;margin:0 0 0 auto;padding:0}
+.nav ul a{font-size:14px;color:#C9CDD3;text-decoration:none;transition:color .2s}
+.nav ul a:hover{color:#fff}
+.nav .btn{height:34px;padding:0 16px;font-size:14px}
+.nav .btn-p{color:#04131C}
+.nav,.nav ul a,.nav-in{transition:color .35s,height .35s var(--ease)}
+.nav.on-light{color:var(--ink);--pulse:var(--pulse-l)}
+.nav.on-light::before{background:rgba(247,243,236,.78);border-bottom-color:rgba(20,19,18,.08)}
+.nav.on-light ul a{color:#3F3B36}.nav.on-light ul a:hover{color:#000}
+.nav.on-light .btn-p{color:#fff}
+@media (max-width:860px){.nav ul{display:none}.nav .btn{margin-left:auto}}
 
-/* ---------- hero ---------- */
-.hero{position:relative;text-align:center;padding:clamp(44px,7vw,100px) 0 0;overflow:hidden}
-.aurora{position:absolute;inset:-25% -10% auto -10%;height:120%;pointer-events:none;filter:blur(70px);opacity:.75}
-.aurora i{position:absolute;display:block;border-radius:50%}
-.aurora i:nth-child(1){width:48vw;height:38vw;left:52%;top:-6%;background:rgba(34,211,238,.34);animation:drift1 17s ease-in-out infinite}
-.aurora i:nth-child(2){width:36vw;height:30vw;left:6%;top:4%;background:rgba(103,232,249,.20);animation:drift2 21s ease-in-out infinite}
-.aurora i:nth-child(3){width:30vw;height:26vw;left:30%;top:28%;background:rgba(255,138,69,.16);animation:drift3 25s ease-in-out infinite}
-@keyframes drift1{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(-7%,6%) scale(1.12)}}
-@keyframes drift2{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(9%,-5%) scale(1.1)}}
-@keyframes drift3{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(5%,8%) scale(.92)}}
-.hero-in{position:relative}
-.eyebrow{display:inline-flex;align-items:center;gap:9px;font-size:13.5px;font-weight:600;color:var(--cyan);
-  background:color-mix(in srgb,var(--cyan) 13%,transparent);padding:7px 15px;border-radius:999px;margin-bottom:24px}
-.eyebrow i{width:6px;height:6px;border-radius:50%;background:var(--cyan);animation:pulse 2.4s ease-in-out infinite}
-@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.3;transform:scale(.8)}}
-.hero h1{max-width:15ch;margin:0 auto}
-.hero .lead{margin:24px auto 0;color:var(--dim);font-size:clamp(16.5px,1.7vw,19.5px);max-width:54ch}
-.hero .cta{display:flex;gap:13px;justify-content:center;flex-wrap:wrap;margin-top:32px}
-.hero .micro{margin-top:16px;font-size:13.5px;color:var(--dim)}
-.stagearea{margin-top:clamp(34px,5vw,58px);display:flex;justify-content:center;position:relative;padding-bottom:clamp(30px,5vw,60px)}
-.stagearea::after{content:"";position:absolute;bottom:6px;left:50%;transform:translateX(-50%);width:min(520px,84vw);height:90px;
-  background:radial-gradient(50% 60% at 50% 50%,rgba(34,211,238,.26),transparent 72%);filter:blur(14px)}
+/* phone frame */
+.phone{--w:300px;position:relative;width:var(--w);padding:calc(var(--w)*.034);border-radius:calc(var(--w)*.165);
+  background:linear-gradient(150deg,#3a3d43 0%,#16171a 18%,#0c0d0f 60%,#26282d 100%);
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.22),inset 0 1px 0 1px rgba(255,255,255,.12),inset 0 0 0 calc(var(--w)*.009) #050506,0 0 0 1px rgba(255,255,255,.07),0 60px 120px -40px rgba(0,0,0,.8),0 0 80px -20px rgba(56,189,248,.10)}
+.light .phone{box-shadow:inset 0 0 0 1px rgba(255,255,255,.16),inset 0 0 0 calc(var(--w)*.009) #050506,0 0 0 1px rgba(0,0,0,.35),0 50px 80px -40px rgba(40,30,15,.45),0 24px 40px -24px rgba(40,30,15,.35)}
+.screen{position:relative;overflow:hidden;border-radius:calc(var(--w)*.13);aspect-ratio:390/844;background:#000;isolation:isolate}
+.screen img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.phone::after{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;background:linear-gradient(118deg,rgba(255,255,255,.10) 0%,rgba(255,255,255,.03) 22%,rgba(255,255,255,0) 40%)}
 
-/* ---------- the device ---------- */
-.tilt{perspective:1400px}
-.phone{width:min(312px,78vw);background:#060A0E;border:9px solid #19222D;border-radius:44px;padding:14px 12px 18px;
-  box-shadow:0 50px 100px -38px var(--shadow),0 0 0 1px rgba(255,255,255,.055);position:relative;z-index:2;
-  transform-style:preserve-3d;will-change:transform}
-.phone::before{content:"";position:absolute;top:10px;left:50%;transform:translateX(-50%);width:86px;height:5px;border-radius:5px;background:#19222D}
-.ph-top{display:flex;align-items:center;gap:8px;margin:12px 4px 12px}
-.ph-top svg{width:19px;height:19px;border-radius:6px}
-.ph-top span{font-weight:800;font-size:13px;letter-spacing:.08em;color:#EAF2F6}
-.ph-top em{margin-left:auto;font-style:normal;font-size:10.5px;color:#8DA2B0;letter-spacing:.06em}
-.ph-h{font-size:19px;font-weight:700;color:#EAF2F6;margin:0 4px}
-.ph-s{font-size:11.5px;color:#8DA2B0;margin:1px 4px 12px}
-.tile{background:#111923;border:1px solid #1E2A36;border-radius:16px;padding:13px;margin-bottom:9px}
-.tile:last-child{margin-bottom:0}
+/* hero */
+.hero{padding-top:clamp(104px,14vh,150px);padding-bottom:0;overflow:hidden;background:radial-gradient(1200px 600px at 50% 85%,rgba(56,189,248,.10),transparent 60%),var(--night)}
+.hero .h-xl{max-width:960px;margin:0 auto}
+.hero .lede{margin-top:24px}
+.hero-ctas{display:flex;gap:28px;align-items:center;justify-content:center;margin-top:36px;flex-wrap:wrap}
+.hero-note{margin-top:22px;font-size:14px;color:var(--nmuted)}
+.hero-note b{color:var(--heat-d);font-weight:600}
+.stage{position:relative;margin-top:clamp(48px,5vw,64px);height:clamp(460px,50vw,700px);perspective:1600px}
+.stage-in{position:absolute;left:50%;top:0;transform-style:preserve-3d;will-change:transform}
+.stage .phone{position:absolute;top:0;left:0}
+.ph-c{--w:clamp(240px,25vw,350px);transform:translateX(-50%);z-index:2}
+.ph-l,.ph-r{--w:clamp(200px,20vw,286px);top:9%!important;z-index:1;will-change:transform}
+.ph-l{transform:translateX(-50%) translateX(var(--sx,-74%)) scale(.94)}
+.ph-r{transform:translateX(-50%) translateX(var(--sx2,74%)) scale(.94)}
+.ph-l .screen img,.ph-r .screen img{opacity:.9}
+.stage-fade{position:absolute;left:0;right:0;bottom:0;height:16%;background:linear-gradient(to bottom,rgba(11,12,14,0),var(--night) 92%);z-index:5;pointer-events:none}
+@media (max-width:640px){.ph-l,.ph-r{display:none}.stage{height:clamp(420px,120vw,560px)}}
+.js .hero .intro{opacity:0;transform:translateY(22px);animation:intro 1s var(--ease) forwards}
+.js .hero .intro.d1{animation-delay:.12s}.js .hero .intro.d2{animation-delay:.24s}.js .hero .intro.d3{animation-delay:.34s}
+.js .stage-rise{opacity:0;transform:translateY(120px);animation:rise 1.4s var(--ease) .45s forwards}
+@keyframes intro{to{opacity:1;transform:none}}
+@keyframes rise{to{opacity:1;transform:none}}
 
-/* screens stack in the same box, cross-fade between them */
-.screens{position:relative;min-height:330px}
-/* The outgoing screen leaves at once and the new one fades in, so they never ghost over each other. */
-.screen{position:absolute;inset:0;opacity:0;visibility:hidden;transform:translateY(12px);transition:none;pointer-events:none}
-.screen.on{opacity:1;visibility:visible;transform:none;
-  transition:opacity .42s cubic-bezier(.2,.7,.2,1),transform .42s cubic-bezier(.2,.7,.2,1)}
+/* reveal */
+.js .reveal{opacity:0;transform:translateY(28px);transition:opacity .9s var(--ease),transform .9s var(--ease);transition-delay:var(--d,0s)}
+.js .reveal.in{opacity:1;transform:none}
 
-/* today screen */
-.ringrow{display:flex;align-items:center;gap:14px}
-.ringsvg{width:88px;height:88px;flex:none}
-.ringsvg circle{fill:none;stroke-width:9;stroke-linecap:round}
-.big{font-size:29px;font-weight:800;color:#EAF2F6;line-height:1.05;font-variant-numeric:tabular-nums}
-.cap{font-size:11.5px;color:#8DA2B0}
-.macros{display:flex;gap:8px;margin-top:11px}
-.mac{flex:1}
-.mac .b{height:5px;border-radius:5px;background:#1E2A36;overflow:hidden}
-.mac .b i{display:block;height:100%;background:var(--cyan);width:0}
-.mac .b.o i{background:var(--orange)}
-.mac .l{font-size:10px;color:#8DA2B0;margin-top:5px;letter-spacing:.03em}
-.meal{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid #1E2A36;
-  font-size:13px;color:#EAF2F6;opacity:0;transform:translateX(-10px);transition:opacity .35s,transform .35s}
-.meal:last-child{border:0;padding-bottom:0}
-.meal.in{opacity:1;transform:none}
-.meal i{font-style:normal;color:#8DA2B0;font-variant-numeric:tabular-nums}
+/* showcase */
+.show-pin{display:none}
+.sc-track{display:flex;gap:20px;overflow-x:auto;scroll-snap-type:x mandatory;padding:8px var(--gut) 24px;margin:0 auto;max-width:1300px;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+.sc-track::-webkit-scrollbar{display:none}
+.slide{flex:0 0 min(80vw,330px);scroll-snap-align:center;display:flex;flex-direction:column;gap:28px}
+.slide .phone{--w:min(76vw,290px);margin:0 auto}
+.slide h3{font-size:24px;letter-spacing:-.025em}
+.slide p{color:var(--mut);margin-top:8px;font-size:16px}
+.slide .step-n{font-size:14px;font-weight:600;color:var(--pulse);margin-bottom:8px}
+.sc-hint{text-align:center;font-size:14px;color:var(--mut);margin-top:8px}
+.caption{font-size:13px;color:var(--mut);margin-top:20px}
+@media (min-width:1024px){
+  .sc-track{display:grid;grid-template-columns:repeat(4,1fr);overflow:visible;gap:28px}
+  .slide{flex:none}.slide .phone{--w:min(100%,250px)}
+  .sc-hint{display:none}
+}
+html.pin .show-stack{display:none}
+html.pin .show-pin{display:block;height:420vh;position:relative}
+html.pin #showcase.band{padding:0}
+html.pin #showcase .head{display:none}
+.pin-sticky{position:sticky;top:0;height:100vh;display:flex;align-items:center;overflow:hidden}
+.pin-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(32px,4vw,64px);align-items:center;width:100%}
+.pin-phone{display:flex;justify-content:center}
+.pin-copy{position:relative}
+.pin-copy .h-lg{margin-bottom:clamp(40px,6vh,64px)}
+.panes{position:relative;min-height:220px}
+.pane{position:absolute;inset:0 0 auto 0;opacity:0;transform:translateY(16px);transition:opacity .28s ease,transform .5s var(--ease);pointer-events:none}
+.pane.on{opacity:1;transform:none;transition:opacity .5s ease .26s,transform .7s var(--ease) .26s;pointer-events:auto}
+.pane .step-n{font-size:15px;font-weight:600;color:var(--pulse);margin-bottom:10px}
+.pane h3{font-size:clamp(30px,3vw,42px);letter-spacing:-.035em;line-height:1.08;font-weight:600}
+.pane p{font-size:19px;line-height:1.45;color:var(--mut);margin-top:16px;max-width:460px}
+.pane .num{color:var(--ink);font-weight:600}
+.dots{display:flex;gap:10px;margin-top:clamp(36px,6vh,56px);list-style:none;padding:0}
+.dots button{appearance:none;border:0;background:none;padding:10px 0;cursor:pointer;display:flex;flex-direction:column;gap:10px;width:84px;text-align:left;font:500 13px var(--sans);color:var(--subtle)}
+.dots button.on{color:var(--ink)}
+.dots .bar{height:3px;border-radius:3px;background:var(--hair);overflow:hidden;width:100%}
+.dots .bar i{display:block;height:100%;background:var(--pulse);transform-origin:left;transform:scaleX(0)}
+.pin-phone .phone{--w:min(36vh,370px)}
+.pin-phone .screen img{opacity:0;transition:opacity .6s ease}
+.pin-phone .screen img.on{opacity:1}
 
-/* train screen */
-.ex{display:flex;justify-content:space-between;align-items:center;padding:9px 0;border-bottom:1px solid #1E2A36;font-size:13px;color:#EAF2F6}
-.ex:last-child{border:0;padding-bottom:0}
-.ex i{font-style:normal;color:#8DA2B0;font-variant-numeric:tabular-nums;margin-left:auto;margin-right:10px}
-.chk{width:19px;height:19px;border-radius:50%;border:1.6px solid #2B3947;flex:none;display:grid;place-items:center;
-  transition:background .3s,border-color .3s,transform .3s}
-.chk svg{width:11px;height:11px;opacity:0;transition:opacity .3s}
-.ex.done .chk{background:var(--cyan);border-color:var(--cyan);transform:scale(1.08)}
-.ex.done .chk svg{opacity:1}
-.volume{display:flex;justify-content:space-between;align-items:baseline}
+/* coach fan */
+.coach{overflow:hidden}
+.fan{position:relative;height:clamp(460px,52vw,700px);perspective:1800px;margin-bottom:clamp(64px,8vw,112px)}
+.fan .phone{position:absolute;left:50%;top:0;transition:transform 1.4s var(--ease),opacity 1s ease}
+.fan .f-c{--w:clamp(220px,23vw,320px);z-index:3;transform:translateX(-50%)}
+.fan .f-l,.fan .f-r{--w:clamp(196px,20vw,280px);top:7%;z-index:2}
+.fan .f-l{transform:translateX(-50%) translateX(-60%) rotateY(28deg) rotateZ(-5deg) scale(.92)}
+.fan .f-r{transform:translateX(-50%) translateX(60%) rotateY(-28deg) rotateZ(5deg) scale(.92)}
+.js .fan:not(.in) .f-l,.js .fan:not(.in) .f-r{transform:translateX(-50%) translateY(6%) scale(.86);opacity:0}
+.js .fan:not(.in) .f-c{transform:translateX(-50%) translateY(40px);opacity:0}
+.fan .f-l{transition-delay:.15s}.fan .f-r{transition-delay:.15s}
+@media (max-width:640px){
+  .fan{height:clamp(420px,118vw,540px)}
+  .fan .f-c{--w:min(62vw,250px)}
+  .fan .f-l,.fan .f-r{--w:min(52vw,210px)}
+  .fan .f-l{transform:translateX(-50%) translateX(-46%) rotateY(26deg) rotateZ(-4deg) scale(.9)}
+  .fan .f-r{transform:translateX(-50%) translateX(46%) rotateY(-26deg) rotateZ(4deg) scale(.9)}
+}
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:clamp(24px,3vw,40px);list-style:none;padding:0;margin:0;counter-reset:s}
+.steps li{border-top:1px solid var(--nhair);padding-top:24px}
+.light .steps li{border-color:var(--hair)}
+.steps .n{font-size:15px;font-weight:600;color:var(--pulse);font-variant-numeric:tabular-nums}
+.steps h3{font-size:21px;letter-spacing:-.02em;margin-top:10px;line-height:1.2}
+.steps p{color:var(--mut);margin-top:8px;font-size:16px;line-height:1.5}
+@media (max-width:900px){.steps{grid-template-columns:repeat(2,1fr)}}
+@media (max-width:520px){.steps{grid-template-columns:1fr}}
 
-/* progress screen */
-.statrow{display:flex;gap:16px;margin-top:10px}
-.statrow b{display:block;font-size:20px;font-weight:800;color:#EAF2F6;font-variant-numeric:tabular-nums;line-height:1.15}
+/* clients */
+.split{display:grid;grid-template-columns:1.05fr .95fr;gap:clamp(48px,8vw,120px);align-items:center}
+.split .phone{--w:clamp(240px,26vw,330px);margin:0 auto}
+.split .steps{grid-template-columns:1fr;gap:0;margin-top:48px}
+.split .steps li{padding:22px 0;display:grid;grid-template-columns:44px 1fr;column-gap:8px}
+.split .steps li:last-child{border-bottom:1px solid var(--hair)}
+.split .steps h3{margin-top:0;grid-column:2}
+.split .steps p{grid-column:2}
+.split .steps .n{grid-row:span 2;padding-top:3px}
+.split-actions{display:flex;gap:28px;align-items:center;margin-top:36px;flex-wrap:wrap}
+@media (max-width:900px){.split{grid-template-columns:1fr}.split .media{order:-1}}
 
-/* ---------- scrolly ---------- */
-.story{position:relative;padding:clamp(40px,6vw,76px) 0 0}
-.story-grid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(26px,5vw,76px);align-items:start}
-.sticky{position:sticky;top:96px;display:flex;flex-direction:column;align-items:center;gap:18px}
-.rail{display:flex;gap:7px}
-.rail span{width:30px;height:3px;border-radius:3px;background:var(--line);overflow:hidden;position:relative}
-.rail span i{position:absolute;inset:0;background:var(--cyan);transform-origin:left;transform:scaleX(0)}
-.beats{display:grid;gap:0;padding:0 0 16vh}
-.beat{min-height:108vh;display:flex;flex-direction:column;justify-content:center;opacity:.3;transition:opacity .5s ease}
-.beat.active{opacity:1}
-.beat .n{font-size:12.5px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--cyan);margin-bottom:13px;display:flex;align-items:center;gap:10px}
-.beat .n::before{content:"";width:26px;height:2px;background:var(--cyan);border-radius:2px}
-.beat h3{margin-bottom:13px}
-.beat p{color:var(--dim)}
-.beat ul{list-style:none;margin-top:17px;display:grid;gap:10px}
-.beat li{padding-left:26px;position:relative;font-size:15.5px}
-.beat li::before{content:"";position:absolute;left:0;top:.52em;width:13px;height:7px;border-left:2px solid var(--cyan);border-bottom:2px solid var(--cyan);transform:rotate(-45deg)}
+/* marquee */
+.marquee{margin-top:clamp(72px,9vw,120px);overflow:hidden;-webkit-mask-image:linear-gradient(90deg,transparent,#000 12%,#000 88%,transparent);mask-image:linear-gradient(90deg,transparent,#000 12%,#000 88%,transparent)}
+.mq-row{display:flex;width:max-content;gap:12px;animation:mq 80s linear infinite}
+.marquee.paused .mq-row{animation-play-state:paused}
+.mq-row span{display:inline-flex;gap:10px;align-items:baseline;padding:12px 20px;border-radius:999px;background:var(--surface);border:1px solid var(--hair);font-size:15px;white-space:nowrap;font-weight:500}
+.mq-row em{font-style:normal;color:var(--subtle);font-variant-numeric:tabular-nums;font-weight:400}
+@keyframes mq{to{transform:translateX(-50%)}}
+.mq-cap{text-align:center;font-size:13px;color:var(--mut);margin-top:16px}
 
-/* ---------- marquee ---------- */
-.marq{border-block:1px solid var(--line);background:var(--bg-2);overflow:hidden;padding:17px 0;
-  -webkit-mask-image:linear-gradient(90deg,transparent,#000 9%,#000 91%,transparent);
-  mask-image:linear-gradient(90deg,transparent,#000 9%,#000 91%,transparent)}
-.marq .track{display:flex;gap:14px;width:max-content;animation:slide 44s linear infinite}
-.marq:hover .track{animation-play-state:paused}
-@keyframes slide{to{transform:translateX(-50%)}}
-.chip{display:inline-flex;align-items:center;gap:8px;white-space:nowrap;font-size:14px;font-weight:500;color:var(--dim);
-  border:1px solid var(--line);border-radius:999px;padding:8px 16px;background:var(--surface)}
-.chip b{color:var(--text);font-weight:600}
-.chip s{text-decoration:none;color:var(--cyan);font-variant-numeric:tabular-nums;font-weight:600}
+/* laptop */
+.browser{max-width:1100px;margin:0 auto;border-radius:14px;background:#1A1B1F;box-shadow:0 0 0 1px rgba(255,255,255,.08),0 80px 120px -50px rgba(0,0,0,.7),0 40px 60px -30px rgba(0,0,0,.6);overflow:hidden}
+.bar-top{height:40px;display:flex;align-items:center;gap:8px;padding:0 16px;background:#202126;border-bottom:1px solid #2A2D33}
+.bar-top i{width:11px;height:11px;border-radius:50%;background:#3A3D44}
+.bar-top .url{margin:0 auto;font-size:12px;color:#9CA1A9;background:#16171A;border-radius:7px;padding:5px 60px;letter-spacing:.01em}
+.b-view{position:relative;aspect-ratio:1440/900;background:var(--night)}
+.b-view img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:left top;opacity:0;transition:opacity .6s ease}
+.b-view img.on{opacity:1}
+html:not(.js) .b-view img:first-child{opacity:1}
+.tabs{display:flex;justify-content:center;gap:6px;margin:clamp(32px,4vw,44px) auto 0;padding:5px;border-radius:999px;background:var(--night3);width:max-content;max-width:100%}
+.tabs button{appearance:none;border:0;background:none;color:var(--nmuted);font:500 15px var(--sans);padding:9px 18px;border-radius:999px;cursor:pointer;transition:background-color .25s,color .25s}
+.tabs button[aria-selected="true"]{background:#2E3138;color:#fff}
+html:not(.js) .tabs{display:none}
 
-/* ---------- sections ---------- */
-section{padding:clamp(56px,7.5vw,104px) 0}
-.head{max-width:60ch;margin-bottom:clamp(28px,4vw,52px)}
-.head.mid{margin-inline:auto;text-align:center}
-.head p{margin-top:15px;color:var(--dim);font-size:17.5px}
-.head.mid p{margin-inline:auto}
+/* bento */
+.bento{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:20px}
+.cell{min-width:0}.tile .crop{overflow:hidden}
+.cell{grid-column:span 2}
+.cell.w3{grid-column:span 3}
+.cell.w4{grid-column:span 4;grid-row:span 2}
+.tile{height:100%;background:var(--surface);border-radius:28px;padding:clamp(26px,2.6vw,36px);position:relative;overflow:hidden;display:flex;flex-direction:column;transition:transform .45s var(--ease),box-shadow .45s var(--ease);box-shadow:0 1px 0 rgba(0,0,0,.02),0 0 0 1px rgba(20,19,18,.04)}
+.tile:hover{transform:translateY(-4px);box-shadow:0 30px 60px -30px rgba(40,30,15,.30),0 0 0 1px rgba(20,19,18,.05)}
+.tile h3{font-size:clamp(21px,1.9vw,26px);letter-spacing:-.025em;line-height:1.15}
+.tile p{color:var(--muted);margin-top:10px;font-size:16px;line-height:1.5;max-width:440px}
+.tile .big{font-size:clamp(56px,6vw,80px);font-weight:700;letter-spacing:-.05em;line-height:1;margin-bottom:14px;font-variant-numeric:tabular-nums}
+.tile .big.heat{color:var(--heat-ink)}
+.tile .ic{width:44px;height:44px;border-radius:12px;background:var(--surface2);display:grid;place-items:center;margin-bottom:22px;color:var(--pulse-l)}
+.tile .crop{margin-top:auto;padding-top:28px;display:flex;justify-content:center;gap:14px}
+.tile .crop .phone{--w:clamp(220px,24vw,320px);margin-bottom:calc(var(--w) * -1.05)}
+.cell.w3 .crop .phone{--w:clamp(150px,13vw,190px);margin-bottom:calc(var(--w) * -1.15)}
+.tile.has-crop{padding-bottom:0}
+.tile .srcs{display:flex;gap:8px;flex-wrap:wrap;margin-top:18px}
+.tile .srcs span{font-size:13px;font-weight:500;padding:6px 12px;border-radius:999px;background:var(--surface2);color:var(--ink)}
+@media (max-width:980px){.bento{grid-template-columns:repeat(2,minmax(0,1fr))}.cell,.cell.w3{grid-column:span 1}.cell.w4{grid-column:span 2;grid-row:auto}}
+@media (max-width:600px){.bento{grid-template-columns:minmax(0,1fr)}.cell,.cell.w3,.cell.w4{grid-column:auto}.tile .crop .phone{--w:min(64vw,240px)}.cell.w3 .crop .phone{--w:min(44vw,170px)}}
 
-/* install */
-.install{background:var(--bg-2);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
-.ins{display:grid;grid-template-columns:1fr 1fr;gap:18px}
-.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:28px;display:flex;flex-direction:column;gap:15px;
-  transition:transform .32s cubic-bezier(.2,.7,.2,1),border-color .32s,box-shadow .32s}
-.card:hover{transform:translateY(-5px);border-color:color-mix(in srgb,var(--cyan) 50%,var(--line));box-shadow:0 28px 60px -34px var(--shadow)}
-.card .os{display:flex;align-items:center;gap:12px}
-.card .os svg{width:27px;height:27px;color:var(--text)}
-.card .os h3{font-size:22px}
-.tag{margin-left:auto;font-size:11.5px;font-weight:700;padding:5px 11px;border-radius:999px;background:color-mix(in srgb,var(--cyan) 16%,transparent);color:var(--cyan)}
-.tag.soft{background:transparent;color:var(--dim);box-shadow:inset 0 0 0 1px var(--line)}
-.steps-s{display:grid;gap:9px;counter-reset:q}
-.steps-s div{display:flex;gap:11px;font-size:15px;color:var(--dim);counter-increment:q}
-.steps-s div::before{content:counter(q);flex:none;width:21px;height:21px;border-radius:50%;background:var(--surface-2);
-  color:var(--text);font-size:11.5px;font-weight:700;display:grid;place-items:center;margin-top:3px}
-.card .btn{margin-top:auto;align-self:flex-start}
-.webapp{margin-top:18px;display:flex;align-items:center;gap:18px;flex-wrap:wrap;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:24px 28px}
-.webapp .t{flex:1;min-width:260px}
-.webapp h3{margin-bottom:6px}
-.webapp p{color:var(--dim);font-size:15.5px}
-
-/* numbers */
-.nums{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
-.num{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:26px 22px;
-  transition:transform .3s,border-color .3s}
-.num:hover{transform:translateY(-4px);border-color:color-mix(in srgb,var(--cyan) 45%,var(--line))}
-.num b{display:block;font-size:clamp(30px,3.7vw,44px);font-weight:800;line-height:1;font-variant-numeric:tabular-nums}
-.num span{display:block;margin-top:10px;font-size:14.5px;color:var(--dim)}
+/* stats */
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:clamp(24px,3vw,48px)}
+.stat{border-top:1px solid var(--nhair);padding-top:28px}
+.stat .v{font-size:clamp(56px,7.4vw,104px);font-weight:700;letter-spacing:-.055em;line-height:1;font-variant-numeric:tabular-nums}
+.stat .v.heat{color:var(--heat-d)}
+.stat .l{color:var(--nmuted);margin-top:14px;font-size:17px}
+@media (max-width:900px){.stats{grid-template-columns:repeat(2,1fr);row-gap:48px}}
 
 /* pricing */
-.prices{display:grid;grid-template-columns:1fr 1fr;gap:18px;max-width:900px;margin-inline:auto}
-.price{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:30px;display:flex;flex-direction:column;gap:13px}
-.price.hl{border-color:var(--cyan);box-shadow:0 0 0 1px var(--cyan),0 26px 60px -40px rgba(34,211,238,.8)}
-.price .amt{font-size:42px;font-weight:800;line-height:1}
-.price ul{list-style:none;display:grid;gap:9px;color:var(--dim);font-size:15.5px}
-.price li{padding-left:24px;position:relative}
-.price li::before{content:"";position:absolute;left:0;top:.52em;width:12px;height:7px;border-left:2px solid var(--cyan);border-bottom:2px solid var(--cyan);transform:rotate(-45deg)}
-.price .ft{margin-top:auto;padding-top:8px;font-size:13.5px;color:var(--dim)}
+.draft{display:inline-flex;align-items:center;gap:8px;font-size:14px;font-weight:600;padding:7px 14px;border-radius:999px;background:#FCE3D3;color:var(--heat-ink);margin-bottom:22px}
+.draft::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--heat)}
+.plans{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px}
+.plan{background:var(--surface);border-radius:24px;padding:32px;display:flex;flex-direction:column;box-shadow:0 0 0 1px rgba(20,19,18,.05);position:relative}
+.plan.hi{background:var(--night);color:var(--nink);box-shadow:0 40px 70px -40px rgba(11,12,14,.55);--pulse:var(--pulse-d);--mut:var(--nmuted)}
+.plan .tag{position:absolute;top:28px;right:28px;font-size:12px;font-weight:600;padding:5px 10px;border-radius:999px;background:rgba(56,189,248,.14);color:var(--pulse-d)}
+.plan h3{font-size:20px;letter-spacing:-.02em}
+.plan .price{margin-top:22px;display:flex;align-items:baseline;gap:6px}
+.plan .price b{font-size:52px;font-weight:700;letter-spacing:-.05em;line-height:1;font-variant-numeric:tabular-nums}
+.plan .price span{color:var(--mut);font-size:16px}
+.plan .cap{margin-top:10px;font-weight:600;font-size:16px}
+.plan p{color:var(--mut);font-size:15px;margin-top:8px;line-height:1.5;margin-bottom:28px}
+.plan .btn{margin-top:auto;width:100%;height:46px;font-size:16px}
+.plan:not(.hi) .btn-q{box-shadow:inset 0 0 0 1px var(--hair)}
+.price-note{margin-top:32px;color:var(--muted);font-size:15px;max-width:760px}
+@media (max-width:980px){.plans{grid-template-columns:repeat(2,1fr)}}
+@media (max-width:600px){.plans{grid-template-columns:1fr}}
+
+/* install */
+.inst{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.card{background:var(--surface);border-radius:24px;padding:34px;display:flex;flex-direction:column;box-shadow:0 0 0 1px rgba(20,19,18,.05)}
+.card .ic{width:48px;height:48px;border-radius:14px;background:var(--surface2);display:grid;place-items:center;color:var(--ink);margin-bottom:24px}
+.card h3{font-size:24px;letter-spacing:-.025em}
+.card ol{margin:16px 0 0;padding-left:20px;color:var(--muted);font-size:16px;line-height:1.6}
+.card p{color:var(--muted);font-size:16px;margin-top:12px}
+.card .btn{margin-top:auto;align-self:flex-start}
+.card .spacer{flex:1;min-height:28px}
+@media (max-width:720px){.inst{grid-template-columns:1fr}}
+@media (min-width:721px) and (max-width:900px){.inst{grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}.card{padding:24px}}
 
 /* faq */
-.faq{max-width:840px;margin-inline:auto}
-details{border-bottom:1px solid var(--line)}
-summary{cursor:pointer;list-style:none;display:flex;justify-content:space-between;gap:20px;padding:20px 0;font-weight:600;font-size:17.5px}
-summary::-webkit-details-marker{display:none}
-summary::after{content:"+";color:var(--cyan);font-size:25px;line-height:1;font-weight:400;transition:transform .25s}
-details[open] summary::after{transform:rotate(45deg)}
-details p{color:var(--dim);padding-bottom:20px;font-size:16px}
+.faq{max-width:860px;margin:0 auto}
+.faq details{border-bottom:1px solid var(--hair)}
+.faq details:first-of-type{border-top:1px solid var(--hair)}
+.faq summary{list-style:none;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:24px;padding:26px 0;font-size:clamp(18px,1.8vw,21px);font-weight:600;letter-spacing:-.015em}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary .pm{flex:none;width:28px;height:28px;border-radius:50%;background:var(--surface2);position:relative;transition:transform .35s var(--ease)}
+.faq summary .pm::before,.faq summary .pm::after{content:"";position:absolute;left:50%;top:50%;width:11px;height:1.6px;background:var(--ink);transform:translate(-50%,-50%);border-radius:2px}
+.faq summary .pm::after{transform:translate(-50%,-50%) rotate(90deg);transition:transform .35s var(--ease)}
+.faq details[open] .pm::after{transform:translate(-50%,-50%) rotate(0)}
+.faq .ans{padding:0 56px 28px 0;color:var(--muted);font-size:17px;line-height:1.55}
+.js .faq details[open] .ans{animation:ans .45s var(--ease)}
+@keyframes ans{from{opacity:0;transform:translateY(-6px)}}
+.faq .more{margin-top:32px;color:var(--muted);text-align:center}
 
-/* final */
-.final{position:relative;text-align:center;overflow:hidden;background:var(--bg-2);border-top:1px solid var(--line)}
-.final::before{content:"";position:absolute;inset:0;background:radial-gradient(52% 120% at 50% 112%,rgba(34,211,238,.28),transparent 70%)}
-.final .wrap{position:relative}
-.final h2{max-width:17ch;margin-inline:auto}
-.final p{margin:16px auto 0;color:var(--dim)}
-.final .cta{display:flex;gap:13px;justify-content:center;flex-wrap:wrap;margin-top:30px}
-footer{border-top:1px solid var(--line);padding:30px 0;font-size:13.5px;color:var(--dim)}
-footer .wrap{display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap}
+/* cta + footer */
+.cta{text-align:center;overflow:hidden;background:radial-gradient(900px 500px at 50% 120%,rgba(56,189,248,.16),transparent 65%),var(--night)}
+.cta .hero-ctas{margin-top:40px}
+footer{padding:56px 0 48px;border-top:1px solid var(--nhair)}
+.foot{display:flex;flex-wrap:wrap;gap:32px;justify-content:space-between;align-items:flex-start}
+.foot .tag{color:var(--nmuted);font-size:15px;margin-top:10px}
+.foot ul{list-style:none;margin:0;padding:0;display:flex;gap:28px;flex-wrap:wrap;font-size:14px;color:var(--nmuted)}
+.foot ul a{color:var(--nink);text-decoration:none}
+.foot ul a:hover{text-decoration:underline}
+.legal{margin-top:40px;font-size:13px;color:var(--nmuted);display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px}
 
-@media (max-width:920px){
-  .story-grid,.ins,.prices{grid-template-columns:1fr}
-  .nums{grid-template-columns:1fr 1fr}
-  .sticky{top:84px;margin-bottom:24px}
-  .beat{min-height:90vh;opacity:1}
-  .nav .links{display:none}
-}
-@media (max-width:540px){
-  .nums{grid-template-columns:1fr}
-  .btn{width:100%}
-  .card .btn{align-self:stretch}
-}
 @media (prefers-reduced-motion:reduce){
   html{scroll-behavior:auto}
-  .aurora i,.eyebrow i,.marq .track{animation:none}
-  .rv{opacity:1;transform:none;transition:none}
-  .beat{opacity:1}
+  .js .reveal,.js .hero .intro,.js .stage-rise{opacity:1!important;transform:none!important;animation:none!important;transition:none!important}
+  .js .fan:not(.in) .f-l,.js .fan:not(.in) .f-r,.js .fan:not(.in) .f-c{opacity:1}
+  .js .fan:not(.in) .f-c{transform:translateX(-50%)}
+  .js .fan:not(.in) .f-l{transform:translateX(-50%) translateX(-60%) rotateY(28deg) rotateZ(-5deg) scale(.92)}
+  .js .fan:not(.in) .f-r{transform:translateX(-50%) translateX(60%) rotateY(-28deg) rotateZ(5deg) scale(.92)}
+  .mq-row{animation:none}
+  .tile,.tile:hover{transition:none;transform:none}
+}
+@media (prefers-reduced-motion:reduce) and (max-width:640px){
+  .js .fan:not(.in) .f-l{transform:translateX(-50%) translateX(-46%) rotateY(26deg) rotateZ(-4deg) scale(.9)}
+  .js .fan:not(.in) .f-r{transform:translateX(-50%) translateX(46%) rotateY(-26deg) rotateZ(4deg) scale(.9)}
 }
 </style>
 </head>
 <body>
+<a class="skip" href="#main">Skip to content</a>
 
-<header id="hdr">
-  <div class="wrap nav">
-    <a href="#top" class="logo" aria-label="DECLYF home">
-      <svg viewBox="0 0 100 100" aria-hidden="true"><rect width="100" height="100" rx="26" fill="#22D3EE"/><path fill-rule="evenodd" fill="#070B0F" d="M34 26H52C66 26 76 36 76 50C76 64 66 74 52 74H34ZM46 38V62H52C59 62 64 57 64 50C64 43 59 38 52 38Z"/></svg>
-      DECLYF
-    </a>
-    <div class="sp"></div>
-    <nav class="links" aria-label="Main">
-      <a href="#product">Product</a>
-      <a href="#install">Install</a>
-      <a href="#pricing">Pricing</a>
-      <a href="#faq">FAQ</a>
+<header class="nav" id="nav">
+  <div class="wrap nav-in">
+    <a class="wordmark" href="#top" aria-label="DECLYF home">DECLYF</a>
+    <nav aria-label="Main">
+      <ul>
+        <li><a href="#how">How it works</a></li>
+        <li><a href="#features">Features</a></li>
+        <li><a href="#pricing">Pricing</a></li>
+        <li><a href="#faq">FAQ</a></li>
+      </ul>
     </nav>
-    <button class="tg" id="theme" aria-label="Switch between dark and light">
-      <svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z"/></svg>
-      <svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4.2"/><path d="M12 2v2.6M12 19.4V22M4.2 4.2l1.9 1.9M17.9 17.9l1.9 1.9M2 12h2.6M19.4 12H22M4.2 19.8l1.9-1.9M17.9 6.1l1.9-1.9"/></svg>
-    </button>
-    <a class="btn sm" href="#install">Install free</a>
+    <a class="btn btn-p" href="app/">Open web app</a>
   </div>
 </header>
 
-<main id="top">
+<main id="main">
 
-<!-- ================= HERO ================= -->
-<div class="hero">
-  <div class="aurora" aria-hidden="true"><i></i><i></i><i></i></div>
-  <div class="wrap hero-in">
-    <span class="eyebrow rv in"><i></i> Now in early access</span>
-    <h1 class="rv in">Coaching that runs on <span class="grad">real numbers.</span></h1>
-    <p class="lead rv in d1">Your plans go out. Their meals, lifts and weight come back. DECLYF keeps both sides looking at the same truth &mdash; on the phone, and on the web.</p>
-    <div class="cta rv in d2">
-      <a class="btn" href="#install">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v11m0 0-4.5-4.5M12 15l4.5-4.5M5 20h14"/></svg>
-        Install the app
-      </a>
-      <a class="btn ghost" href="app/">Open the web app</a>
+<!-- HERO -->
+<section class="hero dark band" id="top" aria-labelledby="hero-h">
+  <div class="wrap center">
+    <h1 class="h-xl intro" id="hero-h">Coach every client by the numbers.</h1>
+    <p class="lede intro d1">Nutrition and progress tracking for online fitness coaches and their clients.</p>
+    <div class="hero-ctas intro d2">
+      <a class="btn btn-p" href="app/">Start coaching free</a>
+      <a class="link" href="app/">Track on your own <span aria-hidden="true">›</span></a>
     </div>
-    <p class="micro rv in d3">Free for clients &middot; Android &amp; iPhone &middot; Works offline</p>
+    <p class="hero-note intro d3"><b>Free</b> for clients. Android, iPhone and web.</p>
   </div>
-</div>
+  <div class="stage" id="stage">
+    <div class="stage-rise">
+      <div class="stage-in" id="stageIn">
+        <div class="phone ph-l" id="phL"><div class="screen"><img src="img/food-dark.webp" width="1170" height="2532" alt="DECLYF Food screen: today's breakfast and lunch logged with calories and macros"></div></div>
+        <div class="phone ph-r" id="phR"><div class="screen"><img src="img/progress-dark.webp" width="1170" height="2532" alt="DECLYF Progress screen: weight journey from 86.5 kg to 81.8 kg with averages for 90 days"></div></div>
+        <div class="phone ph-c"><div class="screen"><img src="img/today-dark.webp" width="1170" height="2532" fetchpriority="high" alt="DECLYF Today screen: 714 kcal left of a 2020 kcal goal, with protein, carbs and fat bars"></div></div>
+      </div>
+    </div>
+    <div class="stage-fade"></div>
+  </div>
+</section>
 
-<!-- ================= SCROLLY: the device plays the product ================= -->
-<div class="story" id="product">
-  <div class="wrap story-grid">
+<!-- SHOWCASE -->
+<section class="light band" id="showcase" aria-labelledby="show-h">
+  <div class="wrap center head">
+    <p class="eyebrow reveal">The app</p>
+    <h2 class="h-lg reveal" id="show-h">One screen at a time.</h2>
+    <p class="lede reveal">Today, Food, Train and Progress. Real screens from the DECLYF web app, with a sample user.</p>
+  </div>
 
-    <div class="sticky">
-      <div class="tilt">
-        <div class="phone" id="device">
-          <div class="ph-top">
-            <svg viewBox="0 0 100 100" aria-hidden="true"><rect width="100" height="100" rx="26" fill="#22D3EE"/><path fill-rule="evenodd" fill="#070B0F" d="M34 26H52C66 26 76 36 76 50C76 64 66 74 52 74H34ZM46 38V62H52C59 62 64 57 64 50C64 43 59 38 52 38Z"/></svg>
-            <span>DECLYF</span><em id="scrName">TODAY</em>
+  <div class="show-stack">
+    <div class="sc-track" role="list" aria-label="App screens">
+      <article class="slide" role="listitem">
+        <div class="phone"><div class="screen"><img src="img/today-light.webp" width="1170" height="2532" loading="lazy" alt="Today screen in light theme: calorie ring with 714 kcal left"></div></div>
+        <div><p class="step-n">Today</p><h3>The day in one ring.</h3><p>1306 of 2020 kcal eaten. 81 g protein to go.</p></div>
+      </article>
+      <article class="slide" role="listitem">
+        <div class="phone"><div class="screen"><img src="img/food-light.webp" width="1170" height="2532" loading="lazy" alt="Food screen in light theme: meals logged with calories and macros per item"></div></div>
+        <div><p class="step-n">Food</p><h3>Log a meal in seconds.</h3><p>7,000+ foods built in, millions more online, plus barcode scan.</p></div>
+      </article>
+      <article class="slide" role="listitem">
+        <div class="phone"><div class="screen"><img src="img/train-light.webp" width="1170" height="2532" loading="lazy" alt="Train screen in light theme: Tuesday plan, 3 of 4 exercises done with weights and reps"></div></div>
+        <div><p class="step-n">Train</p><h3>Plan the week. Tick each set.</h3><p>Weights and reps, set by set. 3 of 4 done.</p></div>
+      </article>
+      <article class="slide" role="listitem">
+        <div class="phone"><div class="screen"><img src="img/progress2-light.webp" width="1170" height="2532" loading="lazy" alt="Progress screen in light theme: calories per day and a falling weight line"></div></div>
+        <div><p class="step-n">Progress</p><h3>See the trend, not the noise.</h3><p>90 days of calories and weight. 4.7 kg down.</p></div>
+      </article>
+    </div>
+    <p class="sc-hint">Swipe to see each screen</p>
+  </div>
+
+  <div class="show-pin" id="pin" aria-hidden="true">
+    <div class="pin-sticky">
+      <div class="wrap pin-grid">
+        <div class="pin-copy">
+          <p class="eyebrow">The app</p>
+          <h2 class="h-lg">One screen<br>at a time.</h2>
+          <div class="panes">
+            <div class="pane on"><p class="step-n">Today</p><h3>The day in one ring.</h3><p>Calories left, protein, carbs and fat against the targets you set. <span class="num tnum">1306</span> of <span class="num tnum">2020</span> kcal eaten. <span class="num tnum">81 g</span> protein to go.</p></div>
+            <div class="pane"><p class="step-n">Food</p><h3>Log a meal in seconds.</h3><p><span class="num tnum">7,000+</span> foods built in, plus millions of packaged products from Open Food Facts, USDA and barcode scan. Every meal adds up as you go.</p></div>
+            <div class="pane"><p class="step-n">Train</p><h3>Plan the week. Tick each set.</h3><p>Weights and reps, set by set, against the plan for the day. <span class="num tnum">3 of 4</span> done, one to go.</p></div>
+            <div class="pane"><p class="step-n">Progress</p><h3>See the trend, not the noise.</h3><p>Calories per day and weight over 90 days. <span class="num tnum">86.5</span> to <span class="num tnum">81.8 kg</span> since September.</p></div>
           </div>
-
-          <div class="screens">
-            <!-- 1 - today -->
-            <div class="screen on" data-screen="0">
-              <div class="ph-h">Today</div>
-              <div class="ph-s">Monday &middot; day 34</div>
-              <div class="tile">
-                <div class="ringrow">
-                  <svg class="ringsvg" viewBox="0 0 100 100" aria-hidden="true">
-                    <circle cx="50" cy="50" r="36" stroke="#1E2A36"/>
-                    <circle id="kRing" cx="50" cy="50" r="36" stroke="#22D3EE" stroke-dasharray="226" stroke-dashoffset="226" transform="rotate(-90 50 50)"/>
-                  </svg>
-                  <div>
-                    <div class="big tnum" id="kNum">0</div>
-                    <div class="cap">of 2,400 kcal eaten</div>
-                    <div class="macros">
-                      <div class="mac"><div class="b"><i id="mP"></i></div><div class="l">PROTEIN</div></div>
-                      <div class="mac"><div class="b o"><i id="mC"></i></div><div class="l">CARBS</div></div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="tile">
-                <div class="meal" data-meal="0"><span>Oats &amp; whey</span><i>420</i></div>
-                <div class="meal" data-meal="1"><span>Chicken rice bowl</span><i>640</i></div>
-                <div class="meal" data-meal="2"><span>Greek yogurt</span><i>180</i></div>
-                <div class="meal" data-meal="3"><span>Salmon &amp; greens</span><i>600</i></div>
-              </div>
-            </div>
-
-            <!-- 2 - train -->
-            <div class="screen" data-screen="1">
-              <div class="ph-h">Train</div>
-              <div class="ph-s">Chest &middot; Shoulders &middot; Triceps</div>
-              <div class="tile">
-                <div class="volume"><span class="cap">Volume today</span><span class="big tnum" id="volNum" style="font-size:21px">0 kg</span></div>
-              </div>
-              <div class="tile">
-                <div class="ex" data-ex="0"><span>Bench Press</span><i>60 &times; 8</i><div class="chk"><svg viewBox="0 0 24 24" fill="none" stroke="#04222A" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"><path d="m5 13 4 4L19 7"/></svg></div></div>
-                <div class="ex" data-ex="1"><span>Incline Press</span><i>22 &times; 10</i><div class="chk"><svg viewBox="0 0 24 24" fill="none" stroke="#04222A" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"><path d="m5 13 4 4L19 7"/></svg></div></div>
-                <div class="ex" data-ex="2"><span>Overhead Press</span><i>35 &times; 8</i><div class="chk"><svg viewBox="0 0 24 24" fill="none" stroke="#04222A" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"><path d="m5 13 4 4L19 7"/></svg></div></div>
-                <div class="ex" data-ex="3"><span>Lateral Raise</span><i>10 &times; 14</i><div class="chk"><svg viewBox="0 0 24 24" fill="none" stroke="#04222A" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"><path d="m5 13 4 4L19 7"/></svg></div></div>
-                <div class="ex" data-ex="4"><span>Triceps Pushdown</span><i>30 &times; 12</i><div class="chk"><svg viewBox="0 0 24 24" fill="none" stroke="#04222A" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"><path d="m5 13 4 4L19 7"/></svg></div></div>
-              </div>
-            </div>
-
-            <!-- 3 - progress -->
-            <div class="screen" data-screen="2">
-              <div class="ph-h">Progress</div>
-              <div class="ph-s">Last 12 weeks</div>
-              <div class="tile">
-                <svg viewBox="0 0 260 120" style="width:100%;height:auto" aria-hidden="true">
-                  <defs><linearGradient id="gw" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#22D3EE" stop-opacity=".34"/><stop offset="1" stop-color="#22D3EE" stop-opacity="0"/></linearGradient></defs>
-                  <path id="wFill" d="M6 22 L48 32 L90 28 L132 50 L174 64 L216 82 L254 96 L254 118 L6 118 Z" fill="url(#gw)" opacity="0"/>
-                  <path id="wLine" d="M6 22 L48 32 L90 28 L132 50 L174 64 L216 82 L254 96" fill="none" stroke="#22D3EE" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/>
-                  <circle id="wDot" cx="6" cy="22" r="5" fill="#FF8A45"/>
-                </svg>
-                <div class="statrow">
-                  <div><b class="tnum" id="wNow">82.0 kg</b><div class="cap">weight</div></div>
-                  <div><b class="tnum" id="wDays">0</b><div class="cap">day streak</div></div>
-                  <div><b class="tnum" id="wAdh">0%</b><div class="cap">plan done</div></div>
-                </div>
-              </div>
-            </div>
+          <div class="dots" id="dots">
+            <button type="button" tabindex="-1" class="on"><span class="bar"><i></i></span>Today</button>
+            <button type="button" tabindex="-1"><span class="bar"><i></i></span>Food</button>
+            <button type="button" tabindex="-1"><span class="bar"><i></i></span>Train</button>
+            <button type="button" tabindex="-1"><span class="bar"><i></i></span>Progress</button>
           </div>
+          <p class="caption">Real screens from the DECLYF web app, with a sample user.</p>
         </div>
-      </div>
-
-      <div class="rail" aria-hidden="true">
-        <span><i data-rail="0"></i></span><span><i data-rail="1"></i></span><span><i data-rail="2"></i></span>
-      </div>
-    </div>
-
-    <div class="beats" id="beats">
-      <div class="beat" data-beat="0">
-        <div class="n">Every day</div>
-        <h3>Food logged in seconds, not in a notebook</h3>
-        <p>Search any food, scan a barcode, or pick from what they ate yesterday. The ring fills, the macros move, and you see it the moment they log it.</p>
-        <ul>
-          <li>Search millions of foods and packaged products</li>
-          <li>Barcode scanning built in</li>
-          <li>Targets set from their goal, height and weight</li>
-        </ul>
-      </div>
-      <div class="beat" data-beat="1">
-        <div class="n">Every session</div>
-        <h3>The plan you wrote, ticked off set by set</h3>
-        <p>Your weekly plan lands on their phone. They enter the weight, tick the set, and the volume adds itself up. Nothing is remembered wrong.</p>
-        <ul>
-          <li>Exercises, sets and rep ranges per weekday</li>
-          <li>Last week's weights shown as they lift</li>
-          <li>Cardio with distance, pace and calories</li>
-        </ul>
-      </div>
-      <div class="beat" data-beat="2">
-        <div class="n">Every week</div>
-        <h3>Progress you can actually point at</h3>
-        <p>Weight against what they ate and lifted, week by week. When somebody stalls you can see exactly where, instead of guessing on a call.</p>
-        <ul>
-          <li>Weight, calories and adherence on one view</li>
-          <li>Streaks that keep people logging</li>
-          <li>A weekly recap they can share</li>
-        </ul>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- ================= MARQUEE ================= -->
-<div class="marq" aria-hidden="true">
-  <div class="track" id="track"></div>
-</div>
-
-<!-- ================= NUMBERS ================= -->
-<section>
-  <div class="wrap">
-    <div class="head mid rv"><h2>Enough depth to never leave the app</h2></div>
-    <div class="nums">
-      <div class="num rv"><b class="tnum" data-count="3" data-suffix="M+">0</b><span>Foods and packaged products searchable worldwide</span></div>
-      <div class="num rv d1"><b class="tnum" data-count="130" data-suffix="+">0</b><span>Exercises grouped by muscle, logged set by set</span></div>
-      <div class="num rv d2"><b class="tnum" data-count="2">0</b><span>Global nutrition databases queried live, plus barcodes</span></div>
-      <div class="num rv d3"><b>Offline</b><span>Everything saves on the phone first and syncs later</span></div>
-    </div>
-  </div>
-</section>
-
-<!-- ================= INSTALL ================= -->
-<div class="install" id="install">
-  <div class="wrap" style="padding-block:clamp(50px,7vw,88px)">
-    <div class="head mid rv">
-      <h2>Two ways in</h2>
-      <p>The app for your clients. The web for you.</p>
-    </div>
-
-    <div class="ins">
-      <div class="card rv">
-        <div class="os">
-          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.6 9.5c-.1 0-2.3.1-3.6 2-1.1 1.6-.7 3.6.6 4.5-.5 1.4-1.4 2.9-2.4 2.9-.9 0-1.2-.6-2.3-.6s-1.4.6-2.3.6c-1.3 0-3.6-3.3-3.6-6.4 0-3.1 2-4.5 3.6-4.5 1 0 1.8.6 2.4.6.5 0 1.5-.7 2.7-.6.9 0 2.4.3 3.3 1.6-.1 0-1.9 1-1.9 2.9 0 2.2 1.9 3 1.9 3M13.9 5.6c.5-.6.9-1.5.8-2.4-.8 0-1.8.5-2.4 1.2-.5.6-.9 1.5-.8 2.4.9.1 1.8-.5 2.4-1.2"/></svg>
-          <h3>iPhone</h3><span class="tag">No file needed</span>
+        <div class="pin-phone">
+          <div class="phone"><div class="screen">
+            <img class="on" src="img/today-light.webp" width="1170" height="2532" loading="lazy" alt="">
+            <img src="img/food-light.webp" width="1170" height="2532" loading="lazy" alt="">
+            <img src="img/train-light.webp" width="1170" height="2532" loading="lazy" alt="">
+            <img src="img/progress2-light.webp" width="1170" height="2532" loading="lazy" alt="">
+          </div></div>
         </div>
-        <p class="dim" style="font-size:15px" id="iosLede">There is nothing to download on iPhone &mdash; Apple only allows apps from the App Store. Instead DECLYF installs straight from Safari and behaves like any other app: its own icon, full screen, no browser bars.</p>
-        <div class="steps-s" id="iosSteps">
-          <div>Open this page in Safari and tap below.</div>
-          <div>Tap the Share icon <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:15px;height:15px;display:inline-block;vertical-align:-2px"><path d="M12 15V3m0 0L8.5 6.5M12 3l3.5 3.5"/><path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-7"/></svg> at the bottom of Safari.</div>
-          <div>Scroll down and choose &ldquo;Add to Home Screen&rdquo;.</div>
-        </div>
-        <a class="btn" href="app/" id="iosBtn">Open on iPhone</a>
-      </div>
-
-      <div class="card rv d1">
-        <div class="os">
-          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6 9h12v8.2c0 .8-.6 1.4-1.4 1.4h-.8V21a1.2 1.2 0 1 1-2.4 0v-2.4h-2.8V21a1.2 1.2 0 1 1-2.4 0v-2.4h-.8c-.8 0-1.4-.6-1.4-1.4Zm-2.3.1a1.2 1.2 0 0 1 1.2 1.2v4.9a1.2 1.2 0 0 1-2.4 0v-4.9a1.2 1.2 0 0 1 1.2-1.2m16.6 0a1.2 1.2 0 0 1 1.2 1.2v4.9a1.2 1.2 0 1 1-2.4 0v-4.9a1.2 1.2 0 0 1 1.2-1.2M15.6 3.6l1.1-1.9a.3.3 0 0 0-.5-.3l-1.1 2a7 7 0 0 0-6.2 0l-1.1-2a.3.3 0 0 0-.5.3l1.1 1.9A6 6 0 0 0 6 8.1h12a6 6 0 0 0-2.4-4.5M9.5 6.3a.65.65 0 1 1 0-1.3.65.65 0 0 1 0 1.3m5 0a.65.65 0 1 1 0-1.3.65.65 0 0 1 0 1.3"/></svg>
-          <h3>Android</h3><span class="tag soft" id="apkTag">Checking&hellip;</span>
-        </div>
-        <p class="dim" style="font-size:15px">Install the full app directly. The button always serves the newest build.</p>
-        <div class="steps-s">
-          <div>Tap Download and open the file.</div>
-          <div>Allow &ldquo;Install from this source&rdquo;.</div>
-          <div>To update later, download again.</div>
-        </div>
-        <a class="btn" href="https://github.com/declyf/declyf.github.io/releases/latest/download/declyf.apk" id="apkBtn">Download APK</a>
-      </div>
-    </div>
-
-    <div class="webapp rv d2">
-      <div class="t">
-        <h3>Coaching from your desk</h3>
-        <p>The web app is the same DECLYF on a big screen &mdash; build plans, open any client and read their week without touching your phone.</p>
-      </div>
-      <a class="btn ghost" href="app/">Open the web app</a>
-    </div>
-  </div>
-</div>
-
-<!-- ================= PRICING ================= -->
-<section id="pricing">
-  <div class="wrap">
-    <div class="head mid rv">
-      <h2>Simple while we grow</h2>
-      <p>Paid coach plans come later. You will hear from us long before anything changes.</p>
-    </div>
-    <div class="prices">
-      <div class="price rv">
-        <h3>Clients</h3>
-        <div class="amt">Free</div>
-        <ul>
-          <li>Food, training and weight logging</li>
-          <li>Streaks and a weekly recap to share</li>
-          <li>Their coach's plan, always in sync</li>
-          <li>Works with no signal</li>
-        </ul>
-      </div>
-      <div class="price hl rv d1">
-        <h3>Coaches</h3>
-        <div class="amt">Early access</div>
-        <ul>
-          <li>Unlimited clients while we launch</li>
-          <li>Training and food plans per client</li>
-          <li>Live view of every client's week</li>
-          <li>Your own invite code</li>
-        </ul>
-        <div class="ft">Nothing to pay today.</div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ================= FAQ ================= -->
-<section id="faq" style="padding-top:0">
+<!-- COACHES -->
+<section class="dark band coach" id="how" aria-labelledby="coach-h">
+  <div class="wrap center head">
+    <p class="eyebrow reveal">For coaches</p>
+    <h2 class="h-lg reveal" id="coach-h">Your whole roster. One list.</h2>
+    <p class="lede reveal">Who logged, who trained and who needs a nudge. Open any client to see their week.</p>
+  </div>
+  <div class="fan" id="fan">
+    <div class="phone f-l"><div class="screen"><img src="img/client-dark.webp" width="1170" height="2532" loading="lazy" alt="Client detail for a demo client: 6 of 7 days logged, 5 day streak, 1921 kcal average"></div></div>
+    <div class="phone f-r"><div class="screen"><img src="img/train-dark.webp" width="1170" height="2532" loading="lazy" alt="Train screen: the plan for Tuesday with logged sets"></div></div>
+    <div class="phone f-c"><div class="screen"><img src="img/clients-dark.webp" width="1170" height="2532" loading="lazy" alt="Coach client list with demo clients marked on track, slipping or needs a nudge"></div></div>
+  </div>
   <div class="wrap">
-    <div class="head mid rv"><h2>Questions</h2></div>
-    <div class="faq rv">
-      <details open><summary>Why is there no app file to download for iPhone?</summary><p>Apple does not allow iPhone apps to be installed from anywhere except the App Store, so no download link can exist &mdash; that is Apple's rule, not a gap in DECLYF. The way around it is the one Apple does support: open the site in Safari, tap Share, then <strong>Add to Home Screen</strong>. You get an icon on your home screen and a full-screen app with no browser bars. Android is different, which is why it gets a real file.</p></details>
-      <details><summary>Will DECLYF be on the App Store?</summary><p>Yes, that is the plan. It needs an Apple Developer account and a review period, so the home-screen install is how iPhone users get it in the meantime.</p></details>
-      <details><summary>Can coaches work on a laptop?</summary><p>Yes. The web app runs the whole of DECLYF in a browser, which is where most coaches build plans and review the week.</p></details>
-      <details><summary>Why is Android a direct download?</summary><p>So every improvement reaches people the same day instead of waiting on store review. A Play Store listing is planned.</p></details>
-      <details><summary>Do clients pay anything?</summary><p>No. The client app is free, including the plans their coach sends.</p></details>
-      <details><summary>Where does the data live?</summary><p>On the phone first, then backed up to a private database. Only the client and the coach they joined can see it, and a client can leave a coach at any time.</p></details>
+    <ol class="steps">
+      <li class="reveal"><span class="n">01</span><h3>Create your account</h3><p>Sign up and get coach access. It takes a minute.</p></li>
+      <li class="reveal" style="--d:.08s"><span class="n">02</span><h3>Bring in clients</h3><p>Share your code or add a client by email. They accept, and they are in.</p></li>
+      <li class="reveal" style="--d:.16s"><span class="n">03</span><h3>Build their plan</h3><p>Calorie and protein targets, meals, and a training plan for each weekday.</p></li>
+      <li class="reveal" style="--d:.24s"><span class="n">04</span><h3>Check in daily</h3><p>See their meals, lifts and weight every day, on one screen.</p></li>
+    </ol>
+    <p class="caption">Client screens show the demo clients built into the coach view.</p>
+  </div>
+</section>
+
+<!-- CLIENTS -->
+<section class="light band" id="clients" aria-labelledby="cl-h">
+  <div class="wrap split">
+    <div>
+      <p class="eyebrow reveal">For clients</p>
+      <h2 class="h-lg reveal" id="cl-h">Free for clients. Three steps.</h2>
+      <p class="lede reveal" style="margin-top:20px">Your coach sets the plan. You log against it. Nothing to pay, ever.</p>
+      <ol class="steps">
+        <li class="reveal"><span class="n">01</span><h3>Install the app</h3><p>Android and iPhone home-screen app, or the web.</p></li>
+        <li class="reveal" style="--d:.08s"><span class="n">02</span><h3>Join your coach</h3><p>Accept their request or enter their code. Or track on your own.</p></li>
+        <li class="reveal" style="--d:.16s"><span class="n">03</span><h3>Log it</h3><p>Food by search or barcode. Workouts set by set. Weight each morning.</p></li>
+      </ol>
+      <div class="split-actions reveal">
+        <a class="btn btn-p" href="app/">Track on your own</a>
+        <a class="link" href="#install">How to install <span aria-hidden="true">›</span></a>
+      </div>
+    </div>
+    <div class="media reveal">
+      <div class="phone"><div class="screen"><img src="img/search-light.webp" width="1170" height="2532" loading="lazy" alt="Add food search for paneer showing paneer dishes with calories per serving"></div></div>
+    </div>
+  </div>
+  <div class="marquee" id="mq" aria-label="Examples from the bundled food library">
+    <div class="mq-row" aria-hidden="true">
+      <span>Poha, bowl <em>161 kcal</em></span><span>Masala dosa <em>345 kcal</em></span><span>Dhokla, piece <em>86 kcal</em></span><span>Dal makhani, bowl <em>262 kcal</em></span><span>Chicken curry, bowl <em>320 kcal</em></span><span>Chapati <em>73 kcal</em></span><span>Idli <em>35 kcal</em></span><span>Paneer tikka, plate <em>412 kcal</em></span><span>Sambar, bowl <em>249 kcal</em></span><span>Rajmah curry, bowl <em>172 kcal</em></span><span>Vegetable biryani, plate <em>526 kcal</em></span><span>Boiled egg <em>69 kcal</em></span><span>Kadhai paneer, bowl <em>344 kcal</em></span><span>Plain dosa <em>138 kcal</em></span>
+      <span>Poha, bowl <em>161 kcal</em></span><span>Masala dosa <em>345 kcal</em></span><span>Dhokla, piece <em>86 kcal</em></span><span>Dal makhani, bowl <em>262 kcal</em></span><span>Chicken curry, bowl <em>320 kcal</em></span><span>Chapati <em>73 kcal</em></span><span>Idli <em>35 kcal</em></span><span>Paneer tikka, plate <em>412 kcal</em></span><span>Sambar, bowl <em>249 kcal</em></span><span>Rajmah curry, bowl <em>172 kcal</em></span><span>Vegetable biryani, plate <em>526 kcal</em></span><span>Boiled egg <em>69 kcal</em></span><span>Kadhai paneer, bowl <em>344 kcal</em></span><span>Plain dosa <em>138 kcal</em></span>
+    </div>
+    <p class="sr">Examples: poha 161 kcal a bowl, masala dosa 345 kcal, chicken curry 320 kcal a bowl, chapati 73 kcal.</p>
+  </div>
+  <p class="mq-cap">Per serving, from the bundled library.</p>
+</section>
+
+<!-- LAPTOP -->
+<section class="dark band" id="laptop" aria-labelledby="lap-h">
+  <div class="wrap center head">
+    <p class="eyebrow reveal">Web app</p>
+    <h2 class="h-lg reveal" id="lap-h">Works on your laptop.</h2>
+    <p class="lede reveal">Same account, same data. A bigger screen for building plans and reviewing clients.</p>
+  </div>
+  <div class="wrap reveal">
+    <div class="browser">
+      <div class="bar-top"><i></i><i></i><i></i><span class="url">declyf.github.io/app</span></div>
+      <div class="b-view" id="bview">
+        <img class="on" src="img/d-today-dark.webp" width="2880" height="1800" loading="lazy" alt="DECLYF web app on a laptop: Today screen with sidebar navigation, calorie ring and a 29 day streak">
+        <img src="img/d-progress-dark.webp" width="2880" height="1800" loading="lazy" alt="DECLYF web app on a laptop: Progress screen with weight journey and calories per day">
+        <img src="img/d-client-dark.webp" width="2880" height="1800" loading="lazy" alt="DECLYF web app on a laptop: a demo client's detail with weekly stats and last 14 days">
+      </div>
+    </div>
+    <div class="tabs" role="tablist" aria-label="Web app screens">
+      <button type="button" role="tab" aria-selected="true">Today</button>
+      <button type="button" role="tab" aria-selected="false" tabindex="-1">Progress</button>
+      <button type="button" role="tab" aria-selected="false" tabindex="-1">Client</button>
     </div>
   </div>
 </section>
 
-<!-- ================= FINAL ================= -->
-<section class="final">
+<!-- FEATURES -->
+<section class="light band" id="features" aria-labelledby="feat-h">
   <div class="wrap">
-    <h2 class="rv">Coach smarter. Live dedicated.</h2>
-    <p class="rv d1">Install DECLYF and connect your first client today.</p>
-    <div class="cta rv d2">
-      <a class="btn" href="#install">Install the app</a>
-      <a class="btn ghost" href="app/">Open the web app</a>
+    <div class="center head">
+      <p class="eyebrow reveal">Features</p>
+      <h2 class="h-lg reveal" id="feat-h">What ships today.</h2>
+      <p class="lede reveal">No roadmap promises. Everything here is in the app now.</p>
+    </div>
+    <div class="bento">
+      <div class="cell w4 reveal"><div class="tile has-crop">
+        <h3>Find any food fast.</h3>
+        <p>Search the bundled library first, then Open Food Facts and USDA when you need a brand or a packet.</p>
+        <div class="srcs"><span>7,000+ built-in foods</span><span>Open Food Facts</span><span>USDA</span></div>
+        <div class="crop"><div class="phone"><div class="screen"><img src="img/search-light.webp" width="1170" height="2532" loading="lazy" alt="Food search results for paneer"></div></div></div>
+      </div></div>
+      <div class="cell reveal" style="--d:.06s"><div class="tile">
+        <div class="ic" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M3 7V5a2 2 0 0 1 2-2h2M17 3h2a2 2 0 0 1 2 2v2M21 17v2a2 2 0 0 1-2 2h-2M7 21H5a2 2 0 0 1-2-2v-2M7 8v8M10.5 8v8M14 8v8M17 8v8"/></svg></div>
+        <h3>Scan a barcode.</h3><p>Point the camera at a packet. Calories and macros from the label go into the day.</p>
+      </div></div>
+      <div class="cell reveal" style="--d:.12s"><div class="tile">
+        <div class="big tnum">130+</div>
+        <h3>Exercises ready to plan.</h3><p>Grouped by muscle, with push, pull and leg day routines. Add your own.</p>
+      </div></div>
+      <div class="cell w3 reveal"><div class="tile has-crop">
+        <h3>Weight and progress calendar.</h3><p>The weight line, calories per day and every logged day on a calendar.</p>
+        <div class="crop"><div class="phone"><div class="screen"><img src="img/progress-light.webp" width="1170" height="2532" loading="lazy" alt="Weight journey card: start 86.5 kg, now 81.8 kg, goal 76 kg"></div></div></div>
+      </div></div>
+      <div class="cell w3 reveal" style="--d:.06s"><div class="tile has-crop">
+        <h3>Light and dark.</h3><p>Follows the phone, or pick one in Profile.</p>
+        <div class="crop"><div class="phone"><div class="screen"><img src="img/today-light.webp" width="1170" height="2532" loading="lazy" alt="Today screen in light theme"></div></div><div class="phone"><div class="screen"><img src="img/today-dark.webp" width="1170" height="2532" loading="lazy" alt="Today screen in dark theme"></div></div></div>
+      </div></div>
+      <div class="cell reveal"><div class="tile">
+        <div class="big heat tnum">29</div>
+        <h3>Streaks.</h3><p>Days logged in a row, on the Today screen. Day 29. Still here.</p>
+      </div></div>
+      <div class="cell reveal" style="--d:.06s"><div class="tile">
+        <div class="ic" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 0 1-15.4 6.4M3 12A9 9 0 0 1 18.4 5.6"/><path d="M18 2v4h-4M6 22v-4h4"/></svg></div>
+        <h3>Works offline. Then syncs.</h3><p>Everything is saved on the phone first and sent when the signal is back.</p>
+      </div></div>
+      <div class="cell reveal" style="--d:.12s"><div class="tile">
+        <div class="ic" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M2 20h20"/></svg></div>
+        <h3>Web app on a laptop.</h3><p>The full app in a browser, with a sidebar. Good for building plans.</p>
+      </div></div>
     </div>
   </div>
 </section>
 
+<!-- STATS -->
+<section class="dark band" aria-labelledby="stats-h">
+  <div class="wrap">
+    <div class="head">
+      <h2 class="h-lg reveal" id="stats-h">Built for the work.</h2>
+      <p class="lede reveal">The numbers behind the app, as it ships today.</p>
+    </div>
+    <div class="stats">
+      <div class="stat reveal"><div class="v" data-count="7000" data-suffix="+">7,000+</div><p class="l">Foods built in</p></div>
+      <div class="stat reveal" style="--d:.08s"><div class="v" data-count="130" data-suffix="+">130+</div><p class="l">Exercises</p></div>
+      <div class="stat reveal" style="--d:.16s"><div class="v" data-count="3">3</div><p class="l">Platforms: Android, iPhone, web</p></div>
+      <div class="stat reveal" style="--d:.24s"><div class="v heat">$0</div><p class="l">For clients</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section class="light band" id="pricing" aria-labelledby="price-h">
+  <div class="wrap">
+    <div class="center head">
+      <p class="draft reveal">Draft pricing</p>
+      <h2 class="h-lg reveal" id="price-h">Pay by client count.</h2>
+      <p class="lede reveal">Free for clients and solo trackers. Coaches move up as their roster grows. Coach plans are free during early access.</p>
+    </div>
+    <div class="plans">
+      <div class="plan reveal"><h3>Free</h3><div class="price"><b>$0</b></div><p class="cap">Solo trackers and clients</p><p>Food, workout and weight logging. Join any coach.</p><a class="btn btn-q" href="app/">Start free</a></div>
+      <div class="plan reveal" style="--d:.06s"><h3>Starter</h3><div class="price"><b>$5</b><span>/ month</span></div><p class="cap">Up to 5 clients</p><p>Client list, plans by weekday, daily logs.</p><a class="btn btn-q" href="app/">Start coaching free</a></div>
+      <div class="plan hi reveal" style="--d:.12s"><span class="tag">Recommended</span><h3>Growth</h3><div class="price"><b>$10</b><span>/ month</span></div><p class="cap">Up to 15 clients</p><p>Everything in Starter, for a growing roster.</p><a class="btn btn-p" href="app/">Start coaching free</a></div>
+      <div class="plan reveal"><h3>Pro</h3><div class="price"><b>$25</b><span>/ month</span></div><p class="cap">Up to 50 clients</p><p>Everything in Starter, for a full-time coach.</p><a class="btn btn-q" href="app/">Start coaching free</a></div>
+      <div class="plan reveal" style="--d:.06s"><h3>Studio</h3><div class="price"><b>$60</b><span>/ month</span></div><p class="cap">Up to 150 clients</p><p>Everything in Starter, for small teams.</p><a class="btn btn-q" href="app/">Start coaching free</a></div>
+      <div class="plan reveal" style="--d:.12s"><h3>Scale</h3><div class="price"><b>$150</b><span>/ month</span></div><p class="cap">Up to 500 clients</p><p>Everything in Starter, for large rosters.</p><a class="btn btn-q" href="app/">Start coaching free</a></div>
+    </div>
+    <p class="price-note reveal">Draft pricing, not final. There is no payment step in the app yet, and coach plans are free during early access. You will hear from us before anything changes.</p>
+  </div>
+</section>
+
+<!-- INSTALL -->
+<section class="light band" id="install" aria-labelledby="inst-h" style="padding-top:0">
+  <div class="wrap">
+    <div class="center head">
+      <p class="eyebrow reveal">Install</p>
+      <h2 class="h-lg reveal" id="inst-h">On your phone in a minute.</h2>
+      <p class="lede reveal">Android, iPhone or any browser. Same account everywhere.</p>
+    </div>
+    <div class="inst">
+      <div class="card reveal">
+        <div class="ic" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="2" width="12" height="20" rx="3"/><path d="M12 7v7M9 11l3 3 3-3"/></svg></div>
+        <h3>Android</h3>
+        <ol><li>Open the web app in Chrome.</li><li>Tap the menu, then Install app or Add to Home screen.</li><li>Open DECLYF from your home screen and sign in.</li></ol>
+        <div class="spacer"></div>
+        <a class="btn btn-p" href="app/">Open the web app</a>
+      </div>
+      <div class="card reveal" style="--d:.08s">
+        <div class="ic" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="2" width="12" height="20" rx="3"/><path d="M12 14V7M9 10l3-3 3 3"/></svg></div>
+        <h3>iPhone</h3>
+        <ol><li>Open the web app in Safari.</li><li>Tap Share.</li><li>Tap Add to Home Screen.</li></ol>
+        <p>No App Store listing yet. It runs full screen, like an app.</p>
+        <div class="spacer"></div>
+        <a class="btn btn-q" href="app/">Open the web app</a>
+      </div>
+      <div class="card reveal" style="--d:.16s">
+        <div class="ic" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.6 3.8 5.6 3.8 9s-1.3 6.4-3.8 9c-2.5-2.6-3.8-5.6-3.8-9S9.5 5.6 12 3z"/></svg></div>
+        <h3>Web</h3>
+        <ol><li>Open the web app in any browser.</li><li>Sign in or create an account.</li><li>Pick coach or solo.</li></ol>
+        <div class="spacer"></div>
+        <a class="btn btn-q" href="app/">Open web app</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="light band" id="faq" aria-labelledby="faq-h" style="padding-top:0">
+  <div class="wrap">
+    <div class="center head">
+      <h2 class="h-lg reveal" id="faq-h">Questions coaches ask.</h2>
+    </div>
+    <div class="faq reveal">
+      <details><summary>What does it cost?<span class="pm" aria-hidden="true"></span></summary><p class="ans">Clients and solo trackers pay nothing. Coaches will pay monthly by client count, from a draft $5 for up to 5 clients. Coach plans are free during early access, and there are no payments in the app yet.</p></details>
+      <details><summary>How do my clients join?<span class="pm" aria-hidden="true"></span></summary><p class="ans">Share your coach code, or add them by email. They get a request in their Profile, accept it, and appear in your list. Until they accept, you cannot see any of their data.</p></details>
+      <details><summary>What can I see for each client?<span class="pm" aria-hidden="true"></span></summary><p class="ans">Their meals, workouts and weight, day by day. The list shows who is on track, slipping or needs a nudge, and each client has a 14 day view.</p></details>
+      <details><summary>Does it work offline?<span class="pm" aria-hidden="true"></span></summary><p class="ans">Yes. Logging works with no signal. Changes are saved on the phone and sync when it is back online.</p></details>
+      <details><summary>Where does the data live?<span class="pm" aria-hidden="true"></span></summary><p class="ans">On the phone first, then synced to a private database. Only the client and the coach they joined can see it, and a client can leave a coach at any time.</p></details>
+      <details><summary>Is there an iPhone app?<span class="pm" aria-hidden="true"></span></summary><p class="ans">Not in the App Store yet. On iPhone you add the web app to your home screen from Safari. On Android you install it from Chrome. A full Android app download is coming soon.</p></details>
+      <details><summary>Can clients use it without a coach?<span class="pm" aria-hidden="true"></span></summary><p class="ans">Yes. Pick solo at sign-up and track food, workouts and weight on your own, free.</p></details>
+      <details><summary>Can I import a plan from a PDF?<span class="pm" aria-hidden="true"></span></summary><p class="ans">Not yet. Plans are built inside DECLYF today.</p></details>
+      <p class="more">Something else? Write to <a class="link" href="mailto:declyf@gmail.com">declyf@gmail.com</a></p>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta dark band" aria-labelledby="cta-h">
+  <div class="wrap">
+    <h2 class="h-xl reveal" id="cta-h">One list. Every client.<br>Every day.</h2>
+    <p class="lede reveal" style="margin:24px auto 0">Coach plans are free during early access. Clients are always free.</p>
+    <div class="hero-ctas reveal">
+      <a class="btn btn-p" href="app/">Start coaching free</a>
+      <a class="link" href="#install">Install the app <span aria-hidden="true">›</span></a>
+    </div>
+  </div>
+</section>
 </main>
 
-<footer>
+<footer class="dark">
   <div class="wrap">
-    <span>&copy; 2026 DECLYF &middot; Dedicated Life. All rights reserved.</span>
-    <span>Coach smarter. Live dedicated.</span>
+    <div class="foot">
+      <div><a class="wordmark" href="#top">DECLYF</a><p class="tag">Coach smarter. Live dedicated.</p></div>
+      <ul>
+        <li><a href="#how">How it works</a></li>
+        <li><a href="#features">Features</a></li>
+        <li><a href="#pricing">Pricing</a></li>
+        <li><a href="#install">Install</a></li>
+        <li><a href="#faq">FAQ</a></li>
+        <li><a href="mailto:declyf@gmail.com">declyf@gmail.com</a></li>
+      </ul>
+    </div>
+    <div class="legal"><span>© 2026 DECLYF</span><span>Privacy, coming soon · Terms, coming soon</span></div>
   </div>
 </footer>
 
 <script>
-(function () {
-  var root = document.documentElement;
-  var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches
-    && location.search.indexOf('motion=1') === -1;
+(function(){
+  var root=document.documentElement;
+  var reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var clamp=function(v,a,b){return Math.max(a,Math.min(b,v))};
 
-  /* ---- theme ---- */
-  try { var saved = localStorage.getItem('declyf-theme'); if (saved) root.setAttribute('data-theme', saved); } catch (e) {}
-  document.getElementById('theme').addEventListener('click', function () {
-    var light = root.getAttribute('data-theme') === 'light'
-      || (!root.getAttribute('data-theme') && matchMedia('(prefers-color-scheme: light)').matches);
-    var next = light ? 'dark' : 'light';
-    root.setAttribute('data-theme', next);
-    try { localStorage.setItem('declyf-theme', next); } catch (e) {}
+  /* nav */
+  var nav=document.getElementById('nav');
+  var bands=[].slice.call(document.querySelectorAll('main > section, footer'));
+  function navState(){
+    nav.classList.toggle('scrolled',window.scrollY>8);
+    var y=nav.offsetHeight/2,light=false;
+    for(var i=0;i<bands.length;i++){var r=bands[i].getBoundingClientRect();if(r.top<=y&&r.bottom>y){light=bands[i].classList.contains('light');break}}
+    nav.classList.toggle('on-light',light);
+  }
+  navState(); window.addEventListener('scroll',navState,{passive:true});
+
+  /* reveal */
+  var reveals=document.querySelectorAll('.reveal');
+  if(reduce||!('IntersectionObserver' in window)){reveals.forEach(function(e){e.classList.add('in')})}
+  else{
+    var ro=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');ro.unobserve(e.target)}})},{rootMargin:'0px 0px -8% 0px',threshold:.12});
+    reveals.forEach(function(e){ro.observe(e)});
+  }
+
+  /* hero: scroll-linked tilt + pointer parallax */
+  var stage=document.getElementById('stage'),stageIn=document.getElementById('stageIn'),phL=document.getElementById('phL'),phR=document.getElementById('phR');
+  if(!reduce&&stage){
+    var heroOn=true,px=0,py=0,tx=0,ty=0,raf=0;
+    var fine=window.matchMedia('(pointer:fine) and (min-width:1024px)').matches;
+    function frame(){
+      raf=0;
+      var r=stage.getBoundingClientRect(),vh=window.innerHeight;
+      var p=clamp((vh-r.top)/(vh+r.height*0.2),0,1); /* 0 when stage just below fold */
+      var s=clamp(window.scrollY/(vh*0.9),0,1);
+      px+=(tx-px)*.08; py+=(ty-py)*.08;
+      var rx=(1-s)*16 + py*-3, ry=px*5, sc=.9+s*.1;
+      stageIn.style.transform='rotateX('+rx.toFixed(2)+'deg) rotateY('+ry.toFixed(2)+'deg) scale('+sc.toFixed(3)+')';
+      var spread=74+s*24;
+      phL.style.setProperty('--sx',(-spread)+'%'); phR.style.setProperty('--sx2',spread+'%');
+      if(heroOn&&(Math.abs(tx-px)>.002||Math.abs(ty-py)>.002))raf=requestAnimationFrame(frame);
+    }
+    function kick(){if(!raf&&heroOn)raf=requestAnimationFrame(frame)}
+    frame();
+    window.addEventListener('scroll',kick,{passive:true});
+    window.addEventListener('resize',kick);
+    if(fine){window.addEventListener('pointermove',function(e){tx=e.clientX/window.innerWidth-.5;ty=e.clientY/window.innerHeight-.5;kick()},{passive:true})}
+    new IntersectionObserver(function(es){heroOn=es[0].isIntersecting;kick()}).observe(stage);
+  }
+
+  /* pinned showcase (desktop, motion allowed) */
+  var pin=document.getElementById('pin');
+  var mqPin=window.matchMedia('(min-width:1024px) and (min-height:620px)');
+  var panes=pin.querySelectorAll('.pane'),imgs=pin.querySelectorAll('.pin-phone img'),dots=pin.querySelectorAll('.dots button'),fills=pin.querySelectorAll('.dots .bar i');
+  var cur=0,pinOn=false;
+  function setStep(i){
+    if(i===cur)return; cur=i;
+    panes.forEach(function(p,k){p.classList.toggle('on',k===i)});
+    imgs.forEach(function(p,k){p.classList.toggle('on',k===i)});
+    dots.forEach(function(p,k){p.classList.toggle('on',k===i)});
+  }
+  function pinFrame(){
+    if(!pinOn)return;
+    var r=pin.getBoundingClientRect(),span=r.height-window.innerHeight;
+    var p=clamp(-r.top/span,0,.9999)*4;
+    var i=Math.floor(p);
+    setStep(i);
+    fills.forEach(function(f,k){f.style.transform='scaleX('+clamp(p-k,0,1).toFixed(3)+')'});
+  }
+  function pinMode(){
+    var want=mqPin.matches&&!reduce;
+    root.classList.toggle('pin',want);
+    pin.setAttribute('aria-hidden',want?'false':'true');
+    pinOn=want; if(want)pinFrame();
+  }
+  pinMode();
+  (mqPin.addEventListener?mqPin.addEventListener('change',pinMode):mqPin.addListener(pinMode));
+  window.addEventListener('scroll',function(){if(pinOn)requestAnimationFrame(pinFrame)},{passive:true});
+  dots.forEach(function(d,k){d.addEventListener('click',function(){
+    var top=pin.getBoundingClientRect().top+window.scrollY,span=pin.offsetHeight-window.innerHeight;
+    window.scrollTo({top:top+span*(k+.5)/4,behavior:'smooth'});
+  })});
+
+  /* coach fan */
+  var fan=document.getElementById('fan');
+  if(reduce||!('IntersectionObserver' in window)){fan.classList.add('in')}
+  else{var fo=new IntersectionObserver(function(es){if(es[0].isIntersecting){fan.classList.add('in');fo.disconnect()}},{threshold:.3});fo.observe(fan)}
+
+  /* laptop tabs */
+  var tabs=document.querySelectorAll('.tabs [role=tab]'),bimgs=document.querySelectorAll('#bview img');
+  function selTab(i,focus){tabs.forEach(function(t,k){t.setAttribute('aria-selected',k===i);t.tabIndex=k===i?0:-1});bimgs.forEach(function(m,k){m.classList.toggle('on',k===i)});if(focus)tabs[i].focus()}
+  tabs.forEach(function(t,k){
+    t.addEventListener('click',function(){selTab(k)});
+    t.addEventListener('keydown',function(e){if(e.key==='ArrowRight'){selTab((k+1)%tabs.length,1)}if(e.key==='ArrowLeft'){selTab((k+tabs.length-1)%tabs.length,1)}});
   });
 
-  /* ---- header hairline ---- */
-  var hdr = document.getElementById('hdr');
+  /* marquee: pause off-screen */
+  var mq=document.getElementById('mq');
+  if('IntersectionObserver' in window){new IntersectionObserver(function(es){mq.classList.toggle('paused',!es[0].isIntersecting)}).observe(mq)}
 
-  /* ---- reveal ---- */
-  var rv = document.querySelectorAll('.rv:not(.in)');
-  if (reduce || !('IntersectionObserver' in window)) {
-    rv.forEach(function (el) { el.classList.add('in'); });
-  } else {
-    var io = new IntersectionObserver(function (es) {
-      es.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
-    }, { rootMargin: '0px 0px -10% 0px' });
-    rv.forEach(function (el) { io.observe(el); });
+  /* count-up */
+  var counters=document.querySelectorAll('[data-count]');
+  if(!reduce&&'IntersectionObserver' in window){
+    var co=new IntersectionObserver(function(es){es.forEach(function(e){
+      if(!e.isIntersecting)return; co.unobserve(e.target);
+      var el=e.target,to=+el.dataset.count,suf=el.dataset.suffix||'',t0=performance.now(),d=1600;
+      (function step(t){var k=clamp((t-t0)/d,0,1),v=Math.round(to*(1-Math.pow(1-k,4)));el.textContent=v+suf;if(k<1)requestAnimationFrame(step)})(t0);
+    })},{threshold:.6});
+    counters.forEach(function(c){co.observe(c)});
   }
-
-  /* ---- marquee content ---- */
-  var FOODS = [
-    ['Chicken breast', 165], ['Greek yogurt', 59], ['Rolled oats', 389], ['Banana', 89],
-    ['Whey protein', 380], ['Brown rice', 123], ['Salmon fillet', 208], ['Almonds', 579],
-    ['Paneer', 265], ['Sweet potato', 86], ['Whole eggs', 155], ['Lentils', 116],
-    ['Olive oil', 884], ['Cottage cheese', 98], ['Avocado', 160], ['Tofu', 76]
-  ];
-  var track = document.getElementById('track');
-  if (track) {
-    var html = FOODS.map(function (f) {
-      return '<span class="chip"><b>' + f[0] + '</b> <s>' + f[1] + '</s> kcal / 100 g</span>';
-    }).join('');
-    track.innerHTML = html + html;   /* doubled so the loop is seamless */
-  }
-
-  /* ---- counters ---- */
-  var counters = [].slice.call(document.querySelectorAll('[data-count]'));
-  function run(el) {
-    var target = +el.getAttribute('data-count'), suffix = el.getAttribute('data-suffix') || '', t0 = null;
-    if (reduce) { el.textContent = target + suffix; return; }
-    function tick(t) {
-      if (t0 === null) t0 = t;
-      var p = Math.min(1, (t - t0) / 1200), e = 1 - Math.pow(1 - p, 3);
-      el.textContent = (target < 10 ? (target * e).toFixed(p === 1 ? 0 : 1) : Math.round(target * e)) + (p === 1 ? suffix : '');
-      if (p < 1) requestAnimationFrame(tick);
-    }
-    requestAnimationFrame(tick);
-  }
-  if ('IntersectionObserver' in window) {
-    var co = new IntersectionObserver(function (es) {
-      es.forEach(function (e) { if (e.isIntersecting) { run(e.target); co.unobserve(e.target); } });
-    }, { threshold: .55 });
-    counters.forEach(function (c) { co.observe(c); });
-  } else { counters.forEach(run); }
-
-  /* ---- the device: one animation loop, driven by scroll position ---- */
-  var story = document.querySelector('.story');
-  var device = document.getElementById('device');
-  var beats = [].slice.call(document.querySelectorAll('.beat'));
-  var screens = [].slice.call(document.querySelectorAll('.screen'));
-  var rails = [].slice.call(document.querySelectorAll('[data-rail]'));
-  var scrName = document.getElementById('scrName');
-  var NAMES = ['TODAY', 'TRAIN', 'PROGRESS'];
-
-  var kRing = document.getElementById('kRing'), kNum = document.getElementById('kNum');
-  var mP = document.getElementById('mP'), mC = document.getElementById('mC');
-  var meals = [].slice.call(document.querySelectorAll('.meal'));
-  var exs = [].slice.call(document.querySelectorAll('.ex'));
-  var volNum = document.getElementById('volNum');
-  var wLine = document.getElementById('wLine'), wFill = document.getElementById('wFill');
-  var wDot = document.getElementById('wDot'), wNow = document.getElementById('wNow');
-  var wDays = document.getElementById('wDays'), wAdh = document.getElementById('wAdh');
-
-  var wLen = wLine ? wLine.getTotalLength() : 0;
-  if (wLine) { wLine.style.strokeDasharray = wLen; wLine.style.strokeDashoffset = wLen; }
-
-  function clamp(v) { return v < 0 ? 0 : v > 1 ? 1 : v; }
-  function ease(v) { return v < .5 ? 2 * v * v : 1 - Math.pow(-2 * v + 2, 2) / 2; }
-
-  /* the finished state, used when someone prefers no motion */
-  function settle() {
-    if (kRing) { kRing.style.strokeDashoffset = 226 - 226 * .77; kNum.textContent = '1,840'; }
-    if (mP) { mP.style.width = '72%'; mC.style.width = '54%'; }
-    meals.forEach(function (m) { m.classList.add('in'); });
-    exs.forEach(function (e) { e.classList.add('done'); });
-    if (volNum) volNum.textContent = '4,180 kg';
-    if (wLine) { wLine.style.strokeDashoffset = 0; wFill.style.opacity = 1; }
-    if (wNow) { wNow.textContent = '76.0 kg'; wDays.textContent = '34'; wAdh.textContent = '91%'; }
-    rails.forEach(function (r) { r.style.transform = 'scaleX(1)'; });
-    beats.forEach(function (b) { b.classList.add('active'); });
-  }
-
-  function frame() {
-    if (!story) return;
-    hdr.classList.toggle('stuck', scrollY > 8);
-
-    var r = story.getBoundingClientRect();
-    var span = Math.max(1, r.height - innerHeight);
-    var p = clamp(-r.top / span);
-    var seg = 1 / 3;
-    var which = p >= seg * 2 ? 2 : p >= seg ? 1 : 0;
-    var local = clamp((p - seg * which) / seg);
-
-    screens.forEach(function (s, n) { s.classList.toggle('on', n === which); });
-    beats.forEach(function (b, n) { b.classList.toggle('active', n === which); });
-    rails.forEach(function (el, n) {
-      el.style.transform = 'scaleX(' + (n < which ? 1 : n > which ? 0 : local).toFixed(3) + ')';
-    });
-    if (scrName) scrName.textContent = NAMES[which];
-
-    /* the device turns a little as you move through the story */
-    if (device) {
-      var turn = (p - .5) * 16;          /* -8deg to +8deg */
-      var lift = Math.sin(p * Math.PI) * -10;
-      device.style.transform = 'rotateY(' + turn.toFixed(2) + 'deg) rotateX(' + (-turn * .22).toFixed(2) + 'deg) translateY(' + lift.toFixed(1) + 'px)';
-    }
-
-    /* 1 - today: the ring fills, macros grow, meals drop in */
-    if (which === 0 && kRing) {
-      var e0 = ease(local);
-      kRing.style.strokeDashoffset = (226 - 226 * .77 * e0).toFixed(1);
-      kNum.textContent = Math.round(1840 * e0).toLocaleString('en-US');
-      mP.style.width = (72 * e0).toFixed(1) + '%';
-      mC.style.width = (54 * e0).toFixed(1) + '%';
-      meals.forEach(function (m, i) { m.classList.toggle('in', local > (i + .5) / (meals.length + 1)); });
-    }
-
-    /* 2 - train: sets tick off one by one, volume climbs */
-    if (which === 1 && exs.length) {
-      var done = 0;
-      exs.forEach(function (ex, i) {
-        var on = local > (i + .4) / (exs.length + .6);
-        ex.classList.toggle('done', on);
-        if (on) done++;
-      });
-      volNum.textContent = Math.round(4180 * (done / exs.length)).toLocaleString('en-US') + ' kg';
-    }
-
-    /* 3 - progress: the weight line draws itself */
-    if (which === 2 && wLine) {
-      var e2 = ease(local);
-      wLine.style.strokeDashoffset = (wLen - wLen * e2).toFixed(1);
-      wFill.style.opacity = e2.toFixed(3);
-      var pt = wLine.getPointAtLength(wLen * e2);
-      wDot.setAttribute('cx', pt.x); wDot.setAttribute('cy', pt.y);
-      wNow.textContent = (82 - 6 * e2).toFixed(1) + ' kg';
-      wDays.textContent = Math.round(34 * e2);
-      wAdh.textContent = Math.round(91 * e2) + '%';
-    }
-  }
-
-  if (reduce) {
-    settle();
-    addEventListener('scroll', function () { hdr.classList.toggle('stuck', scrollY > 8); }, { passive: true });
-  } else {
-    /* a plain loop, plus direct events, so nothing can latch or be missed */
-    (function loop() { frame(); requestAnimationFrame(loop); })();
-    addEventListener('scroll', frame, { passive: true });
-    addEventListener('resize', frame);
-  }
-
-  /* ---- Tell people exactly what to do on the phone they are holding ----
-     The commonest failure is opening this page inside Instagram or WhatsApp,
-     where iOS does not offer "Add to Home Screen" at all. */
-  var ua = navigator.userAgent || '';
-  var isIOS = /iPad|iPhone|iPod/.test(ua) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
-  var inApp = /Instagram|FBAN|FBAV|FB_IAB|Messenger|WhatsApp|Snapchat|Line\/|LinkedInApp|Twitter|MicroMessenger/i.test(ua);
-  var installed = navigator.standalone === true || matchMedia('(display-mode: standalone)').matches;
-
-  var iosLede = document.getElementById('iosLede');
-  var iosSteps = document.getElementById('iosSteps');
-  var iosBtn = document.getElementById('iosBtn');
-
-  function stepList(items) {
-    iosSteps.innerHTML = items.map(function (t) { return '<div>' + t + '</div>'; }).join('');
-  }
-
-  if (installed) {
-    iosLede.textContent = 'DECLYF is already installed on this device.';
-    iosSteps.innerHTML = '';
-    iosBtn.textContent = 'Open DECLYF';
-  } else if (isIOS && inApp) {
-    iosLede.innerHTML = '<strong>You are inside another app’s browser.</strong> iPhone only offers &ldquo;Add to Home Screen&rdquo; in Safari itself, so open this page there first.';
-    stepList([
-      'Tap the <strong>&hellip;</strong> or <strong>Open in browser</strong> button in this app, and choose Safari. Or copy the link below.',
-      'In Safari, tap the Share icon at the bottom.',
-      'Scroll down and choose &ldquo;Add to Home Screen&rdquo;.'
-    ]);
-    iosBtn.textContent = 'Copy the link for Safari';
-    iosBtn.setAttribute('href', '#install');
-    iosBtn.addEventListener('click', function (e) {
-      e.preventDefault();
-      var url = location.origin + location.pathname;
-      function done() { iosBtn.textContent = 'Link copied — now paste it in Safari'; }
-      if (navigator.clipboard) { navigator.clipboard.writeText(url).then(done, done); } else { done(); }
-    });
-  } else if (isIOS) {
-    iosLede.textContent = 'You are on iPhone and in Safari, so you can install it right now. There is no file to download — these three taps are the install.';
-    stepList([
-      'Tap the Share icon at the bottom of Safari.',
-      'Scroll down the list and choose &ldquo;Add to Home Screen&rdquo;.',
-      'Tap Add. DECLYF appears on your home screen.'
-    ]);
-    iosBtn.textContent = 'Open DECLYF first';
-  }
-
-  /* Android and desktop Chrome can install the web app properly. */
-  var deferredPrompt = null;
-  addEventListener('beforeinstallprompt', function (e) {
-    e.preventDefault();
-    deferredPrompt = e;
-    var b = document.getElementById('apkBtn');
-    var t = document.getElementById('apkTag');
-    if (!b) return;
-    b.textContent = 'Install DECLYF';
-    b.className = 'btn';
-    b.setAttribute('href', '#install');
-    if (t) { t.textContent = 'Installable'; t.className = 'tag'; }
-    b.addEventListener('click', function (ev) {
-      ev.preventDefault();
-      deferredPrompt.prompt();
-      deferredPrompt.userChoice.then(function () { deferredPrompt = null; });
-    });
-  });
-
-  /* ---- Android: only offer the APK once a release exists ---- */
-  var tag = document.getElementById('apkTag'), btn = document.getElementById('apkBtn');
-  fetch('https://api.github.com/repos/declyf/declyf.github.io/releases/latest')
-    .then(function (res) { return res.ok ? res.json() : null; })
-    .then(function (rel) {
-      if (rel && rel.tag_name) { tag.textContent = 'v' + rel.tag_name.replace(/^v/, ''); tag.className = 'tag'; return; }
-      if (deferredPrompt) return;            /* Chrome can install it properly; leave that offer alone */
-      tag.textContent = 'Coming soon';
-      btn.textContent = 'Use the web app for now';
-      btn.setAttribute('href', 'app/');
-      btn.className = 'btn ghost';
-    })
-    .catch(function () { tag.textContent = 'Android'; });
 })();
 </script>
 </body>
