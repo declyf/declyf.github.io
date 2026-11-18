@@ -6,6 +6,13 @@
 <script>
 (function(){
   var d=document.documentElement;d.classList.add('js');
+  /* showcase layout, decided before first paint: swipe carousel on small or short touch screens, sticky scroll elsewhere */
+  window.__showMode=function(){
+    var w=window.innerWidth,h=window.innerHeight,coarse=false;
+    try{coarse=window.matchMedia('(hover: none) and (pointer: coarse)').matches}catch(e){}
+    return (w<768||h<500||(coarse&&h<600))?'swipe':'pin';
+  };
+  d.classList.add(window.__showMode());
   /* intro: once per session, never with reduced motion */
   try{
     var rm=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -32,6 +39,8 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="preload" as="image" href="img/today-dark.webp" type="image/webp">
+<!-- Lenis 1.3.27 (MIT): smooth wheel scrolling. Exact version pinned, with SRI. The site works without it. -->
+<script src="https://cdn.jsdelivr.net/npm/lenis@1.3.27/dist/lenis.min.js" integrity="sha384-R18XzqnxvVLEF+BYfhpmDx30v7eP83fAckyfoRzK7/Uf6nGqufcmsk0eAKo7S3RU" crossorigin="anonymous" defer></script>
 <style>
 :root{
   --paper:#F7F3EC; --surface:#FFFFFF; --surface2:#EFE9DF; --hair:#E2DACD;
@@ -46,6 +55,11 @@
 }
 *,*::before,*::after{box-sizing:border-box}
 html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
+/* Lenis */
+html.lenis,html.lenis body{height:auto}
+html.lenis.lenis-smooth{scroll-behavior:auto!important}
+.lenis:not(.lenis-autoToggle).lenis-stopped{overflow:clip}
+.lenis [data-lenis-prevent],.lenis [data-lenis-prevent-horizontal]{overscroll-behavior:contain}
 body{margin:0;font-family:var(--sans);font-size:17px;line-height:1.5;color:var(--ink);background:var(--night);-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;overflow-x:clip;font-feature-settings:"cv11","ss01"}
 img{max-width:100%;display:block}
 a{color:inherit}
@@ -132,6 +146,8 @@ html:not(.js) .nav::before{opacity:1}
 .car.live .phone.cp{will-change:transform;cursor:grab}
 .car.dragging .phone.cp{cursor:grabbing}
 .cp .shade{position:absolute;inset:0;background:#0B0C0E;opacity:0;pointer-events:none;z-index:2}
+/* the shade fades every frame while the ring turns: its own layer, so the phone is never re-rastered */
+.car.live .cp .shade{will-change:opacity}
 /* static fan (no JS / before JS runs) */
 .cp{opacity:0}
 .cp:nth-child(1){opacity:1;z-index:3}
@@ -186,64 +202,88 @@ html.splash:not(.splash-out) .hero .intro,html.splash:not(.splash-out) .stage-ri
 .js .reveal{opacity:0;transform:translateY(28px);transition:opacity .9s var(--ease),transform .9s var(--ease);transition-delay:var(--d,0s)}
 .js .reveal.in{opacity:1;transform:none}
 
-/* showcase */
-/* stacked steps: no JS, reduced motion, or a very short landscape screen */
+/* showcase
+   no JS: a plain stacked list. With JS: a swipe carousel on small or short touch screens (html.swipe),
+   otherwise a sticky viewport driven by ordinary page scroll with a vertical step tracker (html.pin). */
 .show-pin{display:none}
-.sc-track{display:grid;grid-template-columns:minmax(0,1fr);gap:clamp(56px,10vw,72px);padding:8px var(--gut) 0;margin:0 auto;max-width:1300px}
+.sc-track{display:flex;flex-direction:column;gap:clamp(56px,10vw,72px);padding:8px var(--gut) 0;margin:0 auto;max-width:560px}
 .slide{display:flex;flex-direction:column;gap:28px;min-width:0}
 .slide .phone{--w:min(70vw,290px);margin:0 auto}
-.slide > div:last-child{max-width:420px;margin:0 auto;width:100%}
+.sl-copy{max-width:420px;margin:0 auto;width:100%;text-align:center}
 .slide h3{font-size:24px;letter-spacing:-.025em}
 .slide p{color:var(--mut);margin-top:8px;font-size:16px}
 .slide .step-n{font-size:14px;font-weight:600;color:var(--pulse);margin-bottom:8px}
 .caption{font-size:13px;color:var(--mut);margin-top:20px}
-@media (min-width:700px){.sc-track{grid-template-columns:repeat(2,minmax(0,1fr));gap:64px 28px}.slide .phone{--w:min(100%,270px)}}
-@media (min-width:1024px){.sc-track{grid-template-columns:repeat(4,minmax(0,1fr));gap:28px}.slide .phone{--w:min(100%,250px)}}
+.sw-ui{display:none}
 
-/* pinned: a tall scroll track with a sticky viewport, at every width */
+/* swipe: phone and text travel together, 1:1 under the finger, native momentum + snap */
+html.swipe .sc-track{--pw:max(184px,min(64vw,300px,calc((100svh - 250px) / 2.16)));--sw:calc(var(--pw) + 28px);--tw:min(calc(100vw - 40px),400px);--pad:calc((100% - var(--sw)) / 2);flex-direction:row;gap:0;max-width:none;margin:0;padding:10px var(--pad) 6px;scroll-padding-inline:var(--pad);overflow-x:auto;overflow-y:hidden;scroll-snap-type:x mandatory;overscroll-behavior-x:contain;scrollbar-width:none;-webkit-overflow-scrolling:touch;cursor:grab;outline:none}
+html.swipe .sc-track::-webkit-scrollbar{display:none}
+html.swipe .sc-track:focus-visible{outline:2px solid var(--pulse);outline-offset:-4px;border-radius:24px}
+html.swipe .sc-track.dragging{cursor:grabbing;scroll-snap-type:none;-webkit-user-select:none;user-select:none}
+html.swipe .sc-track.tweening{scroll-snap-type:none}
+html.swipe .slide{flex:0 0 var(--sw);scroll-snap-align:center;scroll-snap-stop:always;gap:clamp(16px,3svh,28px)}
+html.swipe .slide .phone{--w:var(--pw);transform-origin:50% 42%;will-change:transform,opacity}
+html.swipe .slide img{-webkit-user-drag:none;pointer-events:none}
+html.swipe .sl-copy{width:var(--tw);max-width:none;margin:0 calc((var(--sw) - var(--tw)) / 2);padding:0 4px;will-change:transform,opacity}
+html.swipe .sl-copy p:last-child{min-height:3em}
+html.swipe .sw-ui{display:flex;flex-direction:column;align-items:center;gap:14px;margin-top:clamp(18px,3svh,28px);padding:0 var(--gut)}
+.sw-tabs{position:relative;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));width:min(100%,360px);padding:4px;border-radius:999px;background:var(--surface2);box-shadow:inset 0 0 0 1px var(--hair)}
+.sw-pill{position:absolute;top:4px;bottom:4px;left:0;width:var(--tabw,0px);will-change:transform;border-radius:999px;background:var(--surface);box-shadow:0 0 0 1px var(--hair);pointer-events:none}
+.sw-tabs button{position:relative;appearance:none;border:0;background:none;padding:0 4px;height:36px;white-space:nowrap;border-radius:999px;font:500 14px var(--sans);letter-spacing:-.005em;color:var(--subtle);cursor:pointer;transition:color .25s}
+.sw-tabs button[aria-current="true"]{color:var(--pulse);font-weight:600}
+.sw-hint{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--mut);transition:opacity .5s ease,transform .5s var(--ease)}
+.sw-hint svg{flex:none}
+.sw-hint .l{animation:nudgeL 2.4s var(--ease) infinite}
+.sw-hint .r{animation:nudgeR 2.4s var(--ease) infinite}
+@keyframes nudgeL{0%,60%,100%{transform:none}30%{transform:translateX(-4px)}}
+@keyframes nudgeR{0%,60%,100%{transform:none}30%{transform:translateX(4px)}}
+.sw-ui.used .sw-hint{opacity:0;transform:translateY(-4px)}
+
+/* pinned: a tall scroll track with a sticky viewport */
 html.pin .show-stack{display:none}
 html.pin .show-pin{display:block;height:calc(var(--pin-steps,4) * 85vh + 100vh);height:calc(var(--pin-steps,4) * 85svh + 100svh);position:relative}
 html.pin #showcase.band{padding:0}
 html.pin #showcase .head{display:none}
 .pin-sticky{position:sticky;top:0;height:100vh;height:100svh;display:flex;align-items:center;overflow:hidden;padding-top:56px}
-.pin-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(32px,4vw,64px);align-items:center;width:100%;height:100%}
+.pin-grid{display:grid;grid-template-columns:minmax(0,1.06fr) minmax(0,.94fr);gap:clamp(28px,4vw,64px);align-items:center;width:100%;height:100%}
 .pin-phone{display:flex;justify-content:center;align-items:center;height:100%;min-height:0}
 .pin-copy{position:relative}
-.pin-copy .h-lg{margin-bottom:clamp(28px,5vh,64px)}
+.pin-copy .h-lg{margin-bottom:clamp(24px,4.6vh,56px)}
+.pin-steps{position:relative}
+@media (min-width:1100px){.pin-steps{display:grid;grid-template-columns:auto minmax(0,1fr);column-gap:clamp(36px,3.6vw,60px);align-items:start}}
+/* the step tracker: names on a thin rail, a pulse fill + knob that follow scroll continuously */
+.trk{position:relative;list-style:none;margin:0 0 clamp(22px,4vh,40px);padding:0}
+@media (min-width:1100px){.trk{margin:0}}
+.trk ol{list-style:none;margin:0;padding:0}
+.trk li{margin:0;padding:0}
+.trk-rail{position:absolute;left:5px;top:var(--t0,20px);height:var(--tl,120px);width:2px;margin-left:-1px;border-radius:2px;background:var(--hair);pointer-events:none}
+.trk-fill{will-change:transform;position:absolute;inset:0;border-radius:2px;background:var(--pulse);transform-origin:50% 0;transform:scaleY(var(--f,0))}
+.trk-knob{will-change:transform;position:absolute;left:5px;top:var(--t0,20px);width:14px;height:14px;margin:-7px 0 0 -7px;z-index:1;pointer-events:none;border-radius:50%;background:var(--pulse);box-shadow:0 0 0 5px color-mix(in srgb,var(--pulse) 16%,transparent);transform:translateY(var(--ky,0px))}
+.trk button{appearance:none;border:0;background:none;position:relative;display:block;padding:8px 6px 8px 30px;margin:0;font:500 17px/1.25 var(--sans);letter-spacing:-.01em;color:var(--subtle);cursor:pointer;text-align:left;transition:color .35s ease,transform .45s var(--ease)}
+.trk button::before{content:"";position:absolute;left:0;top:50%;width:10px;height:10px;margin-top:-5px;border-radius:50%;background:var(--paper);box-shadow:inset 0 0 0 2px var(--hair);transition:box-shadow .35s ease}
+.trk li.done button::before{box-shadow:inset 0 0 0 5px var(--pulse)}
+.trk button:hover{color:var(--ink)}
+.trk button.on{color:var(--pulse);font-weight:600;transform:translateX(4px)}
+.trk button:focus-visible{outline-offset:2px}
 .panes{position:relative;min-height:var(--panes-h,220px)}
-.pane{position:absolute;inset:0 0 auto 0;opacity:0;transform:translateY(16px);transition:opacity .22s ease,transform .5s var(--ease);pointer-events:none}
-.pane.on{opacity:1;transform:none;transition:opacity .45s ease .24s,transform .7s var(--ease) .24s;pointer-events:auto}
-.pane .step-n{font-size:15px;font-weight:600;color:var(--pulse);margin-bottom:10px}
+.pane{position:absolute;inset:0 0 auto 0;pointer-events:none}
+.pane.on{pointer-events:auto}
+/* scroll-driven: script sets opacity/transform every frame from scroll progress */
+.pane > *{will-change:opacity,transform}
+.pane:not(:first-child) > *{opacity:0}
+.pane .step-n{display:none}
 .pane h3{font-size:clamp(30px,3vw,42px);letter-spacing:-.035em;line-height:1.08;font-weight:600}
-.pane p{font-size:19px;line-height:1.45;color:var(--mut);margin-top:16px;max-width:460px}
+.pane p{font-size:clamp(17px,1.5vw,19px);line-height:1.45;color:var(--mut);margin-top:16px;max-width:460px}
 .pane .num{color:var(--ink);font-weight:600}
-.dots{display:flex;gap:10px;margin-top:clamp(28px,5vh,56px);list-style:none;padding:0}
-.dots button{appearance:none;border:0;background:none;padding:10px 0;cursor:pointer;display:flex;flex-direction:column;gap:10px;width:84px;text-align:left;font:500 13px var(--sans);color:var(--subtle)}
-.dots button.on{color:var(--ink)}
-.dots .bar{height:3px;border-radius:3px;background:var(--hair);overflow:hidden;width:100%}
-.dots .bar i{display:block;height:100%;background:var(--pulse);transform-origin:left;transform:scaleX(0)}
-.pin-phone .phone{--w:var(--pw,min(36vh,370px))}
-.pin-phone .screen img{opacity:0;transform:scale(1.035);transition:opacity .55s ease,transform .8s var(--ease)}
-.pin-phone .screen img.prev{opacity:1;transform:none;transition:none;z-index:1}
-.pin-phone .screen img.on{opacity:1;transform:none;z-index:2}
-/* narrow: text block above the phone, both inside one viewport */
-@media (max-width:899px){
-  .pin-sticky{align-items:stretch;padding-top:calc(52px + clamp(8px,2.4svh,24px));padding-bottom:clamp(10px,2.4svh,28px)}
-  .pin-grid{grid-template-columns:minmax(0,1fr);grid-template-rows:auto minmax(0,1fr);gap:clamp(10px,2.4svh,28px);align-items:stretch;max-width:640px}
-  .pin-copy{text-align:center}
-  .pin-copy > .eyebrow,.pin-copy > .h-lg,.pin-copy > .caption{display:none}
-  .pane p{margin-left:auto;margin-right:auto;font-size:clamp(14px,2.1svh,18px);margin-top:clamp(6px,1.2svh,14px);line-height:1.4}
-  .pane h3{font-size:clamp(21px,3.4svh,34px)}
-  .pane .step-n{display:none}
-  .dots{justify-content:center;margin:0 0 clamp(8px,1.8svh,20px);gap:8px;order:-1}
-  .dots button{width:clamp(64px,19vw,96px);gap:7px;padding:6px 0;text-align:center;align-items:center;font-size:12px}
-  .pin-copy{display:flex;flex-direction:column}
-  html.pin #showcase .head{display:block;padding-top:clamp(96px,13vw,168px);margin-bottom:0;padding-bottom:clamp(24px,5vw,48px)}
-}
+.pin-phone .phone{will-change:transform;--w:var(--pw,min(36vh,370px));transform:translate3d(0,var(--py,0px),0)}
+.pin-phone .screen{background:#F7F3ED}
+.pin-phone .screen img{opacity:0;will-change:opacity,transform;transform-origin:50% 40%}
+.pin-phone .screen img:first-child{opacity:1}
 
 /* coach fan */
 .coach{overflow:hidden}
-.fan{position:relative;height:clamp(460px,52vw,700px);perspective:1800px;margin-bottom:clamp(64px,8vw,112px);--w:clamp(220px,23vw,320px);--fx:52%;--fs:.805}
+.fan{position:relative;height:clamp(460px,52vw,700px);height:max(clamp(460px,52vw,700px),calc(var(--w) * 2.2 + 8px));perspective:1800px;margin-bottom:clamp(64px,8vw,112px);--w:clamp(220px,23vw,320px);--fx:52%;--fs:.805}
 .fan .phone{--w:inherit;position:absolute;left:50%;top:0;margin-left:calc(var(--w) / -2);transition:transform 1.4s var(--ease),opacity 1s ease}
 .fan .f-c{z-index:3;transform:translateX(0) translateZ(0) rotateY(0deg) rotateZ(0deg) scale(1)}
 .fan .f-l,.fan .f-r{z-index:2}
@@ -254,8 +294,23 @@ html.pin #showcase .head{display:none}
 .js .fan:not(.in) .f-l,.js .fan:not(.in) .f-r{transform:translateX(0) translateY(6%) scale(.7);opacity:0}
 .js .fan:not(.in) .f-c{transform:translateY(40px);opacity:0}
 .fan:not(.cycling) .f-l,.fan:not(.cycling) .f-r{transition-delay:.15s}
+/* with JS the fan is a ring like the hero: transforms come from script, no CSS transitions */
+.fan.live{touch-action:pan-y;-webkit-user-select:none;user-select:none;-webkit-tap-highlight-color:transparent;outline:none;margin-bottom:0}
+.fan.live .phone{transition:none!important;will-change:transform,opacity;cursor:grab;backface-visibility:hidden}
+.fan.live.dragging .phone{cursor:grabbing}
+.fan:focus-visible::after{content:"";position:absolute;left:50%;top:-5px;width:calc(var(--w) + 10px);height:calc(var(--w) * 2.2);transform:translateX(-50%);border-radius:calc(var(--w) * .165 + 5px);box-shadow:0 0 0 2px var(--pulse-d);pointer-events:none;z-index:300}
+.fan-ctl{display:flex;align-items:center;justify-content:center;gap:14px;margin:clamp(20px,3vw,32px) 0 clamp(64px,8vw,112px);position:relative;z-index:5}
+html:not(.js) .fan-ctl{display:none}
+/* client list: the week's segments fill in and the status dots ping, once, as the section arrives */
+.cl-fx{position:absolute;inset:0;pointer-events:none;z-index:1}
+.cl-bar{position:absolute;left:8.46%;width:83.33%;top:calc((var(--y) - 6) / 844 * 100%);height:calc(12 / 844 * 100%);background:#131517;transform-origin:100% 50%;transform:scaleX(0)}
+.fan.cl-pre .cl-bar{transform:scaleX(1)}
+.fan.cl-go .cl-bar{transform:scaleX(0);transition:transform 1s cubic-bezier(.65,0,.35,1) calc(var(--k) * .16s + .55s)}
+.cl-dot{position:absolute;left:calc(var(--x) / 390 * 100%);top:calc(var(--y) / 844 * 100%);width:calc(9 / 390 * 100%);aspect-ratio:1;margin:calc(-4.5 / 390 * 100%) 0 0 calc(-4.5 / 390 * 100%);border-radius:50%;box-shadow:0 0 0 1.5px var(--c);opacity:0}
+.fan.cl-go .cl-dot{animation:clPing 1.5s cubic-bezier(.2,.7,.1,1) calc(var(--k) * .16s + 1.25s) 2 both}
+@keyframes clPing{0%{opacity:.9;transform:scale(1)}100%{opacity:0;transform:scale(3.4)}}
 /* breathing glow behind the phones */
-.fan-glow{position:absolute;left:50%;top:44%;width:min(1100px,150vw);height:min(760px,120vw);transform:translate(-50%,-50%);pointer-events:none;z-index:0}
+.fan-glow{will-change:transform,opacity;position:absolute;left:50%;top:44%;width:min(1100px,150vw);height:min(760px,120vw);transform:translate(-50%,-50%);pointer-events:none;z-index:0}
 .fan-glow i{position:absolute;inset:0;border-radius:50%;will-change:transform,opacity}
 .fan-glow .g1{background:radial-gradient(closest-side,rgba(56,189,248,.26),rgba(56,189,248,.15) 28%,rgba(56,189,248,.06) 56%,rgba(56,189,248,.015) 80%,rgba(56,189,248,0));animation:glowA 9s ease-in-out infinite alternate}
 .fan-glow .g2{inset:22% 18% 14% 34%;background:radial-gradient(closest-side,rgba(255,138,61,.18),rgba(255,138,61,.08) 40%,rgba(255,138,61,.02) 75%,rgba(255,138,61,0));animation:glowB 11s ease-in-out infinite alternate}
@@ -263,7 +318,7 @@ html.pin #showcase .head{display:none}
 @keyframes glowA{0%{transform:translate(-4%,2%) scale(.92);opacity:.75}50%{opacity:1}100%{transform:translate(4%,-3%) scale(1.06);opacity:.85}}
 @keyframes glowB{0%{transform:translate(6%,-4%) scale(1);opacity:.55}100%{transform:translate(-14%,6%) scale(1.15);opacity:1}}
 @media (max-width:640px){
-  .fan{height:clamp(420px,118vw,540px);--w:min(62vw,250px);--fx:39%;--fs:.756}
+  .fan{height:clamp(420px,118vw,540px);height:max(clamp(420px,118vw,540px),calc(var(--w) * 2.2 + 8px));--w:min(62vw,250px);--fx:39%;--fs:.756}
 }
 .steps{display:grid;grid-template-columns:repeat(4,1fr);gap:clamp(24px,3vw,40px);list-style:none;padding:0;margin:0;counter-reset:s}
 .steps li{border-top:1px solid var(--nhair);padding-top:24px}
@@ -303,7 +358,9 @@ html.pin #showcase .head{display:none}
 .b-view{position:relative;aspect-ratio:1440/900;background:var(--night)}
 .b-view img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:left top;opacity:0;transition:opacity .6s ease}
 .b-view img.on{opacity:1}
-html:not(.js) .b-view img:first-child{opacity:1}
+/* no JS: the three screens simply stack inside the browser frame */
+html:not(.js) .b-view{aspect-ratio:auto}
+html:not(.js) .b-view img{position:static;opacity:1;height:auto}
 .tabs{display:flex;justify-content:center;gap:6px;margin:clamp(32px,4vw,44px) auto 0;padding:5px;border-radius:999px;background:var(--night3);width:max-content;max-width:100%}
 .tabs button{appearance:none;border:0;background:none;color:var(--nmuted);font:500 15px var(--sans);padding:9px 18px;border-radius:999px;cursor:pointer;transition:background-color .25s,color .25s}
 .tabs button[aria-selected="true"]{background:#2E3138;color:#fff}
@@ -396,18 +453,28 @@ footer{padding:56px 0 48px;border-top:1px solid var(--nhair)}
 .foot ul a:hover{text-decoration:underline}
 .legal{margin-top:40px;font-size:13px;color:var(--nmuted);display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px}
 
+/* Reduced motion: only ambient and automatic motion goes (intro, autoplay, glow drift, parallax, count-up,
+   marquee). Anything the visitor drives (dragging, clicking, scrolling, swiping) still moves, with shorter,
+   gentler easing: a short cross-fade plus a small shift instead of big swings. */
 @media (prefers-reduced-motion:reduce){
   html{scroll-behavior:auto}
-  .js .reveal,.js .hero .intro,.js .stage-rise{opacity:1!important;transform:none!important;animation:none!important;transition:none!important}
+  .js .hero .intro,.js .stage-rise{opacity:1!important;transform:none!important;animation:none!important}
+  .js .reveal{transform:translateY(8px);transition:opacity .3s ease-out,transform .3s ease-out;transition-delay:0s}
+  .js .reveal.in{transform:none}
   .js .fan:not(.in) .f-l,.js .fan:not(.in) .f-r,.js .fan:not(.in) .f-c{opacity:1}
   .js .fan:not(.in) .f-c{transform:none}
   .js .fan:not(.in) .f-l{transform:translateX(calc(var(--fx) * -1)) rotateY(28deg) rotateZ(-5deg) scale(var(--fs))}
   .js .fan:not(.in) .f-r{transform:translateX(var(--fx)) rotateY(-28deg) rotateZ(5deg) scale(var(--fs))}
   .fan .phone{transition:none}
   .fan-glow i{animation:none}
-  .pane,.pane.on,.pin-phone .screen img{transition:none}
   .mq-row{animation:none}
   .tile,.tile:hover{transition:none;transform:none}
+  .sw-hint .l,.sw-hint .r{animation:none}
+  .sw-hint{transition:opacity .3s ease-out}
+  .sw-ui.used .sw-hint{transform:none}
+  .trk button{transition:color .25s ease-out}
+  .trk button.on{transform:none}
+  .trk button::before{transition:box-shadow .25s ease-out}
 }
 </style>
 </head>
@@ -487,23 +554,30 @@ footer{padding:56px 0 48px;border-top:1px solid var(--nhair)}
   </div>
 
   <div class="show-stack">
-    <div class="sc-track" role="list" aria-label="App screens">
+    <div class="sc-track" id="scTrack" role="list" aria-label="App screens" data-lenis-prevent-horizontal>
       <article class="slide" role="listitem">
         <div class="phone"><div class="screen"><img src="img/today-light.webp" width="1170" height="2532" loading="lazy" alt="Today screen in light theme: calorie ring with 714 kcal left"></div></div>
-        <div><p class="step-n">Today</p><h3>The day in one ring.</h3><p>1306 of 2020 kcal eaten. 81 g protein to go.</p></div>
+        <div class="sl-copy"><p class="step-n">Today</p><h3>The day in one ring.</h3><p>1306 of 2020 kcal eaten. 81 g protein to go.</p></div>
       </article>
       <article class="slide" role="listitem">
         <div class="phone"><div class="screen"><img src="img/food-light.webp" width="1170" height="2532" loading="lazy" alt="Food screen in light theme: meals logged with calories and macros per item"></div></div>
-        <div><p class="step-n">Food</p><h3>Log a meal in seconds.</h3><p>7,000+ foods built in, millions more online, plus barcode scan.</p></div>
+        <div class="sl-copy"><p class="step-n">Food</p><h3>Log a meal in seconds.</h3><p>7,000+ foods built in, millions more online, plus barcode scan.</p></div>
       </article>
       <article class="slide" role="listitem">
         <div class="phone"><div class="screen"><img src="img/train-light.webp" width="1170" height="2532" loading="lazy" alt="Train screen in light theme: Tuesday plan, 3 of 4 exercises done with weights and reps"></div></div>
-        <div><p class="step-n">Train</p><h3>Plan the week. Tick each set.</h3><p>Weights and reps, set by set. 3 of 4 done.</p></div>
+        <div class="sl-copy"><p class="step-n">Train</p><h3>Plan the week. Tick each set.</h3><p>Weights and reps, set by set. 3 of 4 done.</p></div>
       </article>
       <article class="slide" role="listitem">
         <div class="phone"><div class="screen"><img src="img/progress2-light.webp" width="1170" height="2532" loading="lazy" alt="Progress screen in light theme: calories per day and a falling weight line"></div></div>
-        <div><p class="step-n">Progress</p><h3>See the trend, not the noise.</h3><p>90 days of calories and weight. 4.7 kg down.</p></div>
+        <div class="sl-copy"><p class="step-n">Progress</p><h3>See the trend, not the noise.</h3><p>90 days of calories and weight. 4.7 kg down.</p></div>
       </article>
+    </div>
+    <div class="sw-ui" id="swUi">
+      <div class="sw-tabs" role="group" aria-label="Choose a screen">
+        <span class="sw-pill" aria-hidden="true"></span>
+        <button type="button" aria-current="true">Today</button><button type="button">Food</button><button type="button">Train</button><button type="button">Progress</button>
+      </div>
+      <p class="sw-hint" aria-hidden="true"><svg class="l" width="14" height="14" viewBox="0 0 16 16"><path d="M10 3L5 8l5 5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg><span id="swHintT">Swipe for the next screen</span><svg class="r" width="14" height="14" viewBox="0 0 16 16"><path d="M6 3l5 5-5 5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></p>
     </div>
   </div>
 
@@ -513,17 +587,23 @@ footer{padding:56px 0 48px;border-top:1px solid var(--nhair)}
         <div class="pin-copy">
           <p class="eyebrow">The app</p>
           <h2 class="h-lg">One screen<br>at a time.</h2>
-          <div class="panes">
+          <div class="pin-steps">
+            <div class="trk" id="trk">
+              <span class="trk-rail" aria-hidden="true"><i class="trk-fill"></i></span>
+              <ol aria-label="Steps">
+                <li><button type="button" class="on" aria-current="step">Today</button></li>
+                <li><button type="button">Food</button></li>
+                <li><button type="button">Train</button></li>
+                <li><button type="button">Progress</button></li>
+              </ol>
+              <span class="trk-knob" aria-hidden="true"></span>
+            </div>
+            <div class="panes">
             <div class="pane on"><p class="step-n">Today</p><h3>The day in one ring.</h3><p>Calories left, protein, carbs and fat against the targets you set. <span class="num tnum">1306</span> of <span class="num tnum">2020</span> kcal eaten. <span class="num tnum">81 g</span> protein to go.</p></div>
             <div class="pane"><p class="step-n">Food</p><h3>Log a meal in seconds.</h3><p><span class="num tnum">7,000+</span> foods built in, plus millions of packaged products from Open Food Facts, USDA and barcode scan. Every meal adds up as you go.</p></div>
             <div class="pane"><p class="step-n">Train</p><h3>Plan the week. Tick each set.</h3><p>Weights and reps, set by set, against the plan for the day. <span class="num tnum">3 of 4</span> done, one to go.</p></div>
             <div class="pane"><p class="step-n">Progress</p><h3>See the trend, not the noise.</h3><p>Calories per day and weight over 90 days. <span class="num tnum">86.5</span> to <span class="num tnum">81.8 kg</span> since September.</p></div>
           </div>
-          <div class="dots" id="dots">
-            <button type="button" class="on" aria-current="step"><span class="bar"><i></i></span>Today</button>
-            <button type="button"><span class="bar"><i></i></span>Food</button>
-            <button type="button"><span class="bar"><i></i></span>Train</button>
-            <button type="button"><span class="bar"><i></i></span>Progress</button>
           </div>
           <p class="caption">Real screens from the DECLYF web app, with a sample user.</p>
         </div>
@@ -547,11 +627,17 @@ footer{padding:56px 0 48px;border-top:1px solid var(--nhair)}
     <h2 class="h-lg reveal" id="coach-h">Your whole roster. One list.</h2>
     <p class="lede reveal">Who logged, who trained and who needs a nudge. Open any client to see their week.</p>
   </div>
-  <div class="fan" id="fan">
+  <div class="fan" id="fan" role="region" aria-roledescription="carousel" aria-label="Coach screens. Drag, or use the left and right arrow keys, to turn." tabindex="0">
     <div class="fan-glow" aria-hidden="true"><i class="g1"></i><i class="g2"></i></div>
-    <div class="phone f-c"><div class="screen"><img src="img/clients-dark.webp" width="1170" height="2532" loading="lazy" alt="Coach client list with demo clients marked on track, slipping or needs a nudge"></div></div>
-    <div class="phone f-l"><div class="screen"><img src="img/client-dark.webp" width="1170" height="2532" loading="lazy" alt="Client detail for a demo client: 6 of 7 days logged, 5 day streak, 1921 kcal average"></div></div>
-    <div class="phone f-r"><div class="screen"><img src="img/today-dark.webp" width="1170" height="2532" loading="lazy" alt="Today screen: 714 kcal left of a 2020 kcal goal, with protein, carbs and fat bars"></div></div>
+    <div class="phone f-c" data-name="Clients" role="group" aria-roledescription="slide" aria-label="Clients, 1 of 3"><div class="screen"><img src="img/clients-dark.webp" width="1170" height="2532" loading="lazy" draggable="false" alt="Coach client list with demo clients marked on track, slipping or needs a nudge"><span class="cl-fx" aria-hidden="true"><i class="cl-bar" style="--y:138;--k:0"></i><i class="cl-bar" style="--y:334;--k:1"></i><i class="cl-bar" style="--y:530;--k:2"></i><i class="cl-bar" style="--y:726;--k:3"></i><i class="cl-dot" style="--x:289.5;--y:94;--c:#38BDF8;--k:0"></i><i class="cl-dot" style="--x:292.5;--y:290;--c:#D9A64A;--k:1"></i><i class="cl-dot" style="--x:289.5;--y:486;--c:#38BDF8;--k:2"></i><i class="cl-dot" style="--x:245.5;--y:682;--c:#FF8A3D;--k:3"></i></span></div></div>
+    <div class="phone f-r" data-name="Today" role="group" aria-roledescription="slide" aria-label="Today, 2 of 3"><div class="screen"><img src="img/today-dark.webp" width="1170" height="2532" loading="lazy" draggable="false" alt="Today screen: 714 kcal left of a 2020 kcal goal, with protein, carbs and fat bars"></div></div>
+    <div class="phone f-l" data-name="Client" role="group" aria-roledescription="slide" aria-label="Client, 3 of 3"><div class="screen"><img src="img/client-dark.webp" width="1170" height="2532" loading="lazy" draggable="false" alt="Client detail for a demo client: 6 of 7 days logged, 5 day streak, 1921 kcal average"></div></div>
+  </div>
+  <div class="fan-ctl" id="fanCtl">
+    <button type="button" class="car-arrow" id="fanPrev" aria-label="Previous screen"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M10 3L5 8l5 5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+    <div class="car-dots" id="fanDots" role="group" aria-label="Choose a screen"><button type="button" aria-label="Show Clients" aria-current="true"></button><button type="button" aria-label="Show Today"></button><button type="button" aria-label="Show Client"></button></div>
+    <button type="button" class="car-arrow" id="fanNext" aria-label="Next screen"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M6 3l5 5-5 5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+    <p class="sr" id="fanLive" aria-live="polite" aria-atomic="true"></p>
   </div>
   <div class="wrap">
     <ol class="steps">
@@ -792,21 +878,107 @@ footer{padding:56px 0 48px;border-top:1px solid var(--nhair)}
   var root=document.documentElement;
   var reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   var clamp=function(v,a,b){return Math.max(a,Math.min(b,v))};
+  /* pointer velocity (px/ms) over the last 100 ms of movement; 0 if the pointer has been still */
+  var velOf=function(ss,tEnd){
+    var b=ss[ss.length-1];if(!b||tEnd-b.t>90)return 0;
+    var a=b;for(var i=ss.length-1;i>=0&&b.t-ss[i].t<=100;i--)a=ss[i];
+    return b.t>a.t?(b.x-a.x)/(b.t-a.t):0;
+  };
 
-  /* nav */
-  var nav=document.getElementById('nav');
-  var bands=[].slice.call(document.querySelectorAll('main > section, footer'));
-  function navState(){
-    nav.classList.toggle('scrolled',window.scrollY>8);
-    var y=nav.offsetHeight/2,light=false;
-    for(var i=0;i<bands.length;i++){var r=bands[i].getBoundingClientRect();if(r.top<=y&&r.bottom>y){light=bands[i].classList.contains('light');break}}
-    nav.classList.toggle('on-light',light);
+  /* ---------- one frame loop for everything that moves ----------
+     Lenis (smooth wheel scrolling) and every animation below run in this single requestAnimationFrame.
+     A subscriber returns true to stay subscribed for the next frame. tRaf stays set while a frame runs, so a
+     subscriber added mid-frame (Lenis's scroll event, the glow) joins this frame and never queues a second loop. */
+  var lenis=null,subs=[],tRaf=0,keepAlive=false;
+  function report(e){setTimeout(function(){throw e})}
+  function frame(now){
+    tRaf=-1;
+    if(lenis){try{lenis.raf(now)}catch(e){report(e)}}
+    for(var i=0;i<subs.length;i++){
+      var keep=false;try{keep=subs[i](now)}catch(e){report(e)}
+      if(!keep){subs.splice(i,1);i--}
+    }
+    tRaf=(keepAlive||subs.length)?requestAnimationFrame(frame):0;
   }
-  navState(); window.addEventListener('scroll',navState,{passive:true});
+  var ticker={
+    add:function(fn){if(subs.indexOf(fn)<0)subs.push(fn);if(!tRaf)tRaf=requestAnimationFrame(frame)},
+    keep:function(v){keepAlive=v;if(v&&!tRaf)tRaf=requestAnimationFrame(frame)}
+  };
+  var coarse=window.matchMedia('(hover: none) and (pointer: coarse)').matches;
+  var scrollY_=function(){return lenis?lenis.animatedScroll:window.scrollY};
+  var onScroll=[];
+  function scrolled(){for(var i=0;i<onScroll.length;i++)onScroll[i]()}
+  window.addEventListener('scroll',function(){if(!lenis)scrolled()},{passive:true});
+  /* smooth wheel scrolling: not with reduced motion, and not on touch screens, where native scrolling is better */
+  function startLenis(){
+    if(lenis||reduce||coarse||typeof window.Lenis!=='function')return;
+    try{
+      lenis=new window.Lenis({autoRaf:false,lerp:.1,smoothWheel:true,syncTouch:false,anchors:{offset:0},wheelMultiplier:1});
+      lenis.on('scroll',scrolled);
+      ticker.keep(true);
+      window.__lenis=lenis;
+    }catch(e){lenis=null}
+  }
+  document.addEventListener('DOMContentLoaded',startLenis);
+  window.addEventListener('load',startLenis);
+  /* programmatic scroll (tracker clicks): Lenis when it runs, else our own tween in the same frame loop.
+     Reduced motion: a short 320 ms ease-out. Any wheel, touch or key from the visitor cancels it. */
+  var stw=null;
+  function stStop(){if(stw){stw=null;root.style.scrollBehavior=''}}
+  function stTick(now){
+    if(!stw)return false;
+    var s=clamp((now-stw.t0)/1000/stw.D,0,1),e=reduce?1-Math.pow(1-s,3):(s<.5?4*s*s*s:1-Math.pow(-2*s+2,3)/2);
+    window.scrollTo(0,stw.y0+stw.d*e);
+    if(s>=1){stStop();return false}
+    return true;
+  }
+  ['wheel','touchstart','keydown'].forEach(function(t){window.addEventListener(t,stStop,{passive:true})});
+  function smoothTo(y){
+    if(lenis){lenis.scrollTo(y,{duration:reduce?.32:1.1});return}
+    var y0=window.scrollY,d=y-y0;if(Math.abs(d)<1)return;
+    root.style.scrollBehavior='auto'; /* our tween sets every frame; CSS smooth scrolling must not re-smooth it */
+    stw={y0:y0,d:d,t0:performance.now(),D:reduce?.32:clamp(.6+Math.abs(d)/5000,.6,1.1)};
+    ticker.add(stTick);
+  }
+
+  /* decode images before they first move, so no frame waits on a decode */
+  function decodeAll(list){
+    return Promise.all(list.map(function(m){
+      try{m.loading='eager'}catch(_){}
+      return m.decode?m.decode().catch(function(){}):Promise.resolve();
+    }));
+  }
+  function whenNear(el,fn){
+    if(!('IntersectionObserver' in window)){fn();return}
+    var io=new IntersectionObserver(function(es){if(es[0].isIntersecting){io.disconnect();fn()}},{rootMargin:'100% 0px 100% 0px'});
+    io.observe(el);
+  }
+
+  /* nav: band edges are measured once per layout, not on every scroll */
+  var nav=document.getElementById('nav');
+  var bands=[].slice.call(document.querySelectorAll('main > section, footer')),bandTops=[],navH=64;
+  function navMeasure(){
+    var y=scrollY_();
+    bandTops=bands.map(function(b){var r=b.getBoundingClientRect();return [r.top+y,r.bottom+y,b.classList.contains('light')]});
+    navH=nav.offsetHeight;
+  }
+  var navScrolled=null,navLight=null;
+  function navState(){
+    var y=scrollY_(),mid=y+navH/2,light=false;
+    for(var i=0;i<bandTops.length;i++){if(bandTops[i][0]<=mid&&bandTops[i][1]>mid){light=bandTops[i][2];break}}
+    var sc=y>8;
+    if(sc!==navScrolled){navScrolled=sc;nav.classList.toggle('scrolled',sc)}
+    if(light!==navLight){navLight=light;nav.classList.toggle('on-light',light)}
+  }
+  onScroll.push(navState);
+  navMeasure();navState();
+  window.addEventListener('resize',function(){navMeasure();navState()});
+  window.addEventListener('load',function(){navMeasure();navState()});
+  if(document.fonts&&document.fonts.ready)document.fonts.ready.then(function(){navMeasure();navState()});
 
   /* reveal */
   var reveals=document.querySelectorAll('.reveal');
-  if(reduce||!('IntersectionObserver' in window)){reveals.forEach(function(e){e.classList.add('in')})}
+  if(!('IntersectionObserver' in window)){reveals.forEach(function(e){e.classList.add('in')})}
   else{
     var ro=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');ro.unobserve(e.target)}})},{rootMargin:'0px 0px -8% 0px',threshold:.12});
     reveals.forEach(function(e){ro.observe(e)});
@@ -829,215 +1001,504 @@ footer{padding:56px 0 48px;border-top:1px solid var(--nhair)}
     window.addEventListener('keydown',spKey,true);
   }
 
-  /* ---------- hero: 3D ring carousel ---------- */
-  (function(){
-    var stage=document.getElementById('stage'),car=document.getElementById('car'),ring=document.getElementById('ring');
-    if(!car)return;
-    var cps=[].slice.call(ring.querySelectorAll('.cp')),N=cps.length,TAU=Math.PI*2,STEP=TAU/N;
-    var shades=cps.map(function(c){return c.querySelector('.shade')});
-    var cdots=[].slice.call(document.querySelectorAll('#carDots button')),live=document.getElementById('carLive');
-    var K=118,C=19.5; /* spring: settles in about 700 ms with a whisper of overshoot */
-    var pos=0,target=0,vel=0,W=300,RX=220,raf=0,lastT=0,dragging=false,visible=true,hover=false,focusIn=false;
-    var lastUser=-1e9,lastAuto=performance.now(),front=-1;
+  /* ---------- ring carousels (hero + coach fan) ----------
+     pos/target are in "screens". Dragging writes pos directly (1:1 with the pointer). Release hands the
+     pointer's velocity to a soft spring that decays and settles on the nearest screen. Buttons, dots, keys and
+     autoplay ease the ring round with a velocity-matched curve, so repeated presses keep it rolling. */
+  function makeRing(o){
+    var stage=o.stage,car=o.car,cps=o.items,N=cps.length,STEP=Math.PI*2/N;
+    var cdots=o.dots,live=o.live;
+    /* soft spring after a drag; reduced motion: critically damped, quicker, no overshoot */
+    var SK=reduce?240:80,SC=reduce?31:14.5;
+    var pos=0,target=0,vel=0,lastT=0,running=false,dragging=false,visible=true,hover=false,focusIn=false;
+    var lastHeld=0,mode='idle',tw=null,lastUser=-1e9,lastAuto=performance.now(),front=-1,shown=-1,started=false;
+    var driftV=0,ready=!o.ready;
     var mod=function(n,m){return((n%m)+m)%m};
     car.classList.add('live');
-
-    function measure(){
-      W=cps[0].offsetWidth||300;
-      var sw=stage.clientWidth;
-      RX=sw<=640?W*.54:W*.76;
-      car.style.setProperty('--cw',W+'px');
-      render();
-    }
-    function stepPx(){return Math.max(120,RX*1.08)}
-    function render(){
-      for(var i=0;i<N;i++){
-        var a=(i-pos)*STEP; a-=TAU*Math.round(a/TAU);
-        var c=Math.cos(a),s=Math.sin(a),t=(1-c)/2;
-        var x=s*RX*(1+.5*(1-c)),sc=1-t*.46,ry=s*30,z=-t*W*.6;
-        cps[i].style.transform='perspective(1400px) translate3d('+x.toFixed(1)+'px,0,'+z.toFixed(1)+'px) rotateY('+ry.toFixed(2)+'deg) scale('+sc.toFixed(4)+')';
-        cps[i].style.zIndex=Math.round(100+c*50);
-        shades[i].style.opacity=Math.min(.82,t*1.25).toFixed(3);
-      }
+    function render(){o.render(pos,vel,STEP)}
+    function stepPx(){return Math.max(110,o.stepPx(STEP))}
+    function showFront(f){
+      if(f===shown)return; shown=f;
+      cdots.forEach(function(d,k){d.setAttribute('aria-current',k===f?'true':'false')});
+      cps.forEach(function(c,k){c.setAttribute('aria-hidden',k===f?'false':'true')});
     }
     function announce(){
       var f=mod(Math.round(target),N);
+      showFront(f);
       if(f===front)return; front=f;
-      cdots.forEach(function(d,k){d.setAttribute('aria-current',k===f?'true':'false')});
-      cps.forEach(function(c,k){c.setAttribute('aria-hidden',k===f?'false':'true')});
       if(started)live.textContent=cps[f].getAttribute('data-name')+', screen '+(f+1)+' of '+N;
     }
-    var started=false;
+    function settle(){
+      pos=target;vel=0;mode='idle';tw=null;
+      if(Math.abs(target)>=N){var k=Math.floor(target/N)*N;target-=k;pos-=k}
+    }
     function tick(now){
-      raf=0;
       var dt=lastT?Math.min(.05,(now-lastT)/1000):1/60; lastT=now;
       if(!dragging){
-        if(reduce){pos=target;vel=0}
-        else{
-          var acc=K*(target-pos)-C*vel; vel+=acc*dt; pos+=vel*dt;
-          if(Math.abs(target-pos)<.0006&&Math.abs(vel)<.003){pos=target;vel=0}
+        if(mode==='tween'){
+          var s=(now-tw.t0)/1000/tw.D;
+          if(s>=1)settle();
+          else if(tw.out){var r1=1-s;pos=tw.p0+(tw.p1-tw.p0)*(1-r1*r1*r1);vel=(tw.p1-tw.p0)*3*r1*r1/tw.D}
+          else{
+            var s2=s*s,s3=s2*s,D=tw.D,m0=tw.v0*D;
+            pos=(2*s3-3*s2+1)*tw.p0+(s3-2*s2+s)*m0+(-2*s3+3*s2)*tw.p1;
+            vel=((6*s2-6*s)*tw.p0+(3*s2-4*s+1)*m0+(-6*s2+6*s)*tw.p1)/D;
+          }
+        }else if(mode==='spring'){
+          var n=Math.ceil(dt/(1/240)),h=dt/n;
+          for(var j=0;j<n;j++){var acc=SK*(target-pos)-SC*vel;vel+=acc*h;pos+=vel*h}
+          if(Math.abs(target-pos)<.0005&&Math.abs(vel)<.004)settle();
+        }else if(mode==='drift'){
+          /* idle: a slow, continuous turn that eases in */
+          driftV+=(o.drift-driftV)*(1-Math.exp(-dt/1.1));
+          pos+=driftV*dt;vel=driftV;
+          if(pos>=N){pos-=N;target-=N}
+          showFront(mod(Math.round(pos),N));
         }
-        if(pos===target&&Math.abs(target)>=N){var k=Math.floor(target/N)*N;target-=k;pos-=k}
       }
       render();
-      if(dragging||pos!==target)raf=requestAnimationFrame(tick);else lastT=0;
+      if(dragging||mode!=='idle')return true;
+      running=false;lastT=0;return false;
     }
-    function kick(){if(!raf){lastT=0;raf=requestAnimationFrame(tick)}}
+    function kick(){if(!running){running=true;lastT=0;ticker.add(tick)}}
     function userAct(){lastUser=performance.now();live.setAttribute('aria-live','polite');started=true}
-    function go(d,user){if(user)userAct();target=Math.round(target)+d;announce();kick()}
-    function goTo(i,user){var d=i-mod(Math.round(target),N);d-=N*Math.round(d/N);if(d)go(d,user);else if(user)userAct()}
+    /* ease to a new target, starting from the current position and speed (no restart, no jump) */
+    function easeTo(t,dur){
+      target=t;
+      /* reduced motion: a short 300 ms ease-out from wherever the ring is */
+      if(reduce){tw={p0:pos,p1:t,t0:performance.now(),D:.3,out:true};mode='tween'}
+      else{
+        var d=t-pos,D=dur;
+        if(vel*d>0)D=Math.min(D,3*Math.abs(d)/Math.abs(vel)); /* keeps the curve monotone: no backtracking */
+        D=Math.max(D,.3);
+        var v0=vel;if(v0*d>0&&Math.abs(v0)*D>3*Math.abs(d))v0=3*d/D; /* still monotone at the minimum length */
+        if(v0*d<0)v0=0;
+        tw={p0:pos,v0:v0,p1:t,t0:performance.now(),D:D};mode='tween';
+      }
+      announce();kick();
+    }
+    /* leave the idle drift: keep going the same way and ease to a stop on the next screen */
+    function stopDrift(){
+      if(mode!=='drift')return;
+      var t=Math.ceil(pos);if(t-pos<.18)t+=1;
+      driftV=0;easeTo(t,1.1);
+    }
+    function durFor(n){return Math.min(1.05,.72+.11*(Math.abs(n)-1))}
+    function go(d,user,held){
+      if(dragging)return;
+      if(user)userAct();
+      if(mode==='drift'){driftV=0;mode='idle';target=d>0?Math.floor(pos):Math.ceil(pos)}
+      var nt=target+d,now=performance.now();
+      /* presses accumulate, so rapid clicks or a held key keep the ring rolling; cap the queue.
+         A held key adds a screen at a steady pace instead of at the OS key-repeat rate. */
+      if(held&&(now-lastHeld<(reduce?300:240)||Math.abs(nt-pos)>1.6))return;
+      if(Math.abs(nt-pos)>Math.max(1,N/2)+.5)return;
+      if(held)lastHeld=now;
+      easeTo(nt,user?durFor(nt-pos):.95);
+    }
+    function goTo(i,user){
+      if(mode==='drift'){driftV=0;mode='idle';target=Math.round(pos)}
+      var d=i-mod(target,N);d-=N*Math.round(d/N);if(d)go(d,user);else if(user){userAct();if(target!==pos)easeTo(target,.6)}
+    }
 
-    /* drag / swipe: only horizontal drags are ours, vertical ones scroll the page */
+    /* drag / swipe: only clearly horizontal drags are ours, vertical ones scroll the page */
     var pid=null,sx=0,sy=0,sPos=0,decided=false,moved=false,samples=[];
     car.addEventListener('pointerdown',function(e){
       if(e.pointerType==='mouse'&&e.button!==0)return;
+      if(e.target.closest&&e.target.closest('button'))return;
       pid=e.pointerId;sx=e.clientX;sy=e.clientY;decided=false;moved=false;samples=[{x:e.clientX,t:e.timeStamp}];
     });
     car.addEventListener('pointermove',function(e){
       if(e.pointerId!==pid)return;
       var dx=e.clientX-sx,dy=e.clientY-sy;
       if(!decided){
-        if(Math.abs(dx)<7&&Math.abs(dy)<7)return;
+        if(Math.abs(dx)<6&&Math.abs(dy)<6)return;
         decided=true;
-        if(Math.abs(dx)<=Math.abs(dy)){pid=null;return}
-        dragging=true;moved=true;sPos=pos;vel=0;sx=e.clientX;dx=0;
+        if(Math.abs(dx)<=Math.abs(dy)*1.15){pid=null;return}
+        /* keep the press point as origin: the screen stays exactly under the pointer, threshold included */
+        dragging=true;moved=true;mode='idle';tw=null;driftV=0;sPos=pos;vel=0;
         car.classList.add('dragging');try{car.setPointerCapture(e.pointerId)}catch(_){}
         userAct();
       }
       if(!dragging)return;
       pos=sPos-dx/stepPx();
-      samples.push({x:e.clientX,t:e.timeStamp});if(samples.length>6)samples.shift();
+      samples.push({x:e.clientX,t:e.timeStamp});if(samples.length>20)samples.shift();
+      vel=-velOf(samples,e.timeStamp)*1000/stepPx();
+      render(); /* paint in the same frame as the pointer event: no lag */
+      showFront(mod(Math.round(pos),N));
       kick();
     });
     function endDrag(e){
       if(e.pointerId!==pid)return; pid=null;
       if(!dragging)return;
       dragging=false;car.classList.remove('dragging');
-      var a=samples[0],b=samples[samples.length-1],dt=b.t-a.t,v=dt>0?(b.x-a.x)/dt:0;
-      if(e.timeStamp-b.t>120)v=0;
-      var vs=-v*1000/stepPx(); vs=clamp(vs,-12,12);
-      var base=Math.round(pos),t=Math.round(pos+vs*.2);
-      target=clamp(t,base-2,base+2); vel=reduce?0:vs;
+      var v=velOf(samples,e.timeStamp);
+      var vs=clamp(-v*1000/stepPx(),reduce?-7:-14,reduce?7:14);
+      var base=Math.round(pos),t=Math.round(pos+vs*(reduce?.12:.24));
+      target=clamp(t,base-2,base+2);vel=reduce?vs*.6:vs;mode='spring';
       userAct();announce();kick();
     }
     car.addEventListener('pointerup',endDrag);
     car.addEventListener('pointercancel',endDrag);
+    /* only the ring's own capture: on touch the image under the finger loses its implicit capture to the ring
+       the moment the drag starts, and that bubbling event must not end the drag */
+    car.addEventListener('lostpointercapture',function(e){if(e.target===car)endDrag(e)});
     car.addEventListener('click',function(e){
       if(moved){moved=false;return}
-      var ph=e.target.closest&&e.target.closest('.cp'); if(!ph)return;
+      var ph=e.target.closest&&e.target.closest('.phone'); if(!ph||cps.indexOf(ph)<0)return;
       goTo(cps.indexOf(ph),true);
     });
-    stage.addEventListener('keydown',function(e){
-      if(e.key==='ArrowRight'){e.preventDefault();go(1,true)}
-      else if(e.key==='ArrowLeft'){e.preventDefault();go(-1,true)}
+    o.keys.addEventListener('keydown',function(e){
+      if(e.key==='ArrowRight'){e.preventDefault();go(1,true,e.repeat)}
+      else if(e.key==='ArrowLeft'){e.preventDefault();go(-1,true,e.repeat)}
     });
-    document.getElementById('carPrev').addEventListener('click',function(){go(-1,true)});
-    document.getElementById('carNext').addEventListener('click',function(){go(1,true)});
+    o.prev.addEventListener('click',function(){go(-1,true)});
+    o.next.addEventListener('click',function(){go(1,true)});
     cdots.forEach(function(d,k){d.addEventListener('click',function(){goTo(k,true)})});
 
-    /* autoplay: gentle, and only when nobody is busy with it */
-    stage.addEventListener('pointerenter',function(e){if(e.pointerType==='mouse')hover=true});
-    stage.addEventListener('pointerleave',function(e){if(e.pointerType==='mouse'){hover=false;lastUser=performance.now()}});
-    stage.addEventListener('focusin',function(){focusIn=true});
-    stage.addEventListener('focusout',function(e){if(!stage.contains(e.relatedTarget)){focusIn=false;lastUser=performance.now()}});
-    if(!reduce){
+    /* idle motion: never under reduced motion, and only when nobody is busy with it */
+    [stage,o.ctl].forEach(function(el){
+      el.addEventListener('pointerenter',function(e){if(e.pointerType==='mouse'){hover=true;stopDrift()}});
+      el.addEventListener('pointerleave',function(e){if(e.pointerType==='mouse'){hover=false;lastUser=performance.now()}});
+      /* keyboard focus pauses idle motion; a mouse click on a dot does not freeze it for good */
+      el.addEventListener('focusin',function(e){var kb=true;try{kb=e.target.matches(':focus-visible')}catch(_){}if(kb){focusIn=true;stopDrift()}});
+      el.addEventListener('focusout',function(e){if(!stage.contains(e.relatedTarget)&&!o.ctl.contains(e.relatedTarget)){focusIn=false;lastUser=performance.now()}});
+    });
+    if(!reduce&&(o.drift||o.autoMs)){
       setInterval(function(){
         var now=performance.now();
-        if(!visible||hover||focusIn||dragging||document.hidden||now-lastUser<1500){lastAuto=now;return}
-        if(now-lastAuto>=3500){lastAuto=now;live.setAttribute('aria-live','off');go(1,false)}
-      },250);
+        var busy=!visible||hover||focusIn||dragging||document.hidden||now-lastUser<2500||(o.ready&&!o.ready());
+        if(o.drift){
+          if(busy){stopDrift();return}
+          if(mode==='idle'){mode='drift';driftV=0;live.setAttribute('aria-live','off');kick()}
+          return;
+        }
+        if(busy||mode!=='idle'){lastAuto=now;return}
+        if(now-lastAuto>=o.autoMs){lastAuto=now;live.setAttribute('aria-live','off');go(o.autoDir||1,false)}
+      },200);
     }
-    if('IntersectionObserver' in window){new IntersectionObserver(function(es){visible=es[0].isIntersecting}).observe(stage)}
+    if('IntersectionObserver' in window){new IntersectionObserver(function(es){visible=es[0].isIntersecting;if(o.onVisible)o.onVisible(visible)}).observe(stage)}
+    function measure(){if(o.measure)o.measure();render()}
     window.addEventListener('resize',measure);
     measure();announce();
-    window.__car={get pos(){return pos},get target(){return target},get front(){return mod(Math.round(target),N)}};
+    return {render:render,get stepPx(){return stepPx()},get pos(){return pos},get target(){return target},get mode(){return mode},get vel(){return vel},
+      get front(){return mod(Math.round(mode==='drift'?pos:target),N)},stop:function(){lastUser=1e15;stopDrift()}};
+  }
+
+  /* hero: six screens on a wide ring */
+  (function(){
+    var stage=document.getElementById('stage'),car=document.getElementById('car'),ring=document.getElementById('ring');
+    if(!car)return;
+    var cps=[].slice.call(ring.querySelectorAll('.cp')),shades=cps.map(function(c){return c.querySelector('.shade')});
+    var TAU=Math.PI*2,W=300,RX=220,heroReady=false,zs=[];
+    /* the drift starts only once every screen in the ring is decoded */
+    var heroImgs=[].slice.call(ring.querySelectorAll('img'));
+    Promise.race([decodeAll(heroImgs),new Promise(function(r){setTimeout(r,4000)})]).then(function(){heroReady=true});
+    window.__car=makeRing({
+      stage:stage,car:car,keys:stage,items:cps,ctl:document.getElementById('carCtl'),
+      dots:[].slice.call(document.querySelectorAll('#carDots button')),live:document.getElementById('carLive'),
+      prev:document.getElementById('carPrev'),next:document.getElementById('carNext'),drift:.11,ready:function(){return heroReady},
+      measure:function(){W=cps[0].offsetWidth||300;RX=stage.clientWidth<=640?W*.54:W*.76;car.style.setProperty('--cw',W+'px')},
+      /* pixels of pointer travel per screen: the front phone moves exactly with the pointer */
+      stepPx:function(STEP){return STEP*RX},
+      render:function(pos,vel,STEP){
+        for(var i=0;i<cps.length;i++){
+          var a=(i-pos)*STEP; a-=TAU*Math.round(a/TAU);
+          var c=Math.cos(a),s=Math.sin(a),t=(1-c)/2;
+          /* reduced motion: a flatter ring, so a turn swings less */
+          var x=s*RX*(1+.5*(1-c)),sc=1-t*.46,ry=s*(reduce?16:30),z=-t*W*(reduce?.4:.6);
+          cps[i].style.transform='perspective(1400px) translate3d('+x.toFixed(2)+'px,0,'+z.toFixed(2)+'px) rotateY('+ry.toFixed(3)+'deg) scale('+sc.toFixed(4)+')';
+          var zi=Math.round(100+c*12);if(zi!==zs[i]){zs[i]=zi;cps[i].style.zIndex=zi} /* only when the order changes */
+          shades[i].style.opacity=Math.min(.82,t*1.25).toFixed(3);
+        }
+      }
+    });
   })();
 
-  /* ---------- showcase: sticky viewport driven by ordinary page scroll ---------- */
-  var pin=document.getElementById('pin');
-  var panes=pin.querySelectorAll('.pane'),imgs=[].slice.call(pin.querySelectorAll('.pin-phone img')),dots=pin.querySelectorAll('.dots button'),fills=pin.querySelectorAll('.dots .bar i');
-  var panesBox=pin.querySelector('.panes'),phoneBox=pin.querySelector('.pin-phone');
-  var cur=0,pinOn=false,pinRaf=0,prevTimer=0;
+  /* ---------- showcase ---------- */
+  var pin=document.getElementById('pin'),scTrack=document.getElementById('scTrack'),swUi=document.getElementById('swUi');
+  var showMode='';
+  function applyShowMode(){
+    var m=window.__showMode();
+    if(m===showMode){if(m==='pin')pinLayout();else swLayout();return}
+    showMode=m;
+    root.classList.toggle('pin',m==='pin');root.classList.toggle('swipe',m==='swipe');
+    pin.setAttribute('aria-hidden',m==='pin'?'false':'true');
+    pinOn=m==='pin';
+    if(pinOn){pinLayout();pinFrame()}else{swLayout();swFrame()}
+  }
+
+  /* --- large screens: sticky viewport, vertical step tracker --- */
+  var panes=[].slice.call(pin.querySelectorAll('.pane')),imgs=[].slice.call(pin.querySelectorAll('.pin-phone img'));
+  var trk=document.getElementById('trk'),tbtns=[].slice.call(trk.querySelectorAll('button')),tlis=[].slice.call(trk.querySelectorAll('li'));
+  var panesBox=pin.querySelector('.panes'),phoneBox=pin.querySelector('.pin-phone'),pinPhone=phoneBox.querySelector('.phone'),pinScreen=phoneBox.querySelector('.screen');
+  var cur=0,pinOn=false,centers=[0,1,2,3],rp=-1,pT=0,pLast=0;
+  var paneParts=panes.map(function(p){return [p.querySelector('h3'),p.querySelector('p:last-child')]});
+  var sm=function(t){t=clamp(t,0,1);return t*t*(3-2*t)};
   function setStep(i){
-    if(i===cur)return;
-    var best=null,bo=-1;
-    imgs.forEach(function(m){var o=+getComputedStyle(m).opacity;if(o>bo){bo=o;best=m}});
-    imgs.forEach(function(m){m.classList.remove('prev')});
-    if(best&&best!==imgs[i])best.classList.add('prev');
-    cur=i;
+    if(i===cur)return; cur=i;
     panes.forEach(function(p,k){p.classList.toggle('on',k===i)});
-    imgs.forEach(function(p,k){p.classList.toggle('on',k===i)});
-    dots.forEach(function(p,k){p.classList.toggle('on',k===i);if(k===i)p.setAttribute('aria-current','step');else p.removeAttribute('aria-current')});
-    clearTimeout(prevTimer);
-    prevTimer=setTimeout(function(){imgs.forEach(function(m){m.classList.remove('prev')})},reduce?0:900);
+    imgs.forEach(function(m,k){m.classList.toggle('on',k===i)});
+    tbtns.forEach(function(b,k){b.classList.toggle('on',k===i);if(k===i)b.setAttribute('aria-current','step');else b.removeAttribute('aria-current')});
   }
-  function pinFrame(){
-    pinRaf=0;
-    if(!pinOn)return;
-    var r=pin.getBoundingClientRect(),span=r.height-window.innerHeight;
-    var p=clamp(-r.top/span,0,.9999)*4;
+  /* Every visual is a pure function of scroll progress p (0..4), so slow scrolling glides and reversing
+     simply plays it backwards. Each change happens across a zone half a step wide around the boundary:
+     the next screen rises in over the last (cross-fade, slight slide and scale) while the text hands over,
+     out in the first half of the zone and in during the second, so lines never overlap. */
+  var ZONE=.5,A_IN=reduce?2:7,A_OUT=reduce?1.5:5,S_IN=reduce?0:.035,S_OUT=reduce?0:.06,T_IN=reduce?6:18,T_OUT=reduce?4:12;
+  function bt(k,p){return clamp((p-(k-ZONE/2))/ZONE,0,1)}
+  function renderPin(p){
     setStep(Math.floor(p));
-    fills.forEach(function(f,k){f.style.transform='scaleX('+clamp(p-k,0,1).toFixed(3)+')'});
+    for(var i=0;i<4;i++){
+      var tin=i===0?1:bt(i,p),tout=i===3?0:bt(i+1,p);
+      var inI=sm(tin),outI=sm(tout),m=imgs[i];
+      m.style.opacity=(outI>=1?0:inI).toFixed(4);
+      m.style.transform='translate3d(0,'+((1-inI)*A_IN-outI*A_OUT).toFixed(3)+'%,0) scale('+(1+(1-inI)*S_IN-outI*S_OUT).toFixed(4)+')';
+      m.style.zIndex=i+1;
+      var oE=sm(tout*2),iH=sm(tin*2-1),iP=sm((tin*2-1.2)/.8),h=paneParts[i][0],q=paneParts[i][1];
+      h.style.opacity=(iH*(1-oE)).toFixed(4);
+      h.style.transform='translate3d(0,'+((1-iH)*T_IN-oE*T_OUT).toFixed(2)+'px,0)';
+      q.style.opacity=(iP*(1-oE)).toFixed(4);
+      q.style.transform='translate3d(0,'+((1-iP)*T_IN-oE*T_OUT).toFixed(2)+'px,0)';
+    }
+    /* tracker: knob and fill glide continuously between the step names */
+    var x=clamp(p-.5,0,3),k=Math.min(2,Math.floor(x)),f=x-k;
+    var y=centers[k]+(centers[k+1]-centers[k])*f-centers[0],len=centers[3]-centers[0];
+    trk.style.setProperty('--ky',y.toFixed(2)+'px');
+    trk.style.setProperty('--f',(len>0?y/len:0).toFixed(4));
+    tlis.forEach(function(li,j){li.classList.toggle('done',x>=j-.001)});
+    /* a little depth while scrolling; not with reduced motion */
+    if(!reduce)pinPhone.style.setProperty('--py',((p/4-.5)*-28).toFixed(2)+'px');
   }
+  var pinTop=0,pinSpan=1,pinRunning=false;
+  function pinTick(now){
+    if(!pinOn){pinRunning=false;return false}
+    pT=clamp((scrollY_()-pinTop)/pinSpan,0,.9999)*4;
+    /* Lenis already smooths the wheel, and reduced motion follows scroll exactly. With plain native
+       scrolling (a stepped mouse wheel) a light follow keeps the glide soft. */
+    if(rp<0||reduce||lenis||coarse||Math.abs(pT-rp)>1.5)rp=pT;
+    else{var dt=pLast?Math.min(.05,(now-pLast)/1000):1/60;rp+=(pT-rp)*(1-Math.exp(-dt/.075));if(Math.abs(pT-rp)<.0004)rp=pT}
+    pLast=now;
+    renderPin(rp);
+    if(rp!==pT)return true;
+    pLast=0;pinRunning=false;return false;
+  }
+  function pinFrame(){if(pinOn&&!pinRunning){pinRunning=true;ticker.add(pinTick)}}
+  onScroll.push(pinFrame);
   function pinLayout(){
     if(!pinOn)return;
     var mh=0;panes.forEach(function(p){mh=Math.max(mh,p.offsetHeight)});
     panesBox.style.setProperty('--panes-h',Math.ceil(mh)+'px');
-    var narrow=window.innerWidth<900,h=phoneBox.clientHeight,w=phoneBox.clientWidth;
-    var pw=Math.min(370,w*(narrow?.78:.9),h*(narrow?1:.86)/2.09);
+    var h=phoneBox.clientHeight,w=phoneBox.clientWidth;
+    var pw=Math.min(370,w*.9,h*.86/2.09);
     pin.style.setProperty('--pw',Math.max(120,Math.floor(pw))+'px');
+    var tr=trk.getBoundingClientRect();
+    centers=tbtns.map(function(b){var r=b.getBoundingClientRect();return r.top-tr.top+r.height/2});
+    trk.style.setProperty('--t0',centers[0].toFixed(1)+'px');
+    trk.style.setProperty('--tl',(centers[3]-centers[0]).toFixed(1)+'px');
+    var r=pin.getBoundingClientRect();pinTop=r.top+scrollY_();pinSpan=Math.max(1,pin.offsetHeight-window.innerHeight);
+    rp=-1;pinFrame();
   }
-  function pinMode(){
-    var want=!reduce&&window.innerHeight>=440;
-    root.classList.toggle('pin',want);
-    pin.setAttribute('aria-hidden',want?'false':'true');
-    pinOn=want; if(want){pinLayout();pinFrame()}
-  }
-  pinMode();
-  window.addEventListener('resize',function(){pinMode()});
-  window.addEventListener('scroll',function(){if(pinOn&&!pinRaf)pinRaf=requestAnimationFrame(pinFrame)},{passive:true});
-  if(document.fonts&&document.fonts.ready)document.fonts.ready.then(function(){pinLayout()});
-  dots.forEach(function(d,k){d.addEventListener('click',function(){
-    var top=pin.getBoundingClientRect().top+window.scrollY,span=pin.offsetHeight-window.innerHeight;
-    window.scrollTo({top:top+span*(k+.5)/4,behavior:reduce?'auto':'smooth'});
+  tbtns.forEach(function(b,k){b.addEventListener('click',function(){
+    smoothTo(pinTop+pinSpan*(k+.5)/4);
   })});
 
-  /* ---------- coach fan: glow + the front phone changes every 3 s ---------- */
-  var fan=document.getElementById('fan');
-  var fps=[].slice.call(fan.querySelectorAll('.phone')),fanVis=false,fanHover=false,fanReady=0;
-  if(reduce||!('IntersectionObserver' in window)){fan.classList.add('in')}
-  else{var fo=new IntersectionObserver(function(es){if(es[0].isIntersecting){fan.classList.add('in');fanReady=performance.now()+1600;fo.disconnect()}},{threshold:.3});fo.observe(fan)}
-  function fanCycle(){
-    var fx=(getComputedStyle(fan).getPropertyValue('--fx')||'52%').trim(),fs=(getComputedStyle(fan).getPropertyValue('--fs')||'.805').trim();
-    fan.classList.add('cycling');
-    fps.forEach(function(ph){
-      if(ph.classList.contains('f-l')){ph.classList.remove('f-l');ph.classList.add('f-c')}
-      else if(ph.classList.contains('f-c')){ph.classList.remove('f-c');ph.classList.add('f-r')}
-      else{
-        /* the right phone swings round behind the others to the left slot */
-        ph.classList.add('wrapping');ph.classList.remove('f-r');ph.classList.add('f-l');
-        if(ph.animate){
-          var an=ph.animate([
-            {transform:'translateX('+fx+') translateZ(0px) rotateY(-28deg) rotateZ(5deg) scale('+fs+')',opacity:1},
-            {transform:'translateX(0%) translateZ(-380px) rotateY(0deg) rotateZ(0deg) scale(.66)',opacity:.4,offset:.5},
-            {transform:'translateX(-'+fx+') translateZ(0px) rotateY(28deg) rotateZ(-5deg) scale('+fs+')',opacity:1}
-          ],{duration:1050,easing:'cubic-bezier(.65,0,.35,1)'});
-          an.onfinish=an.oncancel=function(){ph.classList.remove('wrapping')};
-        }else ph.classList.remove('wrapping');
+  /* --- small screens: horizontal swipe carousel (native scroll + snap, mouse drag, keys) --- */
+  var slides=[].slice.call(scTrack.querySelectorAll('.slide'));
+  var sPhones=slides.map(function(s){return s.querySelector('.phone')}),sCopies=slides.map(function(s){return s.querySelector('.sl-copy')});
+  var swBtns=[].slice.call(swUi.querySelectorAll('.sw-tabs button')),swPill=swUi.querySelector('.sw-pill');
+  var swIdx=0,swUsed=false,swStart=null,swWidth=1,swTabs=[],swRun=false,rb=0,rbV=0,rbOn=false;
+  function swW(){return swWidth}
+  function swMeasure(){swWidth=slides[0].offsetWidth||1;swTabs=swBtns.map(function(b){return [b.offsetLeft,b.offsetWidth]});swPill.style.setProperty('--tabw',swTabs[0][1]+'px')}
+  function swTick(){swRun=false;swFrame();return false}
+  function swQueue(){if(!swRun){swRun=true;ticker.add(swTick)}}
+  function swFrame(){
+    if(showMode!=='swipe')return;
+    var x=(scTrack.scrollLeft-rb)/swW();
+    for(var i=0;i<slides.length;i++){
+      var d=i-x,ad=Math.min(1,Math.abs(d));
+      sPhones[i].style.transform='scale('+(1-.12*ad).toFixed(4)+')';
+      sPhones[i].style.opacity=(1-.5*ad).toFixed(3);
+      sCopies[i].style.opacity=Math.max(0,1-Math.abs(d)*1.8).toFixed(3);
+      sCopies[i].style.transform=reduce?'none':'translate3d('+(d*44).toFixed(2)+'px,0,0)';
+    }
+    /* the segmented pill slides with the scroll position */
+    var k=clamp(Math.floor(x),0,swBtns.length-2),f=clamp(x-k,0,1),a=swTabs[k],b=swTabs[k+1];
+    var l=a[0]+(b[0]-a[0])*f;
+    swPill.style.transform='translate3d('+l.toFixed(2)+'px,0,0)';
+    var idx=clamp(Math.round(x),0,slides.length-1);
+    if(idx!==swIdx){swIdx=idx;swBtns.forEach(function(bt,j){bt.setAttribute('aria-current',j===idx?'true':'false')})}
+    if(swStart===null)swStart=scTrack.scrollLeft;
+    else if(!swUsed&&Math.abs(scTrack.scrollLeft-swStart)>8)swUse();
+  }
+  function swLayout(){
+    if(showMode!=='swipe')return;
+    swMeasure();scTrack.scrollLeft=swIdx*swW();swStart=scTrack.scrollLeft;swFrame();
+  }
+  function swUse(){if(swUsed)return;swUsed=true;swUi.classList.add('used')}
+  /* glide to a screen in our frame loop (snap paused meanwhile), starting at the release speed v0 (px/s), so a
+     flick hands its momentum straight to the glide. Reduced motion: a short 300 ms ease-out. */
+  var swTw=null;
+  function swTwEnd(){swTw=null;scTrack.classList.remove('tweening','dragging')}
+  function swTwTick(now){
+    if(!swTw)return false;
+    var s=clamp((now-swTw.t0)/1000/swTw.D,0,1),x;
+    if(swTw.out){var r1=1-s;x=swTw.p0+swTw.d*(1-r1*r1*r1)}
+    else{var s2=s*s,s3=s2*s,m0=swTw.v0*swTw.D;x=(2*s3-3*s2+1)*swTw.p0+(s3-2*s2+s)*m0+(-2*s3+3*s2)*(swTw.p0+swTw.d)}
+    scTrack.scrollLeft=x;swFrame();
+    if(s>=1){swTwEnd();return false}
+    return true;
+  }
+  function swGlide(i,v0){
+    var to=clamp(i,0,slides.length-1)*swW(),p0=scTrack.scrollLeft,d=to-p0;
+    if(Math.abs(d)<.5){scTrack.scrollLeft=to;swTwEnd();swFrame();return}
+    v0=v0||0;if(v0*d<0)v0=0;
+    var D=clamp(.42+.12*Math.abs(d)/swW(),.42,.7);
+    if(v0)D=clamp(Math.min(D,3*Math.abs(d)/Math.abs(v0)),.26,.7);
+    if(Math.abs(v0)*D>3*Math.abs(d))v0=3*d/D; /* monotone: never overshoots and comes back */
+    scTrack.classList.add('tweening');
+    swTw={p0:p0,d:d,v0:v0,D:reduce?.3:D,out:reduce,t0:performance.now()};
+    ticker.add(swTwTick);
+  }
+  function swGo(i){swUse();swGlide(i,0)}
+  /* a touch or wheel from the visitor takes over from a glide */
+  ['touchstart','wheel'].forEach(function(t){scTrack.addEventListener(t,function(){if(swTw)swTwEnd()},{passive:true})});
+  scTrack.addEventListener('scroll',swQueue,{passive:true});
+  scTrack.tabIndex=0;
+  scTrack.setAttribute('aria-roledescription','carousel');
+  scTrack.addEventListener('keydown',function(e){
+    if(showMode!=='swipe')return;
+    var x=Math.round((swTw?swTw.p0+swTw.d:scTrack.scrollLeft)/swW()); /* presses during a glide add up */
+    if(e.key==='ArrowRight'){e.preventDefault();swGo(x+1)}
+    else if(e.key==='ArrowLeft'){e.preventDefault();swGo(x-1)}
+    else if(e.key==='Home'){e.preventDefault();swGo(0)}
+    else if(e.key==='End'){e.preventDefault();swGo(slides.length-1)}
+  });
+  swBtns.forEach(function(b,k){b.addEventListener('click',function(){swGo(k)})});
+  if(window.matchMedia('(hover: hover) and (pointer: fine)').matches)document.getElementById('swHintT').textContent='Drag, or use the arrow keys';
+  /* mouse drag: touch and trackpads already scroll natively */
+  var mId=null,mX=0,mL=0,mS=[],mEndT=0;
+  scTrack.addEventListener('dragstart',function(e){e.preventDefault()});
+  scTrack.addEventListener('pointerdown',function(e){
+    if(showMode!=='swipe'||e.pointerType!=='mouse'||e.button!==0)return;
+    swTw=null;scTrack.classList.remove('tweening'); /* catch a gliding track where it is */
+    mId=e.pointerId;mX=e.clientX;mL=scTrack.scrollLeft;mS=[{x:e.clientX,t:e.timeStamp}];
+    scTrack.classList.add('dragging');
+    try{scTrack.setPointerCapture(e.pointerId)}catch(_){}
+    swUse();
+  });
+  /* rubber band past the first and last screen (touch gets the platform's own overscroll) */
+  function band(over){var d=scTrack.clientWidth,a=Math.abs(over);return (over<0?1:-1)*(1-1/(a*.55/d+1))*d}
+  function setRb(v){rb=v;for(var i=0;i<slides.length;i++)slides[i].style.transform=v?'translate3d('+v.toFixed(2)+'px,0,0)':''}
+  function rbTick(now){
+    var dt=1/60;
+    for(var j=0;j<4;j++){var acc=-260*rb-32*rbV;rbV+=acc*dt/4;rb+=rbV*dt/4}
+    if(Math.abs(rb)<.3&&Math.abs(rbV)<5){setRb(0);rbV=0;rbOn=false;swFrame();return false}
+    setRb(rb);swFrame();return true;
+  }
+  scTrack.addEventListener('pointermove',function(e){
+    if(e.pointerId!==mId)return;
+    var want=mL-(e.clientX-mX),max=scTrack.scrollWidth-scTrack.clientWidth;
+    if(want<0){scTrack.scrollLeft=0;setRb(band(want))}
+    else if(want>max){scTrack.scrollLeft=max;setRb(band(want-max))}
+    else{if(rb)setRb(0);scTrack.scrollLeft=want}
+    swFrame();
+    mS.push({x:e.clientX,t:e.timeStamp});if(mS.length>20)mS.shift();
+  });
+  function mEnd(e){
+    if(e.pointerId!==mId)return;mId=null;
+    if(rb){rbV=0;if(!rbOn){rbOn=true;ticker.add(rbTick)}}
+    var v=velOf(mS,e.timeStamp);
+    var w=swW(),x=scTrack.scrollLeft/w,from=Math.round(mL/w),t=Math.round(x-v*220/w);
+    /* a deliberate push past a fifth of a screen, still moving the same way, turns the page */
+    if(Math.abs(v)>.12&&Math.abs(x-from)>.2&&(x-from)*-v>0)t=from+(x>from?1:-1);
+    t=clamp(t,from-1,from+1);
+    if(rb){scTrack.classList.remove('dragging');return} /* the rubber band springs back on its own */
+    swGlide(t,-v*1000);
+  }
+  scTrack.addEventListener('pointerup',mEnd);
+  scTrack.addEventListener('pointercancel',mEnd);
+
+  applyShowMode();
+  var rzT=0;window.addEventListener('resize',function(){clearTimeout(rzT);rzT=setTimeout(function(){applyShowMode();navMeasure();navState()},60)});
+  if(document.fonts&&document.fonts.ready)document.fonts.ready.then(function(){if(pinOn)pinLayout();else swLayout();navMeasure()});
+  window.addEventListener('load',function(){if(pinOn)pinLayout();else swLayout();navMeasure();navState()});
+  /* decode the showcase screens before they first move */
+  whenNear(document.getElementById('showcase'),function(){decodeAll([].slice.call(document.querySelectorAll('#showcase img')))});
+  window.__show={get mode(){return showMode},get step(){return cur},get x(){return scTrack.scrollLeft/swW()}};
+
+  /* ---------- coach fan: three screens on a ring, same feel as the hero ----------
+     At rest it is the original fan (front, and left/right turned in by 28 deg). Turning swings a side phone
+     round behind the others. The glow behind breathes with the ring's speed. */
+  (function(){
+    var fan=document.getElementById('fan');if(!fan)return;
+    var fps=[].slice.call(fan.querySelectorAll(':scope > .phone')),glow=fan.querySelector('.fan-glow');
+    var TAU=Math.PI*2,W=300,FX=.52,FS=.805,intro=0,introOn=false,gS=1,gX=0,gO=1,ring;
+    var SIN=Math.sin(TAU/3);
+    function readVars(){
+      var cs=getComputedStyle(fan);W=fps[0].offsetWidth||300;
+      FX=(parseFloat(cs.getPropertyValue('--fx'))||52)/100;FS=parseFloat(cs.getPropertyValue('--fs'))||.805;
+    }
+    function ease(t){return 1-Math.pow(1-t,3)}
+    function render(pos,vel,STEP){
+      var e=ease(intro);
+      for(var i=0;i<fps.length;i++){
+        var a=(i-pos)*STEP; a-=TAU*Math.round(a/TAU);
+        var c=Math.cos(a),s=Math.sin(a),t=(1-c)/2,u=s/SIN;
+        var x=FX*W*u,z=-t*W*.55,sc=1-(1-FS)*t/.75,ry=-28*u,rz=5*u;
+        var op=1-Math.max(0,t-.75)*2.4,y=0;
+        /* entrance: the side phones open out from behind the front one */
+        var side=Math.min(1,t/.75);
+        x*=1-(1-e)*side;ry*=e;rz*=e;sc=sc*(1-(1-e)*side*.13);
+        y=(1-e)*(side>.5?6:40);
+        op*=side>.5?e:Math.min(1,e*1.4);
+        fps[i].style.transform='translate3d('+x.toFixed(2)+'px,'+(side>.5?(y*W/100).toFixed(2):y.toFixed(2))+'px,'+z.toFixed(2)+'px) rotateY('+ry.toFixed(3)+'deg) rotateZ('+rz.toFixed(3)+'deg) scale('+sc.toFixed(4)+')';
+        fps[i].style.opacity=op.toFixed(3);
+        fps[i].style.zIndex=Math.round(10+c*5);
       }
+      /* glow breathes with the rotation: swells and leans the way the ring turns */
+      var sp=Math.min(1,Math.abs(vel)/2.2),k=reduce?.5:1;
+      var tS=1+.09*sp*k,tX=clamp(-vel*16,-28,28)*k,tO=1+.25*sp*k;
+      gS+=(tS-gS)*.18;gX+=(tX-gX)*.18;gO+=(tO-gO)*.18;
+      glow.style.transform='translate(calc(-50% + '+gX.toFixed(2)+'px),-50%) scale('+gS.toFixed(4)+')';
+      glow.style.opacity=Math.min(1,.82*gO).toFixed(3);
+      /* the glow keeps easing back to rest after the ring stops */
+      if(!gRun&&(Math.abs(gS-1)>.001||Math.abs(gX)>.05||Math.abs(gO-1)>.002)){gRun=true;ticker.add(glowLoop)}
+    }
+    var gRun=false;
+    function glowLoop(){gRun=false;if(ring&&ring.mode==='idle')ring.render();return false}
+    var fanReady=0,fanVis=false;
+    ring=makeRing({
+      stage:fan,car:fan,keys:fan,items:fps,ctl:document.getElementById('fanCtl'),
+      dots:[].slice.call(document.querySelectorAll('#fanDots button')),live:document.getElementById('fanLive'),
+      prev:document.getElementById('fanPrev'),next:document.getElementById('fanNext'),autoMs:3000,autoDir:-1,
+      measure:readVars,
+      stepPx:function(STEP){return FX*W*STEP/SIN},
+      render:render,
+      ready:function(){return fanReady&&performance.now()>fanReady},
+      onVisible:function(v){fanVis=v;fan.classList.toggle('off',!v)}
     });
-  }
-  if(!reduce&&'IntersectionObserver' in window){
-    new IntersectionObserver(function(es){fanVis=es[0].isIntersecting;fan.classList.toggle('off',!fanVis)}).observe(fan);
-    fan.addEventListener('pointerenter',function(e){if(e.pointerType==='mouse')fanHover=true});
-    fan.addEventListener('pointerleave',function(){fanHover=false});
-    var fanLast=0;
-    setInterval(function(){
-      var now=performance.now();
-      if(!fanReady||now<fanReady||!fanVis||fanHover||document.hidden){fanLast=now;return}
-      if(now-fanLast>=3000){fanLast=now;fanCycle()}
-    },250);
-  }
+    window.__fan=ring;
+
+    function play(){
+      fan.classList.add('in');
+      if(reduce){intro=1;ring.render();return}
+      var t0=0;
+      ticker.add(function(now){if(!t0)t0=now;intro=clamp((now-t0)/1300,0,1);ring.render();return intro<1});
+      fanReady=performance.now()+1600;
+      /* client list: segments fill and status dots ping, once */
+      requestAnimationFrame(function(){fan.classList.add('cl-go')});
+    }
+    /* decode the three screens before the entrance, so the first frames never stall */
+    var fanDecoded=null;
+    whenNear(fan,function(){fanDecoded=Promise.race([decodeAll([].slice.call(fan.querySelectorAll('img'))),new Promise(function(r){setTimeout(r,2500)})])});
+    function playWhenDecoded(){(fanDecoded||Promise.resolve()).then(play)}
+    if(reduce||!('IntersectionObserver' in window)){play()}
+    else{
+      fan.classList.add('cl-pre');ring.render();
+      var fo=new IntersectionObserver(function(es){if(es[0].isIntersecting){fo.disconnect();playWhenDecoded()}},{threshold:.3});fo.observe(fan);
+    }
+  })();
 
   /* laptop tabs */
   var tabs=document.querySelectorAll('.tabs [role=tab]'),bimgs=document.querySelectorAll('#bview img');
@@ -1056,8 +1517,8 @@ footer{padding:56px 0 48px;border-top:1px solid var(--nhair)}
   if(!reduce&&'IntersectionObserver' in window){
     var co=new IntersectionObserver(function(es){es.forEach(function(e){
       if(!e.isIntersecting)return; co.unobserve(e.target);
-      var el=e.target,to=+el.dataset.count,suf=el.dataset.suffix||'',t0=performance.now(),d=1600;
-      (function step(t){var k=clamp((t-t0)/d,0,1),v=Math.round(to*(1-Math.pow(1-k,4)));el.textContent=v+suf;if(k<1)requestAnimationFrame(step)})(t0);
+      var el=e.target,to=+el.dataset.count,suf=el.dataset.suffix||'',t0=0,d=1600;
+      ticker.add(function(t){if(!t0)t0=t;var k=clamp((t-t0)/d,0,1),v=Math.round(to*(1-Math.pow(1-k,4)));el.textContent=(v>=1000?v.toLocaleString('en-US'):v)+suf;return k<1});
     })},{threshold:.6});
     counters.forEach(function(c){co.observe(c)});
   }
