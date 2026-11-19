@@ -107,7 +107,8 @@ p{margin:0}
 html:not(.js) .nav::before{opacity:1}
 .nav-in{position:relative;height:64px;display:flex;align-items:center;gap:32px;transition:height .35s var(--ease)}
 .nav.scrolled .nav-in{height:52px}
-.wordmark{font-family:var(--display);font-size:22px;letter-spacing:.02em;text-decoration:none;color:inherit;line-height:1}
+.wordmark{font-family:var(--display);font-size:22px;letter-spacing:.02em;text-decoration:none;color:inherit;line-height:1;display:inline-flex;align-items:center;gap:9px}
+.wordmark .wm{width:26px;height:26px;flex:none}
 .nav ul{display:flex;gap:28px;list-style:none;margin:0 0 0 auto;padding:0}
 .nav ul a{font-size:14px;color:#C9CDD3;text-decoration:none;transition:color .2s}
 .nav ul a:hover{color:#fff}
@@ -481,7 +482,7 @@ footer{padding:56px 0 48px;border-top:1px solid var(--nhair)}
 <body>
 <div class="splash-ov" id="splash" aria-hidden="true">
   <div class="sp-center">
-    <svg class="sp-tile" width="128" height="128" viewBox="0 0 100 100"><rect x="4" y="4" width="92" height="92" rx="26" fill="#38BDF8"/><path d="M34 26H52C66 26 76 36 76 50C76 64 66 74 52 74H34Z M46 38V62H52C59 62 64 57 64 50C64 43 59 38 52 38Z" fill="#0B0C0E" fill-rule="evenodd"/></svg>
+    <svg class="sp-tile" width="128" height="128" viewBox="0 0 100 100"><rect x="4" y="4" width="92" height="92" rx="26" fill="#38BDF8"/><path d="M65.45 68.54H34.55V31.46H44.85A16.48 16.48 0 0 1 59.12 56.18" stroke="#0B0C0E" stroke-width="10.3" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>
     <div class="sp-word">
       <div class="sp-letters"><span style="--i:0">D</span><span style="--i:1">E</span><span style="--i:2">C</span><span style="--i:3">L</span><span style="--i:4">Y</span><span style="--i:5">F</span></div>
       <i class="sp-line"></i>
@@ -493,7 +494,7 @@ footer{padding:56px 0 48px;border-top:1px solid var(--nhair)}
 
 <header class="nav" id="nav">
   <div class="wrap nav-in">
-    <a class="wordmark" href="#top" aria-label="DECLYF home">DECLYF</a>
+    <a class="wordmark" href="#top" aria-label="DECLYF home"><svg class="wm" viewBox="0 0 100 100" aria-hidden="true"><rect x="4" y="4" width="92" height="92" rx="26" fill="#38BDF8"/><path d="M65.45 68.54H34.55V31.46H44.85A16.48 16.48 0 0 1 59.12 56.18" stroke="#0B0C0E" stroke-width="10.3" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>DECLYF</a>
     <nav aria-label="Main">
       <ul>
         <li><a href="#how">How it works</a></li>
@@ -859,7 +860,7 @@ footer{padding:56px 0 48px;border-top:1px solid var(--nhair)}
 <footer class="dark">
   <div class="wrap">
     <div class="foot">
-      <div><a class="wordmark" href="#top">DECLYF</a><p class="tag">Coach smarter. Live dedicated.</p></div>
+      <div><a class="wordmark" href="#top"><svg class="wm" viewBox="0 0 100 100" aria-hidden="true"><rect x="4" y="4" width="92" height="92" rx="26" fill="#38BDF8"/><path d="M65.45 68.54H34.55V31.46H44.85A16.48 16.48 0 0 1 59.12 56.18" stroke="#0B0C0E" stroke-width="10.3" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>DECLYF</a><p class="tag">Coach smarter. Live dedicated.</p></div>
       <ul>
         <li><a href="#how">How it works</a></li>
         <li><a href="#features">Features</a></li>
